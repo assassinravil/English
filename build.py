@@ -23,6 +23,7 @@ PARTS = {
     "@@VOCABULARY@@": SRC / "data" / "vocabulary.js",
     "@@EXERCISES@@":  SRC / "data" / "exercises.js",
     "@@CORE@@":       SRC / "scripts" / "core.js",
+    "@@PROGRESS@@":   SRC / "scripts" / "progress.js",
     "@@PAGES@@":      SRC / "scripts" / "pages.js",
     "@@TRAINER@@":    SRC / "scripts" / "trainer.js",
 }
@@ -35,6 +36,7 @@ MARKERS = {
     "@@VOCABULARY@@": "/* @@VOCABULARY@@ */",
     "@@EXERCISES@@":  "/* @@EXERCISES@@ */",
     "@@CORE@@":       "/* @@CORE@@ */",
+    "@@PROGRESS@@":   "/* @@PROGRESS@@ */",
     "@@PAGES@@":      "/* @@PAGES@@ */",
     "@@TRAINER@@":    "/* @@TRAINER@@ */",
 }

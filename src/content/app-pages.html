@@ -24,7 +24,7 @@
 <!-- ===================== СЛОВАРЬ ===================== -->
 <div class="page" id="vocab" data-group="Словарь" data-title="Все слова">
   <h2>Словарь</h2>
-  <p class="lede">Слова из разобранных заданий, бытовая лексика и база A1–A2. У каждого слова транскрипция.</p>
+  <p class="lede">Уровень меняется сам по ответам в тренажёрах: три верных подряд поднимают слово на ступень, ошибка опускает. Нажми на значок уровня, чтобы выставить его вручную.</p>
 
   <div class="controls">
     <input type="search" id="q" placeholder="Слово, перевод или транскрипция…" style="min-width:15rem">
@@ -37,13 +37,24 @@
   <div class="controls chips" id="topicbar"></div>
 
   <div class="controls">
-    <span class="counter" id="counter"></span>
-    <button class="btn" id="reset" type="button">Сбросить отметки</button>
+    <button class="btn on" data-lvl="all" type="button">Любой уровень</button>
+    <button class="btn" data-lvl="0" type="button">Не выучено</button>
+    <button class="btn" data-lvl="1" type="button">Повторение</button>
+    <button class="btn" data-lvl="2" type="button">Выучено</button>
   </div>
+
+  <div class="controls">
+    <span class="counter" id="counter"></span>
+    <button class="btn" id="export" type="button">Сохранить прогресс в файл</button>
+    <label class="btn" for="importfile" style="cursor:pointer">Загрузить из файла</label>
+    <input type="file" id="importfile" accept="application/json,.json" style="display:none">
+    <button class="btn" id="reset" type="button">Сбросить прогресс</button>
+  </div>
+  <div id="io-msg"></div>
 
   <div class="scroller">
   <table class="stack">
-    <thead><tr><th class="chkcell">✓</th><th>Слово</th><th>Транскрипция</th><th>Перевод</th><th>Заметка</th></tr></thead>
+    <thead><tr><th>Уровень</th><th>Слово</th><th>Транскрипция</th><th>Перевод</th><th>Заметка</th></tr></thead>
     <tbody id="rows"></tbody>
   </table>
   </div>
@@ -78,6 +89,18 @@
   <div class="score"><span class="r">Верно: <b id="w-right">0</b></span><span class="w">Ошибок: <b id="w-wrong">0</b></span><span>Осталось: <b id="w-left">0</b></span></div>
   <div class="bar"><i id="w-bar"></i></div>
   <div class="stage" id="w-stage"></div>
+</div>
+
+
+<!-- ===================== ПРОИЗНОШЕНИЕ ===================== -->
+<div class="page" id="speak" data-group="Тренажёры" data-title="Произношение">
+  <h2>Произношение</h2>
+  <p class="lede">Показан перевод — скажи слово по-английски вслух. Нужен микрофон и защищённое соединение: работает по ссылке на сайт, но не при открытии файла с диска.</p>
+
+  <div class="settings" id="s-topics"></div>
+  <div class="score"><span class="r">Верно: <b id="s-right">0</b></span><span class="w">Ошибок: <b id="s-wrong">0</b></span><span>Осталось: <b id="s-left">0</b></span></div>
+  <div class="bar"><i id="s-bar"></i></div>
+  <div class="stage" id="s-stage"></div>
 </div>
 
 <!-- ===================== СКОБКИ ===================== -->

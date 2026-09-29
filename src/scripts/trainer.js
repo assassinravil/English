@@ -7,7 +7,6 @@ function bumpStat(key, ok){
   Store.set('trainer-stats', STATS);
 }
 
-/* Очередь: верный ответ убирает карточку, неверный возвращает её через пару позиций */
 function Queue(items){
   this.items = shuffle(items);
   this.right = 0; this.wrong = 0;
@@ -35,10 +34,30 @@ function closeEnough(a, b){
   return diff <= 2;
 }
 
+/* значок уровня слова */
+function levelChip(en){
+  var l = Progress.level(en);
+  return '<span class="lvl l' + l + '">' + Progress.NAMES[l] + '</span>';
+}
+
+/* кнопка озвучки */
+function soundBtn(word){
+  if (!Speak.ok) return '';
+  return '<button class="iconbtn sound" type="button" data-say="' + esc(word).replace(/"/g,'&quot;') +
+         '" title="Послушать" aria-label="Послушать">' +
+         '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/>' +
+         '<path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg></button>';
+}
+document.addEventListener('click', function(e){
+  var b = e.target.closest('[data-say]');
+  if (b){ e.stopPropagation(); Speak.say(b.dataset.say); }
+});
+
 /* ===================== ВЫБОР ТЕМ ===================== */
 /* Общий для карточек и написания. Хранится в браузере. */
 var TopicPicker = {
   key: 'trainer-topics',
+  dueKey: 'trainer-due-only',
   selected: null,
   load: function(){
     if (this.selected) return this.selected;
@@ -57,9 +76,21 @@ var TopicPicker = {
     this.save();
   },
   setAll: function(names){ this.selected = names.slice(); this.save(); },
-  words: function(){
+
+  dueOnly: function(){ return Store.get(this.dueKey, true); },
+  setDueOnly: function(v){ Store.set(this.dueKey, !!v); },
+
+  /* все слова выбранных тем */
+  pool: function(){
     var sel = this.load();
     return VOCAB.filter(function(w){ return sel.indexOf(w.topic) !== -1; });
+  },
+  /* слова для тренировки: с учётом срока повторения */
+  words: function(){
+    var pool = this.pool();
+    if (!this.dueOnly()) return pool;
+    var due = pool.filter(function(w){ return Progress.isDue(w.en); });
+    return due.length ? due : pool;
   }
 };
 
@@ -71,6 +102,10 @@ function renderTopicPanel(host, onChange){
   function draw(){
     var talk = TOPICS.filter(function(t){ return t.set !== 'hw'; });
     var hw   = TOPICS.filter(function(t){ return t.set === 'hw'; });
+
+    var poolAll = TopicPicker.pool();
+    var c = Progress.counts(poolAll);
+    var due = Progress.dueCount(poolAll);
 
     function chips(list){
       return list.map(function(t){
@@ -89,10 +124,22 @@ function renderTopicPanel(host, onChange){
       '</div>' +
       '<h5>Разговорные темы</h5><div class="topiclist">' + chips(talk) + '</div>' +
       '<h5 style="margin-top:.95rem">Из домашек</h5><div class="topiclist">' + chips(hw) + '</div>' +
-      '<div class="counter" style="margin-top:.8rem">Выбрано слов: ' + TopicPicker.words().length + '</div>';
+      '<div class="setrow" style="margin:.95rem 0 0">' +
+        '<span class="topicchip' + (TopicPicker.dueOnly() ? ' on' : '') + '" data-due="1">' +
+          'Только те, что пора повторить <span class="n">' + due + '</span></span>' +
+      '</div>' +
+      '<div class="lvlbar">' +
+        '<span class="lvl l0">Не выучено <b>' + c[0] + '</b></span>' +
+        '<span class="lvl l1">Повторение <b>' + c[1] + '</b></span>' +
+        '<span class="lvl l2">Выучено <b>' + c[2] + '</b></span>' +
+      '</div>';
   }
 
   host.addEventListener('click', function(e){
+    if (e.target.closest('[data-due]')){
+      TopicPicker.setDueOnly(!TopicPicker.dueOnly());
+      draw(); onChange(); return;
+    }
     var chip = e.target.closest('[data-topic]');
     if (chip){ TopicPicker.toggle(chip.dataset.topic); draw(); onChange(); return; }
     var pick = e.target.closest('[data-pick]');
@@ -107,6 +154,7 @@ function renderTopicPanel(host, onChange){
     }
   });
 
+  host._redraw = draw;
   draw();
 }
 
@@ -134,11 +182,12 @@ function renderTopicPanel(host, onChange){
     return '<div class="swipe-card ' + cls + '">' +
       '<div class="stamp yes">ЗНАЮ</div><div class="stamp no">НЕ ЗНАЮ</div>' +
       '<div class="flash-topic">' + esc(w.topic) + '</div>' +
+      '<div class="flash-lvl">' + levelChip(w.en) + '</div>' +
       '<div class="flash-word">' + esc(front) + '</div>' +
-      (!reversed && ipa ? '<div class="flash-ipa">' + esc(ipa) + '</div>' : '') +
+      (!reversed ? '<div class="flash-ipa">' + esc(ipa) + ' ' + soundBtn(w.en) + '</div>' : '') +
       (showBack
         ? '<div class="flash-back"><div class="flash-ru">' + esc(back) + '</div>' +
-          (reversed && ipa ? '<div class="flash-ipa">' + esc(ipa) + '</div>' : '') +
+          (reversed && ipa ? '<div class="flash-ipa">' + esc(ipa) + ' ' + soundBtn(w.en) + '</div>' : '') +
           (w.note ? '<div class="flash-note">' + esc(w.note) + '</div>' : '') + '</div>'
         : '<div class="flash-hint">Нажми, чтобы перевернуть</div>') +
       '</div>';
@@ -170,12 +219,16 @@ function renderTopicPanel(host, onChange){
   }
 
   function decide(card, dir){
+    var w = q.current();
     card.classList.add(dir > 0 ? 'gone-right' : 'gone-left');
     bumpStat('cards', dir > 0);
+    Progress.answer(w.en, dir > 0);
     setTimeout(function(){
       if (dir > 0) q.pass(); else q.fail();
       flipped = false;
       draw();
+      var panel = document.getElementById('c-topics');
+      if (panel && panel._redraw) panel._redraw();
     }, 220);
   }
 
@@ -211,7 +264,10 @@ function renderTopicPanel(host, onChange){
     card.addEventListener('touchstart', function(e){ down(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
     card.addEventListener('touchmove',  function(e){ move(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
     card.addEventListener('touchend',   up);
-    card.addEventListener('mousedown',  function(e){ e.preventDefault(); down(e.clientX, e.clientY); });
+    card.addEventListener('mousedown',  function(e){
+      if (e.target.closest('[data-say]')) return;
+      e.preventDefault(); down(e.clientX, e.clientY);
+    });
     window.addEventListener('mousemove', function(e){ move(e.clientX, e.clientY); });
     window.addEventListener('mouseup',   up);
   }
@@ -272,10 +328,11 @@ function renderTopicPanel(host, onChange){
       return;
     }
     stage.innerHTML =
-      '<div class="qmeta">' + esc(w.topic) + ' · напиши по-английски</div>' +
+      '<div class="qmeta">' + esc(w.topic) + ' · ' + levelChip(w.en) + '</div>' +
       '<p class="qtext">' + esc(w.ru) + '</p>' +
       '<div class="answerrow">' +
-        '<input type="text" id="w-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Ответ…">' +
+        '<input type="text" id="w-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Напиши по-английски…">' +
+        (Listen.ok ? '<button class="btn mic" id="w-mic" type="button">🎤 Сказать</button>' : '') +
         '<button class="btn primary" id="w-check" type="button">Проверить</button>' +
         '<button class="btn" id="w-skip" type="button">Не знаю</button>' +
       '</div><div id="w-verdict"></div>';
@@ -285,6 +342,18 @@ function renderTopicPanel(host, onChange){
     input.addEventListener('keydown', function(e){ if (e.key === 'Enter') check(); });
     document.getElementById('w-check').addEventListener('click', check);
     document.getElementById('w-skip').addEventListener('click', function(){ reveal(false, true); });
+
+    var mic = document.getElementById('w-mic');
+    if (mic) mic.addEventListener('click', function(){
+      var self = this;
+      self.classList.add('rec'); self.textContent = '● Слушаю…';
+      Listen.start(
+        function(variants){ input.value = variants[0]; check(); },
+        function(msg){ document.getElementById('w-verdict').innerHTML =
+          '<div class="verdict no"><b>Микрофон</b>' + esc(msg) + '</div>'; },
+        function(){ self.classList.remove('rec'); self.textContent = '🎤 Сказать'; }
+      );
+    });
   }
 
   function check(){
@@ -302,18 +371,23 @@ function renderTopicPanel(host, onChange){
   function reveal(ok, skipped){
     var w = q.current();
     bumpStat('write', ok);
+    var d = Progress.answer(w.en, ok);
     document.getElementById('w-verdict').innerHTML =
       '<div class="verdict ' + (ok ? 'ok' : 'no') + '"><b>' +
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
       '<span class="en">' + esc(w.en) + '</span>' +
-      (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') +
+      (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(w.en) +
       (w.note ? '<br><span style="color:var(--ink-soft);font-size:.9em">' + esc(w.note) + '</span>' : '') +
-      '</div>';
+      '<div class="lvlnow">Теперь: ' + Progress.NAMES[d.l] +
+        (d.l < 2 ? ' · до повышения ' + (Progress.UP - d.s) : '') + '</div></div>';
     var btn = document.getElementById('w-check');
     btn.textContent = 'Дальше';
     btn.onclick = next;
     document.getElementById('w-skip').style.display = 'none';
+    var mic = document.getElementById('w-mic'); if (mic) mic.style.display = 'none';
     document.getElementById('w-input').onkeydown = function(e){ if (e.key === 'Enter') next(); };
+    var panel = document.getElementById('w-topics');
+    if (panel && panel._redraw) panel._redraw();
     function next(){ if (ok) q.pass(); else q.fail(); draw(); }
   }
 
@@ -452,7 +526,7 @@ function renderTopicPanel(host, onChange){
     document.getElementById('t-verdict').innerHTML =
       '<div class="verdict ' + (ok ? 'ok' : 'no') + '"><b>' +
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
-      '<span class="en">' + esc(t.a[0]) + '</span>' +
+      '<span class="en">' + esc(t.a[0]) + '</span> ' + soundBtn(t.a[0]) +
       (t.a.length > 1 ? '<br><span style="color:var(--ink-soft);font-size:.9em">Также принимается: ' + esc(t.a[1]) + '</span>' : '') +
       '<br><span style="color:var(--ink-soft);font-size:.9em">' + esc(t.why) + '</span></div>';
     var btn = document.getElementById('t-check');
@@ -464,4 +538,105 @@ function renderTopicPanel(host, onChange){
   }
 
   draw();
+})();
+
+/* =====================================================
+   ПРОИЗНОШЕНИЕ — говоришь вслух, проверяет микрофон
+   ===================================================== */
+(function(){
+  var stage = document.getElementById('s-stage');
+  if (!stage) return;
+  var q = null, total = 0;
+  var panel = document.getElementById('s-topics');
+
+  function build(){
+    // берём короткие слова: длинные фразы распознаются плохо
+    var list = TopicPicker.words().filter(function(w){ return w.en.split(' ').length <= 4; });
+    q = new Queue(list); total = list.length;
+    draw();
+  }
+
+  function draw(){
+    document.getElementById('s-right').textContent = q.right;
+    document.getElementById('s-wrong').textContent = q.wrong;
+    document.getElementById('s-left').textContent = q.left();
+    setBar('s-bar', q.right, total);
+
+    if (!Listen.ok){
+      stage.innerHTML =
+        '<div class="qmeta">Произношение</div>' +
+        '<p class="qtext">Микрофон недоступен</p>' +
+        '<p class="qhint">' + esc(Listen.why()) + '</p>' +
+        '<p class="qhint">Озвучка при этом работает: послушать слово можно на карточках, ' +
+        'в «Написании» и в «Переводе».</p>';
+      return;
+    }
+
+    var w = q.current();
+    if (!w){
+      stage.innerHTML = '<p class="qtext">Всё пройдено.</p><p class="qhint">Верно с первого раза: ' +
+        q.right + ' из ' + total + '</p>';
+      if (panel && panel._redraw) panel._redraw();
+      return;
+    }
+
+    stage.innerHTML =
+      '<div class="qmeta">' + esc(w.topic) + ' · ' + levelChip(w.en) + '</div>' +
+      '<p class="qtext">' + esc(w.ru) + '</p>' +
+      '<p class="qhint">Скажи это слово по-английски вслух.</p>' +
+      '<div class="answerrow">' +
+        '<button class="btn primary mic" id="s-mic" type="button">🎤 Говорить</button>' +
+        '<button class="btn" id="s-hear" type="button">Подсказать голосом</button>' +
+        '<button class="btn" id="s-skip" type="button">Не знаю</button>' +
+      '</div><div id="s-verdict"></div>';
+
+    document.getElementById('s-mic').addEventListener('click', listen);
+    document.getElementById('s-hear').addEventListener('click', function(){
+      Speak.say(w.en);
+      document.getElementById('s-verdict').innerHTML =
+        '<div class="verdict no"><b>Подсказка</b><span class="en">' + esc(w.en) + '</span>' +
+        (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + '</div>';
+    });
+    document.getElementById('s-skip').addEventListener('click', function(){ reveal(false, true, ''); });
+  }
+
+  function listen(){
+    var w = q.current(), btn = document.getElementById('s-mic');
+    btn.classList.add('rec'); btn.textContent = '● Слушаю…';
+    Listen.start(
+      function(variants){
+        var ok = variants.some(function(v){ return matches(v, [w.en]); });
+        if (!ok) ok = variants.some(function(v){ return closeEnough(v, w.en); });
+        reveal(ok, false, variants[0]);
+      },
+      function(msg){
+        document.getElementById('s-verdict').innerHTML =
+          '<div class="verdict no"><b>Микрофон</b>' + esc(msg) + '</div>';
+      },
+      function(){ btn.classList.remove('rec'); btn.textContent = '🎤 Говорить'; }
+    );
+  }
+
+  function reveal(ok, skipped, heard){
+    var w = q.current();
+    bumpStat('speak', ok);
+    var d = Progress.answer(w.en, ok);
+    document.getElementById('s-verdict').innerHTML =
+      '<div class="verdict ' + (ok ? 'ok' : 'no') + '"><b>' +
+      (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
+      '<span class="en">' + esc(w.en) + '</span>' +
+      (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(w.en) +
+      (heard && !ok ? '<br><span style="color:var(--ink-soft);font-size:.9em">Услышал: «' + esc(heard) + '»</span>' : '') +
+      '<div class="lvlnow">Теперь: ' + Progress.NAMES[d.l] +
+        (d.l < 2 ? ' · до повышения ' + (Progress.UP - d.s) : '') + '</div>' +
+      '<div style="margin-top:.75rem"><button class="btn primary" id="s-next" type="button">Дальше</button></div></div>';
+    document.getElementById('s-next').addEventListener('click', function(){
+      if (ok) q.pass(); else q.fail();
+      draw();
+    });
+    if (panel && panel._redraw) panel._redraw();
+  }
+
+  renderTopicPanel(panel, build);
+  build();
 })();
