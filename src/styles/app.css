@@ -559,3 +559,15 @@ select{
   border-radius:9px;background:var(--surface);color:var(--ink);
 }
 select:focus{border-color:var(--brand)}
+
+/* счётчики навыков */
+.skills{display:inline-flex;gap:.3rem;margin-left:.4rem;vertical-align:middle}
+.skill{
+  font-size:.7rem;font-weight:600;padding:.12em .45em;border-radius:6px;
+  background:var(--surface-2);color:var(--ink-faint);white-space:nowrap;
+}
+.skill.done{background:var(--ok-bg);color:var(--ok)}
+.flash-lvl{display:flex;gap:.4rem;align-items:center;justify-content:center;flex-wrap:wrap}
+@media (max-width:640px){
+  .skills{display:flex;margin:.35rem 0 0}
+}

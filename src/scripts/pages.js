@@ -112,12 +112,17 @@
 
     rows.innerHTML = list.map(function(w){
       var d = Progress.of(w.en);
-      var lvl = d.l;
-      var seen = d.r + d.w;
+      var lvl = Progress.level(w.en);
+      var seen = (d.r || 0) + (d.x || 0);
+      var N = Progress.NEED;
+      var skills = '<span class="skills"><span class="skill' + (d.w >= N ? ' done' : '') + '">✍ ' +
+        Math.min(d.w||0, N) + '/' + N + '</span>' +
+        (Progress.useSpeak() ? '<span class="skill' + (d.s >= N ? ' done' : '') + '">🎤 ' +
+          Math.min(d.s||0, N) + '/' + N + '</span>' : '') + '</span>';
       return '<tr class="lv' + lvl + '">' +
         '<td data-label="Уровень"><button class="lvl l' + lvl + ' btnlvl" type="button" data-word="' +
           esc(w.en).replace(/"/g,'&quot;') + '" title="Нажми, чтобы сменить вручную">' +
-          Progress.NAMES[lvl] + '</button></td>' +
+          Progress.NAMES[lvl] + '</button>' + skills + '</td>' +
         '<td class="en main">' + esc(w.en) +
           (Speak.ok ? ' <button class="iconbtn sound" type="button" data-say="' + esc(w.en).replace(/"/g,'&quot;') +
             '" title="Послушать"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/>' +
@@ -192,6 +197,7 @@
   });
 
   renderVoicePanel(document.getElementById('v-voice'));
+  renderSkillPanel(document.getElementById('v-skill'), render);
   drawTopics(); render();
   document.addEventListener('pageshown', function(e){ if (e.detail.id === 'vocab') render(); });
 })();

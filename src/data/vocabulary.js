@@ -490,7 +490,7 @@ var VOCAB_BASIC = [
 {en:"Hello / Hi", tr:"/həˈləʊ, haɪ/", ru:"Здравствуйте / Привет", note:"", topic:"Общение", set:"basic"},
 {en:"Goodbye / Bye", tr:"/ɡʊdˈbaɪ, baɪ/", ru:"До свидания / Пока", note:"", topic:"Общение", set:"basic"},
 {en:"Please", tr:"/pliːz/", ru:"Пожалуйста (просьба)", note:"", topic:"Общение", set:"basic"},
-{en:"Thank you / Thanks", tr:"/θæŋk juː/", ru:"Спасибо", note:"ответ: You're welcome", topic:"Общение", set:"basic"},
+{en:"Thank you / Thanks", tr:"/θæŋk juː, θæŋks/", ru:"Спасибо", note:"ответ: You're welcome", topic:"Общение", set:"basic"},
 {en:"Sorry / Excuse me", tr:"/ˈsɒri, ɪkˈskjuːz miː/", ru:"Извините", note:"sorry — после, excuse me — до", topic:"Общение", set:"basic"},
 {en:"How are you?", tr:"/haʊ ɑː juː/", ru:"Как дела?", note:"ответ: I'm fine, thanks", topic:"Общение", set:"basic"},
 {en:"Nice to meet you.", tr:"/naɪs tə miːt juː/", ru:"Приятно познакомиться.", note:"", topic:"Общение", set:"basic"},
@@ -547,7 +547,7 @@ var VOCAB_EXT1 = [
 {en:"bedroom", tr:"/ˈbedruːm/", ru:"спальня", note:"", topic:"Дом и быт", set:"basic"},
 {en:"kitchen", tr:"/ˈkɪtʃɪn/", ru:"кухня", note:"", topic:"Дом и быт", set:"basic"},
 {en:"living room", tr:"/ˈlɪvɪŋ ruːm/", ru:"гостиная", note:"", topic:"Дом и быт", set:"basic"},
-{en:"switch on / off", tr:"/swɪtʃ/", ru:"включить / выключить", note:"также turn on / off", topic:"Дом и быт", set:"basic"},
+{en:"switch on / switch off", tr:"/swɪtʃ ɒn, swɪtʃ ɒf/", ru:"включить / выключить", note:"также turn on / off", topic:"Дом и быт", set:"basic"},
 {en:"washing machine", tr:"/ˈwɒʃɪŋ məˌʃiːn/", ru:"стиральная машина", note:"", topic:"Дом и быт", set:"basic"},
 {en:"fridge", tr:"/frɪdʒ/", ru:"холодильник", note:"полное refrigerator", topic:"Дом и быт", set:"basic"},
 
@@ -627,7 +627,7 @@ var VOCAB_EXT1 = [
 {en:"get married", tr:"/ɡet ˈmærid/", ru:"пожениться", note:"marry somebody, без to", topic:"Семья и люди", set:"basic"},
 {en:"divorced", tr:"/dɪˈvɔːst/", ru:"разведён", note:"", topic:"Семья и люди", set:"basic"},
 {en:"couple", tr:"/ˈkʌpl/", ru:"пара", note:"a couple of — пара штук", topic:"Семья и люди", set:"basic"},
-{en:"boyfriend / girlfriend", tr:"/ˈbɔɪfrend/", ru:"парень / девушка", note:"о романтических отношениях", topic:"Семья и люди", set:"basic"},
+{en:"boyfriend / girlfriend", tr:"/ˈbɔɪfrend, ˈɡɜːlfrend/", ru:"парень / девушка", note:"о романтических отношениях", topic:"Семья и люди", set:"basic"},
 {en:"be born", tr:"/biː bɔːn/", ru:"родиться", note:"I was born in 2000.", topic:"Семья и люди", set:"basic"},
 {en:"grow up", tr:"/ɡrəʊ ʌp/", ru:"расти, взрослеть", note:"", topic:"Семья и люди", set:"basic"},
 {en:"look after", tr:"/lʊk ˈɑːftə/", ru:"заботиться о", note:"", topic:"Семья и люди", set:"basic"},
@@ -716,7 +716,7 @@ var VOCAB_EXT2 = [
 {en:"passport", tr:"/ˈpɑːspɔːt/", ru:"паспорт", note:"", topic:"Транспорт и поездки", set:"basic"},
 {en:"flight", tr:"/flaɪt/", ru:"рейс, полёт", note:"", topic:"Транспорт и поездки", set:"basic"},
 {en:"book a room", tr:"/bʊk ə ruːm/", ru:"забронировать номер", note:"", topic:"Транспорт и поездки", set:"basic"},
-{en:"check in / out", tr:"/tʃek ɪn/", ru:"заселяться / выселяться", note:"", topic:"Транспорт и поездки", set:"basic"},
+{en:"check in / check out", tr:"/tʃek ɪn, tʃek aʊt/", ru:"заселяться / выселяться", note:"", topic:"Транспорт и поездки", set:"basic"},
 {en:"tourist", tr:"/ˈtʊərɪst/", ru:"турист", note:"", topic:"Транспорт и поездки", set:"basic"},
 {en:"sightseeing", tr:"/ˈsaɪtsiːɪŋ/", ru:"осмотр достопримечательностей", note:"go sightseeing", topic:"Транспорт и поездки", set:"basic"},
 {en:"souvenir", tr:"/ˌsuːvəˈnɪə/", ru:"сувенир", note:"", topic:"Транспорт и поездки", set:"basic"},
@@ -730,15 +730,15 @@ var VOCAB_EXT2 = [
 
 /* --- Страны и языки --- */
 {en:"country", tr:"/ˈkʌntri/", ru:"страна", note:"мн. ч. countries", topic:"Страны и языки", set:"basic"},
-{en:"England / English", tr:"/ˈɪŋɡlənd/", ru:"Англия / английский", note:"языки с заглавной", topic:"Страны и языки", set:"basic"},
-{en:"Britain / British", tr:"/ˈbrɪtn/", ru:"Британия / британский", note:"", topic:"Страны и языки", set:"basic"},
-{en:"America / American", tr:"/əˈmerɪkə/", ru:"Америка / американский", note:"", topic:"Страны и языки", set:"basic"},
+{en:"England / English", tr:"/ˈɪŋɡlənd, ˈɪŋɡlɪʃ/", ru:"Англия / английский", note:"языки с заглавной", topic:"Страны и языки", set:"basic"},
+{en:"Britain / British", tr:"/ˈbrɪtn, ˈbrɪtɪʃ/", ru:"Британия / британский", note:"", topic:"Страны и языки", set:"basic"},
+{en:"America / American", tr:"/əˈmerɪkə, əˈmerɪkən/", ru:"Америка / американский", note:"", topic:"Страны и языки", set:"basic"},
 {en:"France / French", tr:"/frɑːns, frentʃ/", ru:"Франция / французский", note:"", topic:"Страны и языки", set:"basic"},
-{en:"Germany / German", tr:"/ˈdʒɜːməni/", ru:"Германия / немецкий", note:"", topic:"Страны и языки", set:"basic"},
+{en:"Germany / German", tr:"/ˈdʒɜːməni, ˈdʒɜːmən/", ru:"Германия / немецкий", note:"", topic:"Страны и языки", set:"basic"},
 {en:"Spain / Spanish", tr:"/speɪn, ˈspænɪʃ/", ru:"Испания / испанский", note:"", topic:"Страны и языки", set:"basic"},
-{en:"Italy / Italian", tr:"/ˈɪtəli/", ru:"Италия / итальянский", note:"", topic:"Страны и языки", set:"basic"},
-{en:"Russia / Russian", tr:"/ˈrʌʃə/", ru:"Россия / русский", note:"", topic:"Страны и языки", set:"basic"},
-{en:"China / Chinese", tr:"/ˈtʃaɪnə/", ru:"Китай / китайский", note:"", topic:"Страны и языки", set:"basic"},
+{en:"Italy / Italian", tr:"/ˈɪtəli, ɪˈtæliən/", ru:"Италия / итальянский", note:"", topic:"Страны и языки", set:"basic"},
+{en:"Russia / Russian", tr:"/ˈrʌʃə, ˈrʌʃn/", ru:"Россия / русский", note:"", topic:"Страны и языки", set:"basic"},
+{en:"China / Chinese", tr:"/ˈtʃaɪnə, ˌtʃaɪˈniːz/", ru:"Китай / китайский", note:"", topic:"Страны и языки", set:"basic"},
 {en:"capital", tr:"/ˈkæpɪtl/", ru:"столица", note:"также «заглавная буква»", topic:"Страны и языки", set:"basic"},
 {en:"border", tr:"/ˈbɔːdə/", ru:"граница", note:"", topic:"Страны и языки", set:"basic"},
 {en:"foreign", tr:"/ˈfɒrən/", ru:"иностранный", note:"g не читается", topic:"Страны и языки", set:"basic"},
@@ -913,7 +913,7 @@ var VOCAB_EXT3 = [
 /* --- Фразовые глаголы --- */
 {en:"get up", tr:"/ɡet ʌp/", ru:"вставать с постели", note:"", topic:"Фразовые глаголы", set:"basic"},
 {en:"put on", tr:"/pʊt ɒn/", ru:"надевать", note:"", topic:"Фразовые глаголы", set:"basic"},
-{en:"turn on / off", tr:"/tɜːn ɒn/", ru:"включать / выключать", note:"turn it on", topic:"Фразовые глаголы", set:"basic"},
+{en:"turn on / turn off", tr:"/tɜːn ɒn, tɜːn ɒf/", ru:"включать / выключать", note:"turn it on", topic:"Фразовые глаголы", set:"basic"},
 {en:"look for", tr:"/lʊk fɔː/", ru:"искать", note:"", topic:"Фразовые глаголы", set:"basic"},
 {en:"look after", tr:"/lʊk ˈɑːftə/", ru:"присматривать за", note:"", topic:"Фразовые глаголы", set:"basic"},
 {en:"look forward to", tr:"/lʊk ˈfɔːwəd tuː/", ru:"с нетерпением ждать", note:"дальше -ing форма", topic:"Фразовые глаголы", set:"basic"},
@@ -925,10 +925,10 @@ var VOCAB_EXT3 = [
 {en:"pick up", tr:"/pɪk ʌp/", ru:"поднимать; забирать", note:"", topic:"Фразовые глаголы", set:"basic"},
 {en:"put off", tr:"/pʊt ɒf/", ru:"откладывать", note:"дальше -ing", topic:"Фразовые глаголы", set:"basic"},
 {en:"take off", tr:"/teɪk ɒf/", ru:"снимать; взлетать", note:"", topic:"Фразовые глаголы", set:"basic"},
-{en:"get on / get off", tr:"/ɡet ɒn/", ru:"садиться / выходить", note:"о транспорте", topic:"Фразовые глаголы", set:"basic"},
+{en:"get on / get off", tr:"/ɡet ɒn, ɡet ɒf/", ru:"садиться / выходить", note:"о транспорте", topic:"Фразовые глаголы", set:"basic"},
 {en:"run out of", tr:"/rʌn aʊt əv/", ru:"закончиться (о запасе)", note:"We ran out of milk.", topic:"Фразовые глаголы", set:"basic"},
 {en:"wake up", tr:"/weɪk ʌp/", ru:"просыпаться", note:"", topic:"Фразовые глаголы", set:"basic"},
-{en:"sit down / stand up", tr:"/sɪt daʊn/", ru:"садиться / вставать", note:"", topic:"Фразовые глаголы", set:"basic"},
+{en:"sit down / stand up", tr:"/sɪt daʊn, stænd ʌp/", ru:"садиться / вставать", note:"", topic:"Фразовые глаголы", set:"basic"},
 
 /* --- Описание: прилагательные --- */
 {en:"good / bad", tr:"/ɡʊd, bæd/", ru:"хороший / плохой", note:"better, worse", topic:"Прилагательные", set:"basic"},
@@ -950,7 +950,7 @@ var VOCAB_EXT3 = [
 {en:"busy / free", tr:"/ˈbɪzi, friː/", ru:"занятой / свободный", note:"«бизи»", topic:"Прилагательные", set:"basic"},
 {en:"favourite", tr:"/ˈfeɪvərɪt/", ru:"любимый", note:"амер. favorite", topic:"Прилагательные", set:"basic"},
 {en:"famous", tr:"/ˈfeɪməs/", ru:"известный", note:"famous for", topic:"Прилагательные", set:"basic"},
-{en:"possible / impossible", tr:"/ˈpɒsəbl/", ru:"возможный / невозможный", note:"", topic:"Прилагательные", set:"basic"},
+{en:"possible / impossible", tr:"/ˈpɒsəbl, ɪmˈpɒsəbl/", ru:"возможный / невозможный", note:"", topic:"Прилагательные", set:"basic"},
 {en:"true / false", tr:"/truː, fɔːls/", ru:"верный / неверный", note:"", topic:"Прилагательные", set:"basic"},
 {en:"right / wrong", tr:"/raɪt, rɒŋ/", ru:"правильный / неправильный", note:"You are right.", topic:"Прилагательные", set:"basic"},
 {en:"sure", tr:"/ʃʊə/", ru:"уверенный", note:"be sure about", topic:"Прилагательные", set:"basic"},
@@ -1069,7 +1069,7 @@ var VOCAB_EXT4 = [
 {en:"half", tr:"/hɑːf/", ru:"половина", note:"l не читается; мн. ч. halves", topic:"Числа и цвета", set:"basic"},
 {en:"quarter", tr:"/ˈkwɔːtə/", ru:"четверть", note:"", topic:"Числа и цвета", set:"basic"},
 {en:"double", tr:"/ˈdʌbl/", ru:"двойной, вдвое", note:"", topic:"Числа и цвета", set:"basic"},
-{en:"metre / centimetre", tr:"/ˈmiːtə/", ru:"метр / сантиметр", note:"амер. meter", topic:"Числа и цвета", set:"basic"},
+{en:"metre / centimetre", tr:"/ˈmiːtə, ˈsentɪmiːtə/", ru:"метр / сантиметр", note:"амер. meter", topic:"Числа и цвета", set:"basic"},
 {en:"kilometre / mile", tr:"/ˈkɪləmiːtə, maɪl/", ru:"километр / миля", note:"", topic:"Числа и цвета", set:"basic"},
 {en:"weight", tr:"/weɪt/", ru:"вес", note:"gh не читается", topic:"Числа и цвета", set:"basic"},
 {en:"height", tr:"/haɪt/", ru:"высота, рост", note:"«хайт»", topic:"Числа и цвета", set:"basic"},
@@ -1077,7 +1077,7 @@ var VOCAB_EXT4 = [
 {en:"pound / euro", tr:"/paʊnd, ˈjʊərəʊ/", ru:"фунт / евро", note:"", topic:"Числа и цвета", set:"basic"},
 {en:"dollar / cent", tr:"/ˈdɒlə, sent/", ru:"доллар / цент", note:"", topic:"Числа и цвета", set:"basic"},
 {en:"about / around", tr:"/əˈbaʊt, əˈraʊnd/", ru:"примерно", note:"about ten people", topic:"Числа и цвета", set:"basic"},
-{en:"more than / less than", tr:"/mɔː ðæn/", ru:"больше чем / меньше чем", note:"", topic:"Числа и цвета", set:"basic"},
+{en:"more than / less than", tr:"/mɔː ðæn, les ðæn/", ru:"больше чем / меньше чем", note:"", topic:"Числа и цвета", set:"basic"},
 {en:"total", tr:"/ˈtəʊtl/", ru:"итого, всего", note:"", topic:"Числа и цвета", set:"basic"},
 {en:"per cent", tr:"/pə ˈsent/", ru:"процент", note:"fifty per cent", topic:"Числа и цвета", set:"basic"},
 
@@ -1090,7 +1090,7 @@ var VOCAB_EXT4 = [
 {en:"I think that…", tr:"/aɪ θɪŋk ðæt/", ru:"Я думаю, что…", note:"запятая не ставится", topic:"Общение", set:"basic"},
 {en:"In my opinion", tr:"/ɪn maɪ əˈpɪnjən/", ru:"По-моему", note:"", topic:"Общение", set:"basic"},
 {en:"It depends on…", tr:"/ɪt dɪˈpendz ɒn/", ru:"Зависит от…", note:"предлог on", topic:"Общение", set:"basic"},
-{en:"I agree / I disagree", tr:"/aɪ əˈɡriː/", ru:"Согласен / не согласен", note:"agree with somebody", topic:"Общение", set:"basic"},
+{en:"I agree / I disagree", tr:"/aɪ əˈɡriː, aɪ ˌdɪsəˈɡriː/", ru:"Согласен / не согласен", note:"agree with somebody", topic:"Общение", set:"basic"},
 {en:"That's a good idea.", tr:"/ˈaɪdɪə/", ru:"Хорошая мысль.", note:"", topic:"Общение", set:"basic"},
 {en:"I'm afraid not.", tr:"/aɪm əˈfreɪd nɒt/", ru:"Боюсь, что нет.", note:"вежливый отказ", topic:"Общение", set:"basic"},
 {en:"Never mind.", tr:"/ˈnevə maɪnd/", ru:"Ничего страшного.", note:"", topic:"Общение", set:"basic"},
@@ -1128,7 +1128,7 @@ var VOCAB_EXT4 = [
 {en:"opposite", tr:"/ˈɒpəzɪt/", ru:"напротив", note:"opposite the bank", topic:"Направления", set:"basic"},
 {en:"next to", tr:"/nekst tuː/", ru:"рядом с", note:"", topic:"Направления", set:"basic"},
 {en:"far / near", tr:"/fɑː, nɪə/", ru:"далеко / близко", note:"far from", topic:"Направления", set:"basic"},
-{en:"upstairs / downstairs", tr:"/ˌʌpˈsteəz/", ru:"наверху / внизу", note:"без предлога", topic:"Направления", set:"basic"},
+{en:"upstairs / downstairs", tr:"/ˌʌpˈsteəz, ˌdaʊnˈsteəz/", ru:"наверху / внизу", note:"без предлога", topic:"Направления", set:"basic"},
 {en:"inside / outside", tr:"/ɪnˈsaɪd, aʊtˈsaɪd/", ru:"внутри / снаружи", note:"", topic:"Направления", set:"basic"},
 {en:"everywhere / nowhere", tr:"/ˈevriweə, ˈnəʊweə/", ru:"везде / нигде", note:"nowhere уже отрицание", topic:"Направления", set:"basic"},
 {en:"somewhere / anywhere", tr:"/ˈsʌmweə, ˈeniweə/", ru:"где-то / где-нибудь", note:"", topic:"Направления", set:"basic"},
@@ -1139,13 +1139,55 @@ var VOCAB_EXT4 = [
 
 
 /* ---------- СБОРКА ----------
+
+   Записи вида «arm / leg» и «one, two, three» разбиваются на отдельные слова:
+   писать и произносить их по одному удобнее, чем целой связкой.
+   Не делятся: предложения (кончаются на точку или вопрос) и пары из темы
+   «Легко перепутать» — там противопоставление и есть смысл записи.
+
    Повторы по слову убираются: остаётся первое вхождение. */
+
+function splitEntry(w){
+  var isSentence = /[.!?…]$/.test(String(w.en).trim());
+  var isPair     = w.topic === 'Легко перепутать';
+  if (isSentence || isPair || !/[\/,]/.test(w.en)) return [w];
+
+  var en = w.en.split(/\s*[\/,]\s*/).map(function(x){ return x.trim(); }).filter(Boolean);
+  if (en.length < 2) return [w];
+
+  var ru = w.ru.split(/\s*[\/,]\s*/).map(function(x){ return x.trim(); }).filter(Boolean);
+  var paired = (en.length === ru.length);
+
+  /* длинные куски без парного перевода не режем — получится каша */
+  if (!paired && en.some(function(x){ return x.split(' ').length > 3; })) return [w];
+
+  /* транскрипция вида «/ɑːm, leɡ/» тоже делится по запятой */
+  var trs;
+  var inner = String(w.tr || '').replace(/^\//, '').replace(/\/$/, '');
+  var tp = inner.split(/\s*,\s*/).map(function(x){ return x.trim(); }).filter(Boolean);
+  if (tp.length === en.length) trs = tp.map(function(x){ return '/' + x + '/'; });
+  else trs = en.map(function(){ return w.tr || ''; });
+
+  return en.map(function(part, i){
+    return {
+      en: part,
+      tr: trs[i],
+      ru: paired ? ru[i] : w.ru,
+      note: w.note,
+      topic: w.topic,
+      set: w.set
+    };
+  });
+}
+
 var VOCAB = (function(){
   var all = [].concat(VOCAB_BASIC, VOCAB_EXT1, VOCAB_EXT2, VOCAB_EXT3, VOCAB_EXT4, VOCAB_DAILY, VOCAB_HW);
   var seen = {}, out = [];
-  all.forEach(function(w){
-    var k = w.en.toLowerCase();
-    if (!seen[k]){ seen[k] = 1; out.push(w); }
+  all.forEach(function(entry){
+    splitEntry(entry).forEach(function(w){
+      var k = w.en.toLowerCase();
+      if (!seen[k]){ seen[k] = 1; out.push(w); }
+    });
   });
   return out;
 })();

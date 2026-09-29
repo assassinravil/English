@@ -1,43 +1,77 @@
 /* =========================================================
    ПРОГРЕСС ПО СЛОВАМ
-   Три уровня:
-     0 — не выучено
-     1 — повторение   (3 верных ответа подряд с уровня 0)
-     2 — выучено      (ещё 3 верных ответа подряд)
-   Ошибка опускает слово на уровень ниже и обнуляет серию.
 
-   Слово возвращается в очередь не сразу, а по сроку:
-     уровень 0 — сразу
-     уровень 1 — через 2 дня
-     уровень 2 — через 10 дней
+   Два навыка считаются раздельно:
+     write — написание   (тренажёр «Написание»)
+     speak — произношение (тренажёр «Произношение»)
 
-   Хранится в localStorage под ключом progress-v1 как JSON:
-     { "слово": {l:уровень, s:серия, r:верных, w:ошибок, d:срок, t:последний раз} }
+   Верный ответ прибавляет к своему навыку, ошибка отнимает.
+   Нужно по 3 в каждом.
+
+   Уровень выводится из навыков:
+     0 «Не выучено»  — ни один навык не набран
+     1 «Повторение»  — набран один навык
+     2 «Выучено»     — набраны оба
+
+   Карточки — чистое повторение: двигают срок возврата,
+   но навыки не трогают.
+
+   Срок возврата по уровням: сразу / 2 дня / 10 дней.
+
+   Хранится в localStorage под ключом progress-v2 как JSON:
+     { "слово": {w:написание, s:произношение, r:верных, x:ошибок, d:срок, t:когда} }
    ========================================================= */
 
 var Progress = {
-  KEY: 'progress-v1',
-  UP: 3,                       // сколько верных подряд для повышения
+  KEY: 'progress-v2',
+  NEED: 3,                     // сколько верных нужно в каждом навыке
   DELAY: [0, 2, 10],           // задержка в днях по уровням
   NAMES: ['Не выучено', 'Повторение', 'Выучено'],
+  SPEAK_KEY: 'progress-use-speak',
 
   _data: null,
+
+  /* учитывать ли произношение: без микрофона это недостижимо */
+  useSpeak: function(){
+    var saved = Store.get(this.SPEAK_KEY, null);
+    if (saved !== null) return !!saved;
+    return !!(typeof Listen !== 'undefined' && Listen.ok);
+  },
+  setUseSpeak: function(v){ Store.set(this.SPEAK_KEY, !!v); },
 
   all: function(){
     if (this._data) return this._data;
     this._data = Store.get(this.KEY, null);
 
     if (!this._data){
-      // перенос старых отметок «выучено»
       this._data = {};
-      var old = Store.get('vocab-learned', null);
-      if (old){
-        var now = Date.now();
-        Object.keys(old).forEach(function(k){
-          Progress._data[k] = {l:2, s:3, r:3, w:0, d:now, t:now};
+      var now = Date.now();
+
+      /* перенос из прежней схемы с одним счётчиком */
+      var v1 = Store.get('progress-v1', null);
+      if (v1){
+        var self = this;
+        Object.keys(v1).forEach(function(k){
+          var o = v1[k];
+          var done = (o.l >= 2) ? self.NEED : (o.l === 1 ? self.NEED : (o.s || 0));
+          self._data[k] = {
+            w: Math.min(self.NEED, done),
+            s: o.l >= 2 ? self.NEED : 0,
+            r: o.r || 0, x: o.w || 0,
+            d: o.d || now, t: o.t || now
+          };
         });
-        this.save();
       }
+
+      /* ещё более ранние отметки «выучено» */
+      var old = Store.get('vocab-learned', null);
+      if (old && !v1){
+        var me = this;
+        Object.keys(old).forEach(function(k){
+          me._data[k] = {w:me.NEED, s:me.NEED, r:me.NEED, x:0, d:now, t:now};
+        });
+      }
+      this.save();
     }
     return this._data;
   },
@@ -45,45 +79,69 @@ var Progress = {
   save: function(){ Store.set(this.KEY, this._data); },
 
   of: function(en){
-    var d = this.all()[en];
-    return d || {l:0, s:0, r:0, w:0, d:0, t:0};
+    return this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
   },
 
-  level: function(en){ return this.of(en).l; },
+  /* уровень выводится из навыков, а не хранится */
+  level: function(en){
+    var d = this.of(en);
+    var wOk = d.w >= this.NEED;
+    var sOk = d.s >= this.NEED;
+    if (!this.useSpeak()) return wOk ? 2 : (d.w > 0 ? 1 : 0);
+    if (wOk && sOk) return 2;
+    if (wOk || sOk) return 1;
+    return 0;
+  },
 
-  /* ответ в тренажёре: ok — верно или нет */
-  answer: function(en, ok){
-    var d = this.all()[en] || {l:0, s:0, r:0, w:0, d:0, t:0};
+  /* сколько осталось до полного освоения */
+  remaining: function(en){
+    var d = this.of(en);
+    return {
+      write: Math.max(0, this.NEED - d.w),
+      speak: this.useSpeak() ? Math.max(0, this.NEED - d.s) : 0
+    };
+  },
+
+  /* ответ в тренажёре навыка: skill — "write" или "speak" */
+  answer: function(en, ok, skill){
+    var d = this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
     var now = Date.now();
+    var key = (skill === 'speak') ? 's' : 'w';
 
-    if (ok){
-      d.r++; d.s++;
-      if (d.s >= this.UP && d.l < 2){ d.l++; d.s = 0; }
-    } else {
-      d.w++; d.s = 0;
-      if (d.l > 0) d.l--;
-    }
+    if (ok){ d[key] = Math.min(this.NEED, (d[key] || 0) + 1); d.r++; }
+    else    { d[key] = Math.max(0, (d[key] || 0) - 1);        d.x++; }
 
     d.t = now;
-    d.d = now + this.DELAY[d.l] * 86400000;
     this.all()[en] = d;
+    d.d = now + this.DELAY[this.level(en)] * 86400000;
+    this.save();
+    return d;
+  },
+
+  /* карточки: только сдвигают срок, навыки не трогают */
+  review: function(en, ok){
+    var d = this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    var now = Date.now();
+    d.t = now;
+    this.all()[en] = d;
+    d.d = ok ? now + this.DELAY[this.level(en)] * 86400000 : now;
     this.save();
     return d;
   },
 
   /* ручная установка уровня из словаря */
   setLevel: function(en, level){
-    var d = this.all()[en] || {l:0, s:0, r:0, w:0, d:0, t:0};
-    d.l = Math.max(0, Math.min(2, level));
-    d.s = 0;
+    var d = this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    if (level >= 2){ d.w = this.NEED; d.s = this.NEED; }
+    else if (level === 1){ d.w = this.NEED; d.s = 0; }
+    else { d.w = 0; d.s = 0; }
     d.t = Date.now();
-    d.d = d.t + this.DELAY[d.l] * 86400000;
     this.all()[en] = d;
+    d.d = d.t + this.DELAY[this.level(en)] * 86400000;
     this.save();
     return d;
   },
 
-  /* пора ли повторять */
   isDue: function(en){
     var d = this.all()[en];
     if (!d) return true;
@@ -91,25 +149,33 @@ var Progress = {
   },
 
   counts: function(list){
-    var c = [0, 0, 0];
-    list.forEach(function(w){ c[Progress.level(w.en)]++; });
+    var c = [0, 0, 0], self = this;
+    list.forEach(function(w){ c[self.level(w.en)]++; });
     return c;
+  },
+
+  /* сколько слов ждёт каждого навыка */
+  skillCounts: function(list){
+    var need = {write:0, speak:0}, self = this;
+    list.forEach(function(w){
+      var r = self.remaining(w.en);
+      if (r.write > 0) need.write++;
+      if (r.speak > 0) need.speak++;
+    });
+    return need;
   },
 
   dueCount: function(list){
     return list.filter(function(w){ return Progress.isDue(w.en); }).length;
   },
 
-  reset: function(){
-    this._data = {};
-    this.save();
-  },
+  reset: function(){ this._data = {}; this.save(); },
 
-  /* ---------- перенос прогресса между устройствами ---------- */
+  /* ---------- перенос между устройствами ---------- */
   exportFile: function(){
     var payload = {
       app: 'english-trainer',
-      version: 1,
+      version: 2,
       savedAt: new Date().toISOString(),
       progress: this.all(),
       trainerStats: Store.get('trainer-stats', {}),
@@ -129,25 +195,34 @@ var Progress = {
     reader.onload = function(){
       try {
         var p = JSON.parse(reader.result);
-        if (!p || !p.progress) throw new Error('нет данных о прогрессе');
-        var added = 0;
+        if (!p || !p.progress) throw new Error('в файле нет данных о прогрессе');
+        var added = 0, old = (p.version || 1) < 2;
         Object.keys(p.progress).forEach(function(k){
-          var incoming = p.progress[k];
-          var current = Progress.all()[k];
-          // при слиянии выигрывает более высокий уровень
-          if (!current || (incoming.l || 0) > (current.l || 0) ||
-              (incoming.t || 0) > (current.t || 0)){
-            Progress.all()[k] = incoming;
-            added++;
+          var inc = p.progress[k];
+          if (old){
+            inc = {w: inc.l >= 1 ? Progress.NEED : (inc.s || 0),
+                   s: inc.l >= 2 ? Progress.NEED : 0,
+                   r: inc.r || 0, x: inc.w || 0, d: inc.d || 0, t: inc.t || 0};
           }
+          var cur = Progress.all()[k];
+          /* при слиянии берём лучшее по каждому навыку */
+          if (!cur){ Progress.all()[k] = inc; added++; return; }
+          var merged = {
+            w: Math.max(cur.w || 0, inc.w || 0),
+            s: Math.max(cur.s || 0, inc.s || 0),
+            r: Math.max(cur.r || 0, inc.r || 0),
+            x: Math.max(cur.x || 0, inc.x || 0),
+            d: Math.max(cur.d || 0, inc.d || 0),
+            t: Math.max(cur.t || 0, inc.t || 0)
+          };
+          Progress.all()[k] = merged;
+          added++;
         });
         Progress.save();
         if (p.trainerStats) Store.set('trainer-stats', p.trainerStats);
         if (p.topics) Store.set('trainer-topics', p.topics);
         done(null, added);
-      } catch (e){
-        done(e);
-      }
+      } catch (e){ done(e); }
     };
     reader.onerror = function(){ done(new Error('не удалось прочитать файл')); };
     reader.readAsText(file);
@@ -586,6 +661,37 @@ function renderFuzzyPanel(host){
     if (!b) return;
     Fuzzy.setLevel(+b.dataset.fuzzy);
     draw();
+  });
+
+  draw();
+}
+
+/* ---------- переключатель «учитывать произношение» ---------- */
+function renderSkillPanel(host, onChange){
+  if (!host) return;
+
+  function draw(){
+    var on = Progress.useSpeak();
+    host.innerHTML =
+      '<div class="setrow">' +
+        '<h5 style="margin:0;flex:1">Что нужно для уровня «Выучено»</h5>' +
+        '<button class="btn' + (on ? ' on' : '') + '" data-skill="1" type="button">Писать и произносить</button>' +
+        '<button class="btn' + (!on ? ' on' : '') + '" data-skill="0" type="button">Только писать</button>' +
+      '</div>' +
+      '<p class="qhint" style="margin:0">По ' + Progress.NEED + ' верных ответа в каждом навыке. ' +
+      (on
+        ? 'Слово станет выученным, только когда ты и напишешь его, и проговоришь.'
+        : 'Произношение не учитывается — уровень зависит только от написания.') +
+      (Listen.ok ? '' : ' Микрофон в этом браузере недоступен, поэтому второй режим включён по умолчанию.') +
+      '</p>';
+  }
+
+  host.addEventListener('click', function(e){
+    var b = e.target.closest('[data-skill]');
+    if (!b) return;
+    Progress.setUseSpeak(b.dataset.skill === '1');
+    draw();
+    if (onChange) onChange();
   });
 
   draw();

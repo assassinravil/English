@@ -40,6 +40,15 @@ function levelChip(en){
   return '<span class="lvl l' + l + '">' + Progress.NAMES[l] + '</span>';
 }
 
+/* сколько ещё нужно по каждому навыку */
+function skillChips(en){
+  var d = Progress.of(en), N = Progress.NEED;
+  var out = '<span class="skill' + (d.w >= N ? ' done' : '') + '">✍ ' + Math.min(d.w, N) + '/' + N + '</span>';
+  if (Progress.useSpeak())
+    out += '<span class="skill' + (d.s >= N ? ' done' : '') + '">🎤 ' + Math.min(d.s, N) + '/' + N + '</span>';
+  return '<span class="skills">' + out + '</span>';
+}
+
 /* кнопка озвучки */
 function soundBtn(word){
   if (!Speak.ok) return '';
@@ -106,6 +115,7 @@ function renderTopicPanel(host, onChange){
     var poolAll = TopicPicker.pool();
     var c = Progress.counts(poolAll);
     var due = Progress.dueCount(poolAll);
+    var need = Progress.skillCounts(poolAll);
 
     function chips(list){
       return list.map(function(t){
@@ -132,7 +142,9 @@ function renderTopicPanel(host, onChange){
         '<span class="lvl l0">Не выучено <b>' + c[0] + '</b></span>' +
         '<span class="lvl l1">Повторение <b>' + c[1] + '</b></span>' +
         '<span class="lvl l2">Выучено <b>' + c[2] + '</b></span>' +
-      '</div>';
+      '</div>' +
+      '<p class="qhint" style="margin:.6rem 0 0">Ждут написания: ' + need.write +
+        (Progress.useSpeak() ? ' · ждут произношения: ' + need.speak : '') + '</p>';
   }
 
   host.addEventListener('click', function(e){
@@ -182,7 +194,7 @@ function renderTopicPanel(host, onChange){
     return '<div class="swipe-card ' + cls + '">' +
       '<div class="stamp yes">ЗНАЮ</div><div class="stamp no">НЕ ЗНАЮ</div>' +
       '<div class="flash-topic">' + esc(w.topic) + '</div>' +
-      '<div class="flash-lvl">' + levelChip(w.en) + '</div>' +
+      '<div class="flash-lvl">' + levelChip(w.en) + skillChips(w.en) + '</div>' +
       '<div class="flash-word">' + esc(front) + '</div>' +
       (!reversed ? '<div class="flash-ipa">' + esc(ipa) + ' ' + soundBtn(w.en) + '</div>' : '') +
       (showBack
@@ -222,7 +234,7 @@ function renderTopicPanel(host, onChange){
     var w = q.current();
     card.classList.add(dir > 0 ? 'gone-right' : 'gone-left');
     bumpStat('cards', dir > 0);
-    Progress.answer(w.en, dir > 0);
+    Progress.review(w.en, dir > 0);
     setTimeout(function(){
       if (dir > 0) q.pass(); else q.fail();
       flipped = false;
@@ -379,15 +391,18 @@ function renderTopicPanel(host, onChange){
   function reveal(ok, skipped){
     var w = q.current();
     bumpStat('write', ok);
-    var d = Progress.answer(w.en, ok);
+    var d = Progress.answer(w.en, ok, 'write');
+    var rem = Progress.remaining(w.en);
     document.getElementById('w-verdict').innerHTML =
       '<div class="verdict ' + (ok ? 'ok' : 'no') + '"><b>' +
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
       '<span class="en">' + esc(w.en) + '</span>' +
       (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(w.en) +
       (w.note ? '<br><span style="color:var(--ink-soft);font-size:.9em">' + esc(w.note) + '</span>' : '') +
-      '<div class="lvlnow">Теперь: ' + Progress.NAMES[d.l] +
-        (d.l < 2 ? ' · до повышения ' + (Progress.UP - d.s) : '') + '</div></div>';
+      '<div class="lvlnow">' + Progress.NAMES[Progress.level(w.en)] + ' · ' +
+        (rem.write ? 'написать ещё ' + rem.write : 'написание освоено') +
+        (Progress.useSpeak() ? ' · ' + (rem.speak ? 'произнести ещё ' + rem.speak : 'произношение освоено') : '') +
+      '</div></div>';
     var btn = document.getElementById('w-check');
     btn.textContent = 'Дальше';
     btn.onclick = next;
@@ -656,7 +671,8 @@ function renderTopicPanel(host, onChange){
   function reveal(ok, skipped, heard){
     var w = q.current();
     bumpStat('speak', ok);
-    var d = Progress.answer(w.en, ok);
+    var d = Progress.answer(w.en, ok, 'speak');
+    var rem = Progress.remaining(w.en);
     document.getElementById('s-verdict').innerHTML =
       '<div class="verdict ' + (ok ? 'ok' : 'no') + '"><b>' +
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
@@ -665,8 +681,10 @@ function renderTopicPanel(host, onChange){
       (heard && heard.said ?
         '<br><span style="color:var(--ink-soft);font-size:.9em">Услышал: «' + esc(heard.said) + '» · похоже на ' +
         heard.percent + '%' + (heard.how ? ' · совпало ' + esc(heard.how) : '') + '</span>' : '') +
-      '<div class="lvlnow">Теперь: ' + Progress.NAMES[d.l] +
-        (d.l < 2 ? ' · до повышения ' + (Progress.UP - d.s) : '') + '</div>' +
+      '<div class="lvlnow">' + Progress.NAMES[Progress.level(w.en)] + ' · ' +
+        (rem.speak ? 'произнести ещё ' + rem.speak : 'произношение освоено') +
+        ' · ' + (rem.write ? 'написать ещё ' + rem.write : 'написание освоено') +
+      '</div>' +
       '<div style="margin-top:.75rem"><button class="btn primary" id="s-next" type="button">Дальше</button></div></div>';
     document.getElementById('s-next').addEventListener('click', function(){
       if (ok) q.pass(); else q.fail();
