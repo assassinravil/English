@@ -191,6 +191,7 @@
     Progress.reset(); render();
   });
 
+  renderVoicePanel(document.getElementById('v-voice'));
   drawTopics(); render();
   document.addEventListener('pageshown', function(e){ if (e.detail.id === 'vocab') render(); });
 })();

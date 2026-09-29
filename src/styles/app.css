@@ -552,3 +552,10 @@ tr.lv2 td.main,tr.lv2 td:nth-child(4){opacity:.55}
   table.stack td[data-label="Уровень"]::before{content:none}
   table.stack td.main{padding-right:0}
 }
+
+/* выпадающий список голосов */
+select{
+  font:inherit;font-size:.9rem;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:9px;background:var(--surface);color:var(--ink);
+}
+select:focus{border-color:var(--brand)}

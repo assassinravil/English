@@ -549,6 +549,8 @@ function renderTopicPanel(host, onChange){
   var q = null, total = 0;
   var panel = document.getElementById('s-topics');
 
+  renderVoicePanel(document.getElementById('s-voice'));
+
   function build(){
     // берём короткие слова: длинные фразы распознаются плохо
     var list = TopicPicker.words().filter(function(w){ return w.en.split(' ').length <= 4; });

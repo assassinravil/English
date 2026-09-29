@@ -565,6 +565,13 @@ tr.lv2 td.main,tr.lv2 td:nth-child(4){opacity:.55}
   table.stack td.main{padding-right:0}
 }
 
+/* выпадающий список голосов */
+select{
+  font:inherit;font-size:.9rem;padding:.45rem .7rem;border:1px solid var(--line);
+  border-radius:9px;background:var(--surface);color:var(--ink);
+}
+select:focus{border-color:var(--brand)}
+
 </style>
 </head>
 <body>
@@ -618,6 +625,8 @@ tr.lv2 td.main,tr.lv2 td:nth-child(4){opacity:.55}
     <button class="btn" data-set="hw" type="button">Из домашек</button>
     <button class="btn" id="hide" type="button">Скрыть выученные</button>
   </div>
+
+  <div class="settings" id="v-voice"></div>
 
   <div class="controls chips" id="topicbar"></div>
 
@@ -682,6 +691,7 @@ tr.lv2 td.main,tr.lv2 td:nth-child(4){opacity:.55}
   <h2>Произношение</h2>
   <p class="lede">Показан перевод — скажи слово по-английски вслух. Нужен микрофон и защищённое соединение: работает по ссылке на сайт, но не при открытии файла с диска.</p>
 
+  <div class="settings" id="s-voice"></div>
   <div class="settings" id="s-topics"></div>
   <div class="score"><span class="r">Верно: <b id="s-right">0</b></span><span class="w">Ошибок: <b id="s-wrong">0</b></span><span>Осталось: <b id="s-left">0</b></span></div>
   <div class="bar"><i id="s-bar"></i></div>
@@ -3502,41 +3512,157 @@ var Progress = {
 
 /* =========================================================
    ОЗВУЧКА
-   Работает во всех современных браузерах, интернет не нужен.
+   Главная ловушка: если на устройстве нет английского голоса,
+   браузер читает английский текст русским синтезатором —
+   получается «ком бэк» вместо «кам бэк». Поэтому голос
+   выбирается явно, а при отсутствии английского показывается
+   предупреждение.
    ========================================================= */
 var Speak = {
   ok: ('speechSynthesis' in window),
-  voice: null,
+  KEY: 'voice-name',
+  ready: false,
 
-  pick: function(){
-    if (!this.ok) return null;
-    if (this.voice) return this.voice;
-    var list = speechSynthesis.getVoices();
-    if (!list.length) return null;
-    var pref = ['en-GB', 'en_GB', 'en-US', 'en_US', 'en'];
-    for (var i = 0; i < pref.length; i++){
-      var v = list.filter(function(x){ return (x.lang || '').indexOf(pref[i]) === 0; })[0];
-      if (v){ this.voice = v; return v; }
-    }
-    return null;
+  list: function(){
+    if (!this.ok) return [];
+    try { return speechSynthesis.getVoices() || []; } catch (e){ return []; }
   },
+
+  /* только английские голоса */
+  english: function(){
+    return this.list().filter(function(v){ return /^en[-_]/i.test(v.lang || ''); });
+  },
+
+  /* выбранный голос: сохранённый, иначе лучший доступный */
+  voice: function(){
+    var list = this.english();
+    if (!list.length) return null;
+
+    var saved = Store.get(this.KEY, null);
+    if (saved){
+      var found = list.filter(function(v){ return v.name === saved; })[0];
+      if (found) return found;
+    }
+
+    /* предпочтения: британский, потом американский; локальный голос лучше сетевого */
+    var order = ['en-GB', 'en_GB', 'en-US', 'en_US', 'en-AU', 'en'];
+    for (var i = 0; i < order.length; i++){
+      var same = list.filter(function(v){ return (v.lang || '').indexOf(order[i]) === 0; });
+      if (!same.length) continue;
+      var local = same.filter(function(v){ return v.localService; })[0];
+      return local || same[0];
+    }
+    return list[0];
+  },
+
+  setVoice: function(name){ Store.set(this.KEY, name || null); },
+
+  /* есть ли вообще английский голос */
+  hasEnglish: function(){ return this.english().length > 0; },
 
   say: function(text){
     if (!this.ok) return false;
+    var clean = String(text).replace(/\s*\/[^/]*\/\s*/g, ' ').trim();
     try {
       speechSynthesis.cancel();
-      var u = new SpeechSynthesisUtterance(String(text).replace(/\s*\/.*$/, ''));
-      var v = this.pick();
-      if (v) u.voice = v;
-      u.lang = (v && v.lang) || 'en-GB';
-      u.rate = 0.92;
+      var u = new SpeechSynthesisUtterance(clean);
+      var v = this.voice();
+      if (v){
+        u.voice = v;
+        u.lang = v.lang;
+      } else {
+        /* английского голоса нет — просим браузер хотя бы прочитать как английский */
+        u.lang = 'en-GB';
+      }
+      u.rate = 0.9;
+      u.pitch = 1;
       speechSynthesis.speak(u);
       return true;
     } catch (e){ return false; }
+  },
+
+  /* список голосов приходит асинхронно, поэтому опрашиваем несколько раз */
+  warmUp: function(done){
+    if (!this.ok){ if (done) done(); return; }
+    var self = this, tries = 0;
+    function check(){
+      tries++;
+      if (self.list().length || tries > 12){
+        self.ready = true;
+        if (done) done();
+        return;
+      }
+      setTimeout(check, 250);
+    }
+    if (speechSynthesis.onvoiceschanged !== undefined){
+      speechSynthesis.onvoiceschanged = function(){
+        self.ready = true;
+        document.dispatchEvent(new CustomEvent('voicesready'));
+      };
+    }
+    check();
   }
 };
-if (Speak.ok && speechSynthesis.onvoiceschanged !== undefined){
-  speechSynthesis.onvoiceschanged = function(){ Speak.voice = null; Speak.pick(); };
+Speak.warmUp(function(){ document.dispatchEvent(new CustomEvent('voicesready')); });
+
+/* ---------- панель выбора голоса ---------- */
+function renderVoicePanel(host){
+  if (!host) return;
+
+  function draw(){
+    if (!Speak.ok){
+      host.innerHTML = '<div class="setrow"><h5 style="margin:0">Озвучка</h5></div>' +
+        '<p class="qhint" style="margin:0">Браузер не умеет синтезировать речь.</p>';
+      return;
+    }
+
+    var list = Speak.english();
+    var cur = Speak.voice();
+
+    if (!list.length){
+      host.innerHTML =
+        '<div class="setrow"><h5 style="margin:0;flex:1">Озвучка</h5>' +
+          '<button class="btn" data-say="come back">Проверить</button></div>' +
+        '<div class="verdict no" style="margin:0"><b>Нет английского голоса</b>' +
+          'Браузер читает английские слова русским синтезатором — звучит неправильно. ' +
+          'Добавьте английский голос в системе:' +
+          '<ul style="margin:.5rem 0 0;padding-left:1.1rem">' +
+            '<li><b>Windows:</b> Параметры → Время и язык → Речь → Добавить голоса → English</li>' +
+            '<li><b>Android:</b> Настройки → Язык и ввод → Синтез речи → Google → Установить языки</li>' +
+            '<li><b>iPhone:</b> Настройки → Универсальный доступ → Устный контент → Голоса → English</li>' +
+            '<li><b>macOS:</b> Системные настройки → Универсальный доступ → Устное содержимое → Системный голос → Управление голосами</li>' +
+          '</ul>' +
+          '<p style="margin:.6rem 0 0">В Chrome обычно есть сетевые голоса Google — проверьте, что вы в сети.</p>' +
+        '</div>';
+      return;
+    }
+
+    host.innerHTML =
+      '<div class="setrow">' +
+        '<h5 style="margin:0;flex:1">Голос озвучки</h5>' +
+        '<button class="btn" data-say="come back">Проверить</button>' +
+      '</div>' +
+      '<select class="voicepick" style="width:100%;max-width:26rem">' +
+        list.map(function(v){
+          var label = v.name + ' · ' + v.lang + (v.localService ? '' : ' · сетевой');
+          return '<option value="' + esc(v.name).replace(/"/g,'&quot;') + '"' +
+                 (cur && v.name === cur.name ? ' selected' : '') + '>' + esc(label) + '</option>';
+        }).join('') +
+      '</select>' +
+      '<p class="qhint" style="margin:.55rem 0 0">Нажмите «Проверить» — должно прозвучать «кам бэк». ' +
+      'Если слышите «ком бэк», выберите другой голос из списка.</p>';
+
+    var sel = host.querySelector('.voicepick');
+    sel.addEventListener('change', function(){
+      Speak.setVoice(this.value);
+      Speak.say('come back');
+      /* остальные панели должны показать тот же выбор */
+      document.dispatchEvent(new CustomEvent('voicesready'));
+    });
+  }
+
+  draw();
+  document.addEventListener('voicesready', draw);
 }
 
 /* =========================================================
@@ -3800,6 +3926,7 @@ Listen.init();
     Progress.reset(); render();
   });
 
+  renderVoicePanel(document.getElementById('v-voice'));
   drawTopics(); render();
   document.addEventListener('pageshown', function(e){ if (e.detail.id === 'vocab') render(); });
 })();
@@ -4377,6 +4504,8 @@ function renderTopicPanel(host, onChange){
   if (!stage) return;
   var q = null, total = 0;
   var panel = document.getElementById('s-topics');
+
+  renderVoicePanel(document.getElementById('s-voice'));
 
   function build(){
     // берём короткие слова: длинные фразы распознаются плохо
