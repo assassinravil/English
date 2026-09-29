@@ -692,6 +692,7 @@ select:focus{border-color:var(--brand)}
   <p class="lede">Показан перевод — скажи слово по-английски вслух. Нужен микрофон и защищённое соединение: работает по ссылке на сайт, но не при открытии файла с диска.</p>
 
   <div class="settings" id="s-voice"></div>
+  <div class="settings" id="s-fuzzy"></div>
   <div class="settings" id="s-topics"></div>
   <div class="score"><span class="r">Верно: <b id="s-right">0</b></span><span class="w">Ошибок: <b id="s-wrong">0</b></span><span>Осталось: <b id="s-left">0</b></span></div>
   <div class="bar"><i id="s-bar"></i></div>
@@ -3731,6 +3732,222 @@ var Listen = {
 };
 Listen.init();
 
+/* =========================================================
+   НЕЧЁТКОЕ СРАВНЕНИЕ ПРОИЗНЕСЁННОГО
+   Распознаватель часто слышит близко, но не точно:
+   «come back» → «comeback», «bear» → «bare», «two» → «2».
+   Поэтому сравниваем тремя способами и берём лучший результат:
+     1. точное совпадение после очистки
+     2. расстояние редактирования (сколько правок до эталона)
+     3. фонетический код — по звучанию, а не по буквам
+   ========================================================= */
+var Fuzzy = {
+  KEY: 'fuzzy-level',
+
+  /* строгость: 0 — строго, 1 — обычно, 2 — мягко */
+  level: function(){ return Store.get(this.KEY, 1); },
+  setLevel: function(v){ Store.set(this.KEY, v); },
+  LEVELS: ['Строго', 'Обычно', 'Мягко'],
+
+  DIGITS: {'0':'zero','1':'one','2':'two','3':'three','4':'four','5':'five','6':'six',
+           '7':'seven','8':'eight','9':'nine','10':'ten','11':'eleven','12':'twelve'},
+
+  /* очистка: нижний регистр, цифры словами, долой всё кроме букв и пробелов */
+  clean: function(s){
+    s = String(s || '').toLowerCase()
+      .replace(/[\u2018\u2019\u02BC]/g, "'")
+      .replace(/[…]/g, ' ');
+    var self = this;
+    s = s.replace(/\b\d+\b/g, function(m){ return self.DIGITS[m] || m; });
+    return s.replace(/[^a-z' ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  },
+
+  /* без пробелов, дефисов и служебных слов — для «comeback» против «come back» */
+  tight: function(s){
+    return this.clean(s)
+      .replace(/\b(a|an|the|to|is|are|am)\b/g, ' ')
+      .replace(/[^a-z]/g, '');
+  },
+
+  /* фонетический код: упрощённый метафон.
+     Сводит вместе то, что звучит одинаково, но пишется по-разному. */
+  phon: function(s){
+    var w = this.tight(s);
+    if (!w) return '';
+    w = w
+      .replace(/^(kn|gn|pn|wr|ps)/, 'n')
+      .replace(/^x/, 's')
+      .replace(/^wh/, 'w')
+      .replace(/mb$/, 'm')
+      .replace(/ough/g, 'of')
+      .replace(/augh/g, 'af')
+      .replace(/ph/g, 'f')
+      .replace(/gh/g, '')
+      .replace(/ck/g, 'k')
+      .replace(/sch/g, 'sk')
+      .replace(/sh/g, 'x')
+      .replace(/ch/g, 'x')
+      .replace(/th/g, 't')
+      .replace(/qu/g, 'kw')
+      .replace(/x/g, 'ks')
+      .replace(/c(?=[iey])/g, 's')
+      .replace(/c/g, 'k')
+      .replace(/z/g, 's')
+      .replace(/v/g, 'f')
+      .replace(/j/g, 'g')
+      .replace(/(.)\1+/g, '$1');            // двойные буквы в одну
+    var first = w.charAt(0);
+    var rest = w.slice(1).replace(/[aeiouy]/g, '');   // гласные внутри не важны
+    return (first + rest).replace(/(.)\1+/g, '$1');
+  },
+
+  /* расстояние Левенштейна: сколько правок нужно, чтобы получить эталон */
+  dist: function(a, b){
+    if (a === b) return 0;
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
+    var prev = [], cur = [], i, j;
+    for (j = 0; j <= b.length; j++) prev[j] = j;
+    for (i = 1; i <= a.length; i++){
+      cur[0] = i;
+      for (j = 1; j <= b.length; j++){
+        var cost = a.charAt(i-1) === b.charAt(j-1) ? 0 : 1;
+        cur[j] = Math.min(cur[j-1] + 1, prev[j] + 1, prev[j-1] + cost);
+      }
+      for (j = 0; j <= b.length; j++) prev[j] = cur[j];
+    }
+    return prev[b.length];
+  },
+
+  /* Омофоны: пишутся по-разному, звучат одинаково.
+     Если сказанное и эталон в одной группе — произношение верное. */
+  HOMOPHONES: [
+    ['two','too','to'], ['there','their','theyre'], ['bear','bare'],
+    ['write','right','rite'], ['no','know'], ['hear','here'], ['sea','see'],
+    ['week','weak'], ['buy','by','bye'], ['hour','our'], ['one','won'],
+    ['sun','son'], ['meat','meet'], ['flour','flower'], ['piece','peace'],
+    ['made','maid'], ['be','bee'], ['blue','blew'], ['knew','new'],
+    ['hi','high'], ['wear','where','ware'], ['whole','hole'], ['wood','would'],
+    ['threw','through'], ['eight','ate'], ['allowed','aloud'], ['cell','sell'],
+    ['plain','plane'], ['weather','whether'], ['which','witch'],
+    ['road','rode'], ['seen','scene'], ['stair','stare'], ['tail','tale'],
+    ['waist','waste'], ['weight','wait'], ['son','sun'], ['steal','steel'],
+    ['break','brake'], ['pair','pear'], ['fair','fare'], ['mail','male'],
+    ['sale','sail'], ['tide','tied'], ['days','daze'], ['die','dye'],
+    ['find','fined'], ['heal','heel'], ['hole','whole'], ['its','its'],
+    ['mind','mined'], ['need','knead'], ['nose','knows'], ['pause','paws'],
+    ['rain','reign','rein'], ['some','sum'], ['toe','tow'], ['war','wore']
+  ],
+
+  _homoMap: null,
+  homoGroup: function(w){
+    if (!this._homoMap){
+      this._homoMap = {};
+      var self = this;
+      this.HOMOPHONES.forEach(function(group, i){
+        group.forEach(function(x){ self._homoMap[x] = i; });
+      });
+    }
+    return this._homoMap[w];
+  },
+
+  /* сколько правок прощаем: зависит от длины слова и строгости */
+  allowed: function(len){
+    var share = [0.2, 0.32, 0.45][this.level()];
+    var cap   = [2, 3, 4][this.level()];
+    return Math.min(cap, Math.max(1, Math.round(len * share)));
+  },
+
+  /* эталон может содержать варианты: «good / bad», «one, two, three» */
+  expected: function(en){
+    var parts = String(en).split(/\s*[\/,]\s*/).filter(Boolean);
+    if (parts.length > 1) parts.push(String(en));
+    return parts.length ? parts : [String(en)];
+  },
+
+  /* минимальная похожесть для зачёта */
+  minScore: function(){ return [0.86, 0.76, 0.66][this.level()]; },
+
+  /* сравнение одной пары */
+  one: function(said, target){
+    var a = this.tight(said), b = this.tight(target);
+    if (!a || !b) return {score:0, dist:99, how:''};
+
+    if (a === b) return {score:1, dist:0, how:'точно'};
+
+    var ga = this.homoGroup(a), gb = this.homoGroup(b);
+    if (ga !== undefined && ga === gb)
+      return {score:1, dist:0, how:'омофон', target:b};
+
+    var d = this.dist(a, b);
+    var len = Math.max(a.length, b.length);
+    var byLetter = 1 - d / len;
+
+    var pa = this.phon(said), pb = this.phon(target);
+    var pd = this.dist(pa, pb);
+    var plen = Math.max(pa.length, pb.length) || 1;
+    var bySound = pa === pb ? 0.97 : (1 - pd / plen) * 0.93;
+
+    var best = Math.max(byLetter, bySound);
+    var how = bySound > byLetter ? 'по звучанию' : 'по буквам';
+    /* эффективное число правок — по тому способу, что дал лучший результат */
+    var eff = bySound > byLetter ? Math.round(pd * b.length / plen) : d;
+    return {score:best, dist:eff, how:how, target:b};
+  },
+
+  /* главный вход: массив вариантов от распознавателя против эталона */
+  check: function(variants, en){
+    var self = this;
+    var targets = this.expected(en);
+    var best = {score:0, dist:99, how:'', said:variants[0] || ''};
+
+    variants.forEach(function(v){
+      targets.forEach(function(t){
+        var r = self.one(v, t);
+        if (r.score > best.score) best = {score:r.score, dist:r.dist, how:r.how, said:v, target:t};
+      });
+    });
+
+    var len = this.tight(best.target || en).length || 1;
+    best.limit = this.allowed(len);
+    best.floor = this.minScore();
+    /* зачёт требует и малого числа правок, и достаточной похожести:
+       только вместе они отсекают «look for» от «look after» */
+    best.ok = best.dist <= best.limit && best.score >= best.floor;
+    best.percent = Math.round(best.score * 100);
+    /* близко, но не зачёт — предложим засчитать вручную */
+    best.near = !best.ok && best.score >= 0.55;
+    return best;
+  }
+};
+
+/* ---------- панель строгости распознавания ---------- */
+function renderFuzzyPanel(host){
+  if (!host) return;
+
+  function draw(){
+    host.innerHTML =
+      '<div class="setrow"><h5 style="margin:0;flex:1">Строгость проверки речи</h5>' +
+        Fuzzy.LEVELS.map(function(name, i){
+          return '<button class="btn' + (Fuzzy.level() === i ? ' on' : '') +
+                 '" data-fuzzy="' + i + '" type="button">' + name + '</button>';
+        }).join('') +
+      '</div>' +
+      '<p class="qhint" style="margin:0">Проверка сравнивает сказанное с эталоном по буквам и по звучанию, ' +
+      'знает омофоны и прощает часть расхождений. Если распознаватель упрямится, ' +
+      'ответ можно засчитать вручную — на уровень слова это влияет так же, как обычный верный ответ.</p>';
+  }
+
+  host.addEventListener('click', function(e){
+    var b = e.target.closest('[data-fuzzy]');
+    if (!b) return;
+    Fuzzy.setLevel(+b.dataset.fuzzy);
+    draw();
+  });
+
+  draw();
+}
+
 </script>
 <script>
 /* ===================== ГЛАВНАЯ ===================== */
@@ -4304,7 +4521,15 @@ function renderTopicPanel(host, onChange){
       var self = this;
       self.classList.add('rec'); self.textContent = '● Слушаю…';
       Listen.start(
-        function(variants){ input.value = variants[0]; check(); },
+        function(variants){
+          var w = q.current();
+          input.value = variants[0];
+          var r = Fuzzy.check(variants, w.en);
+          if (r.ok) return reveal(true, false);
+          document.getElementById('w-verdict').innerHTML =
+            '<div class="verdict no"><b>Услышал «' + esc(r.said) + '»</b>' +
+            'Похоже на ' + r.percent + '%. Поправь в поле или скажи ещё раз.</div>';
+        },
         function(msg){ document.getElementById('w-verdict').innerHTML =
           '<div class="verdict no"><b>Микрофон</b>' + esc(msg) + '</div>'; },
         function(){ self.classList.remove('rec'); self.textContent = '🎤 Сказать'; }
@@ -4506,6 +4731,7 @@ function renderTopicPanel(host, onChange){
   var panel = document.getElementById('s-topics');
 
   renderVoicePanel(document.getElementById('s-voice'));
+  renderFuzzyPanel(document.getElementById('s-fuzzy'));
 
   function build(){
     // берём короткие слова: длинные фразы распознаются плохо
@@ -4563,9 +4789,10 @@ function renderTopicPanel(host, onChange){
     btn.classList.add('rec'); btn.textContent = '● Слушаю…';
     Listen.start(
       function(variants){
-        var ok = variants.some(function(v){ return matches(v, [w.en]); });
-        if (!ok) ok = variants.some(function(v){ return closeEnough(v, w.en); });
-        reveal(ok, false, variants[0]);
+        var r = Fuzzy.check(variants, w.en);
+        if (r.ok) return reveal(true, false, r);
+        if (r.near) return almost(r);
+        reveal(false, false, r);
       },
       function(msg){
         document.getElementById('s-verdict').innerHTML =
@@ -4573,6 +4800,30 @@ function renderTopicPanel(host, onChange){
       },
       function(){ btn.classList.remove('rec'); btn.textContent = '🎤 Говорить'; }
     );
+  }
+
+  /* близко, но не зачёт: ещё попытка или засчитать вручную, без штрафа */
+  function almost(r){
+    var w = q.current();
+    document.getElementById('s-verdict').innerHTML =
+      '<div class="verdict no"><b>Почти</b>' +
+      'Услышал «' + esc(r.said) + '», похоже на ' + r.percent + '%. ' +
+      'Это ещё не зачёт, но и не ошибка — попробуй сказать чётче.' +
+      '<div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap">' +
+        '<button class="btn primary" id="s-retry" type="button">Ещё раз</button>' +
+        '<button class="btn" id="s-accept" type="button">Засчитать</button>' +
+        '<button class="btn" id="s-show" type="button">Показать ответ</button>' +
+      '</div></div>';
+    document.getElementById('s-retry').addEventListener('click', function(){
+      document.getElementById('s-verdict').innerHTML = '';
+      listen();
+    });
+    document.getElementById('s-accept').addEventListener('click', function(){
+      reveal(true, false, r);
+    });
+    document.getElementById('s-show').addEventListener('click', function(){
+      reveal(false, true, r);
+    });
   }
 
   function reveal(ok, skipped, heard){
@@ -4584,7 +4835,9 @@ function renderTopicPanel(host, onChange){
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
       '<span class="en">' + esc(w.en) + '</span>' +
       (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(w.en) +
-      (heard && !ok ? '<br><span style="color:var(--ink-soft);font-size:.9em">Услышал: «' + esc(heard) + '»</span>' : '') +
+      (heard && heard.said ?
+        '<br><span style="color:var(--ink-soft);font-size:.9em">Услышал: «' + esc(heard.said) + '» · похоже на ' +
+        heard.percent + '%' + (heard.how ? ' · совпало ' + esc(heard.how) : '') + '</span>' : '') +
       '<div class="lvlnow">Теперь: ' + Progress.NAMES[d.l] +
         (d.l < 2 ? ' · до повышения ' + (Progress.UP - d.s) : '') + '</div>' +
       '<div style="margin-top:.75rem"><button class="btn primary" id="s-next" type="button">Дальше</button></div></div>';

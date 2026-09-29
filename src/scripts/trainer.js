@@ -348,7 +348,15 @@ function renderTopicPanel(host, onChange){
       var self = this;
       self.classList.add('rec'); self.textContent = '● Слушаю…';
       Listen.start(
-        function(variants){ input.value = variants[0]; check(); },
+        function(variants){
+          var w = q.current();
+          input.value = variants[0];
+          var r = Fuzzy.check(variants, w.en);
+          if (r.ok) return reveal(true, false);
+          document.getElementById('w-verdict').innerHTML =
+            '<div class="verdict no"><b>Услышал «' + esc(r.said) + '»</b>' +
+            'Похоже на ' + r.percent + '%. Поправь в поле или скажи ещё раз.</div>';
+        },
         function(msg){ document.getElementById('w-verdict').innerHTML =
           '<div class="verdict no"><b>Микрофон</b>' + esc(msg) + '</div>'; },
         function(){ self.classList.remove('rec'); self.textContent = '🎤 Сказать'; }
@@ -550,6 +558,7 @@ function renderTopicPanel(host, onChange){
   var panel = document.getElementById('s-topics');
 
   renderVoicePanel(document.getElementById('s-voice'));
+  renderFuzzyPanel(document.getElementById('s-fuzzy'));
 
   function build(){
     // берём короткие слова: длинные фразы распознаются плохо
@@ -607,9 +616,10 @@ function renderTopicPanel(host, onChange){
     btn.classList.add('rec'); btn.textContent = '● Слушаю…';
     Listen.start(
       function(variants){
-        var ok = variants.some(function(v){ return matches(v, [w.en]); });
-        if (!ok) ok = variants.some(function(v){ return closeEnough(v, w.en); });
-        reveal(ok, false, variants[0]);
+        var r = Fuzzy.check(variants, w.en);
+        if (r.ok) return reveal(true, false, r);
+        if (r.near) return almost(r);
+        reveal(false, false, r);
       },
       function(msg){
         document.getElementById('s-verdict').innerHTML =
@@ -617,6 +627,30 @@ function renderTopicPanel(host, onChange){
       },
       function(){ btn.classList.remove('rec'); btn.textContent = '🎤 Говорить'; }
     );
+  }
+
+  /* близко, но не зачёт: ещё попытка или засчитать вручную, без штрафа */
+  function almost(r){
+    var w = q.current();
+    document.getElementById('s-verdict').innerHTML =
+      '<div class="verdict no"><b>Почти</b>' +
+      'Услышал «' + esc(r.said) + '», похоже на ' + r.percent + '%. ' +
+      'Это ещё не зачёт, но и не ошибка — попробуй сказать чётче.' +
+      '<div style="margin-top:.75rem;display:flex;gap:.5rem;flex-wrap:wrap">' +
+        '<button class="btn primary" id="s-retry" type="button">Ещё раз</button>' +
+        '<button class="btn" id="s-accept" type="button">Засчитать</button>' +
+        '<button class="btn" id="s-show" type="button">Показать ответ</button>' +
+      '</div></div>';
+    document.getElementById('s-retry').addEventListener('click', function(){
+      document.getElementById('s-verdict').innerHTML = '';
+      listen();
+    });
+    document.getElementById('s-accept').addEventListener('click', function(){
+      reveal(true, false, r);
+    });
+    document.getElementById('s-show').addEventListener('click', function(){
+      reveal(false, true, r);
+    });
   }
 
   function reveal(ok, skipped, heard){
@@ -628,7 +662,9 @@ function renderTopicPanel(host, onChange){
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
       '<span class="en">' + esc(w.en) + '</span>' +
       (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(w.en) +
-      (heard && !ok ? '<br><span style="color:var(--ink-soft);font-size:.9em">Услышал: «' + esc(heard) + '»</span>' : '') +
+      (heard && heard.said ?
+        '<br><span style="color:var(--ink-soft);font-size:.9em">Услышал: «' + esc(heard.said) + '» · похоже на ' +
+        heard.percent + '%' + (heard.how ? ' · совпало ' + esc(heard.how) : '') + '</span>' : '') +
       '<div class="lvlnow">Теперь: ' + Progress.NAMES[d.l] +
         (d.l < 2 ? ' · до повышения ' + (Progress.UP - d.s) : '') + '</div>' +
       '<div style="margin-top:.75rem"><button class="btn primary" id="s-next" type="button">Дальше</button></div></div>';
