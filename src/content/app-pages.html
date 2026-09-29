@@ -1,0 +1,106 @@
+<!-- ===================== ГЛАВНАЯ ===================== -->
+<div class="page" id="home" data-group="Начало" data-title="Главная">
+  <div class="pagehead">
+    <h1>Английский: справочник и тренажёры</h1>
+    <p>Грамматика по разделам, словарь с транскрипцией и четыре тренажёра. Всё работает офлайн, прогресс хранится в браузере.</p>
+  </div>
+
+  <div class="stats" id="home-stats"></div>
+
+  <h3>Продолжить</h3>
+  <div class="cards" id="home-resume"></div>
+
+  <h3>Справочник</h3>
+  <div class="cards" id="home-grammar"></div>
+
+  <h3>Тренировка</h3>
+  <div class="cards" id="home-train"></div>
+
+  <footer>
+    Материал собран по разбору домашних заданий. Отметки и статистика хранятся только в этом браузере.
+  </footer>
+</div>
+
+<!-- ===================== СЛОВАРЬ ===================== -->
+<div class="page" id="vocab" data-group="Словарь" data-title="Все слова">
+  <h2>Словарь</h2>
+  <p class="lede">Слова из разобранных заданий, бытовая лексика и база A1–A2. У каждого слова транскрипция.</p>
+
+  <div class="controls">
+    <input type="search" id="q" placeholder="Слово, перевод или транскрипция…" style="min-width:15rem">
+    <button class="btn on" data-set="all" type="button">Все</button>
+    <button class="btn" data-set="basic" type="button">Разговорные темы</button>
+    <button class="btn" data-set="hw" type="button">Из домашек</button>
+    <button class="btn" id="hide" type="button">Скрыть выученные</button>
+  </div>
+
+  <div class="controls chips" id="topicbar"></div>
+
+  <div class="controls">
+    <span class="counter" id="counter"></span>
+    <button class="btn" id="reset" type="button">Сбросить отметки</button>
+  </div>
+
+  <div class="scroller">
+  <table class="stack">
+    <thead><tr><th class="chkcell">✓</th><th>Слово</th><th>Транскрипция</th><th>Перевод</th><th>Заметка</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ===================== КАРТОЧКИ ===================== -->
+<div class="page" id="cards" data-group="Тренажёры" data-title="Карточки">
+  <h2>Карточки</h2>
+  <p class="lede">Смахни вправо, если вспомнил, влево — если нет. Нажми на карточку, чтобы перевернуть. На компьютере работают стрелки и пробел.</p>
+
+  <div class="settings" id="c-topics"></div>
+  <div class="controls">
+    <button class="btn" id="c-flip" type="button">Показывать русское</button>
+  </div>
+
+  <div class="score"><span class="r">Верно: <b id="c-right">0</b></span><span class="w">Ошибок: <b id="c-wrong">0</b></span><span>Осталось: <b id="c-left">0</b></span></div>
+  <div class="bar"><i id="c-bar"></i></div>
+
+  <div class="deck" id="c-deck"></div>
+  <div class="deckbtns">
+    <button class="btn no" id="c-no" type="button">Не вспомнил</button>
+    <button class="btn yes" id="c-yes" type="button">Вспомнил</button>
+  </div>
+</div>
+
+<!-- ===================== НАПИСАНИЕ ===================== -->
+<div class="page" id="write" data-group="Тренажёры" data-title="Написание">
+  <h2>Написание</h2>
+  <p class="lede">Показан перевод — набери английское слово. Регистр и знаки в конце не важны.</p>
+
+  <div class="settings" id="w-topics"></div>
+  <div class="score"><span class="r">Верно: <b id="w-right">0</b></span><span class="w">Ошибок: <b id="w-wrong">0</b></span><span>Осталось: <b id="w-left">0</b></span></div>
+  <div class="bar"><i id="w-bar"></i></div>
+  <div class="stage" id="w-stage"></div>
+</div>
+
+<!-- ===================== СКОБКИ ===================== -->
+<div class="page" id="gaps" data-group="Тренажёры" data-title="Раскрытие скобок">
+  <h2>Раскрытие скобок</h2>
+  <p class="lede">Поставь глагол в нужную форму. После ответа — разбор, почему именно так.</p>
+  <div class="controls chips">
+    <button class="btn on" data-gapcat="all" type="button">Все</button>
+    <button class="btn" data-gapcat="present" type="button">Настоящее</button>
+    <button class="btn" data-gapcat="past" type="button">Прошедшее</button>
+    <button class="btn" data-gapcat="future" type="button">Будущее</button>
+    <button class="btn" data-gapcat="participle" type="button">Причастия</button>
+  </div>
+  <div class="score"><span class="r">Верно: <b id="g-right">0</b></span><span class="w">Ошибок: <b id="g-wrong">0</b></span><span>Осталось: <b id="g-left">0</b></span></div>
+  <div class="bar"><i id="g-bar"></i></div>
+  <div class="stage" id="g-stage"></div>
+</div>
+
+<!-- ===================== ПЕРЕВОД ===================== -->
+<div class="page" id="translate" data-group="Тренажёры" data-title="Перевод">
+  <h2>Перевод</h2>
+  <p class="lede">Собери английское предложение. Принимаются разные допустимые варианты; если ответ близок, скажу, где расхождение.</p>
+  <div class="score"><span class="r">Верно: <b id="t-right">0</b></span><span class="w">Ошибок: <b id="t-wrong">0</b></span><span>Осталось: <b id="t-left">0</b></span></div>
+  <div class="bar"><i id="t-bar"></i></div>
+  <div class="stage" id="t-stage"></div>
+</div>
