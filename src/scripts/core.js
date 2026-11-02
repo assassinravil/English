@@ -22,6 +22,8 @@ var GROUPS = {
   'Начало':      {v:'--g-home',   b:'--g-home-bg',   icon:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>'},
   'Времена':     {v:'--g-tense',  b:'--g-tense-bg',  icon:'<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/>'},
   'Глагол':      {v:'--g-verb',   b:'--g-verb-bg',   icon:'<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>'},
+  'Залог':       {v:'--g-voice',  b:'--g-voice-bg',  icon:'<path d="M17 7 7 17"/><path d="M7 11V7h4"/><path d="M17 13v4h-4"/>'},
+  'Условные':    {v:'--g-cond',   b:'--g-cond-bg',   icon:'<path d="M6 3v12"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M18 8.5c0 6-12 3-12 9"/>'},
   'Части речи':  {v:'--g-part',   b:'--g-part-bg',   icon:'<path d="M4 19V7a3 3 0 0 1 3-3h9"/><path d="M8 9h8M8 13h5"/><path d="M20 4v16H7a3 3 0 0 0-3 3"/>'},
   'Структуры':   {v:'--g-struct', b:'--g-struct-bg', icon:'<rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="10" height="6" rx="2"/>'},
   'Проверка':    {v:'--g-check',  b:'--g-check-bg',  icon:'<path d="M20 6 9 17l-5-5"/>'},

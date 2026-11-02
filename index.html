@@ -38,6 +38,8 @@
   --g-check:#E0355A;   --g-check-bg:#E0355A14;
   --g-dict:#C63DAE;    --g-dict-bg:#C63DAE14;
   --g-train:#0BA5C6;   --g-train-bg:#0BA5C614;
+  --g-voice:#C2410C;   --g-voice-bg:#C2410C14;
+  --g-cond:#7C3AED;    --g-cond-bg:#7C3AED14;
   --g-home:#16172B;    --g-home-bg:#16172B0F;
 
   --ok:#0E9F6E;   --ok-bg:#0E9F6E14;   --ok-line:#0E9F6E3D;
@@ -79,6 +81,8 @@
   --g-check:#FF7A96;   --g-check-bg:#FF7A961C;
   --g-dict:#E486D2;    --g-dict-bg:#E486D21C;
   --g-train:#4CC9E4;   --g-train-bg:#4CC9E41C;
+  --g-voice:#FB923C;   --g-voice-bg:#FB923C1C;
+  --g-cond:#B49BFF;    --g-cond-bg:#B49BFF1C;
   --g-home:#ECEDF6;    --g-home-bg:#ECEDF612;
 
   --ok:#3FD3A0;   --ok-bg:#3FD3A016;   --ok-line:#3FD3A040;
@@ -722,6 +726,9 @@ select:focus{border-color:var(--brand)}
     <button class="btn" data-gapcat="past" type="button">Прошедшее</button>
     <button class="btn" data-gapcat="future" type="button">Будущее</button>
     <button class="btn" data-gapcat="participle" type="button">Причастия</button>
+    <button class="btn" data-gapcat="passive" type="button">Страдательный залог</button>
+    <button class="btn" data-gapcat="modal" type="button">Модальные глаголы</button>
+    <button class="btn" data-gapcat="conditional" type="button">Условные</button>
   </div>
   <div class="score"><span class="r">Верно: <b id="g-right">0</b></span><span class="w">Ошибок: <b id="g-wrong">0</b></span><span>Осталось: <b id="g-left">0</b></span></div>
   <div class="bar"><i id="g-bar"></i></div>
@@ -1242,6 +1249,405 @@ select:focus{border-color:var(--brand)}
       <li><span class="en">I heard children ___ (play).</span> → <span class="good">playing</span>, после hear без союза</li>
     </ul>
     <p>Все эти задания есть в тренажёре — раздел «Раскрытие скобок», фильтр «Причастия».</p>
+  </div>
+</div>
+
+<!-- ========== МОДАЛЬНЫЕ ГЛАГОЛЫ ========== -->
+<div class="page" id="modals" data-group="Глагол" data-title="Модальные глаголы">
+  <h2>Модальные глаголы</h2>
+  <p class="lede">Они показывают не действие, а отношение к нему: обязательно, можно, нужно, следует. Главная трудность не в грамматике, а в выборе: русское «должен» переводится тремя разными способами.</p>
+
+  <div class="rule">
+    <b>Одно правило на всю тему</b>
+    <p>После модального глагол стоит <b>в чистой форме</b>: без <code>to</code>, без окончаний, без вторых и третьих форм.</p>
+    <p><span class="good">must cook · can swim · should rest · used to decorate</span></p>
+    <p><span class="bad">must to cook · must cooks · used to decorated</span></p>
+    <p>Причина простая: прошедшее или будущее уже помечено самим модальным, второй раз его помечать не нужно. То же правило работает с <code>did</code>: <span class="en">did you <b>visit</b></span>, а не <span class="en">did you visited</span>.</p>
+  </div>
+
+  <h3>Карта соответствий</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Русское</th><th>Английское</th><th>Оттенок</th></tr></thead>
+    <tbody>
+      <tr><td>приходится, вынужден</td><td class="en">have to / has to</td><td>обязывают обстоятельства</td></tr>
+      <tr><td>обязан, должен</td><td class="en">must</td><td>правило, закон, внутренний долг</td></tr>
+      <tr><td>следует, стоит</td><td class="en">should</td><td>совет</td></tr>
+      <tr><td>не следует</td><td class="en">shouldn't</td><td>совет не делать</td></tr>
+      <tr><td>нельзя</td><td class="en">mustn't</td><td>запрет</td></tr>
+      <tr><td>не обязан, можно не</td><td class="en">don't have to / needn't</td><td>нет необходимости</td></tr>
+      <tr><td>могу, умею</td><td class="en">can</td><td>способность, возможность</td></tr>
+      <tr><td>мог, умел</td><td class="en">could</td><td>прошедшее от can</td></tr>
+      <tr><td>смогу</td><td class="en">will be able to</td><td>будущее от can</td></tr>
+      <tr><td>можно ли, могу ли я</td><td class="en">may / can</td><td>просьба, разрешение</td></tr>
+      <tr><td>бывало, раньше</td><td class="en">used to</td><td>повторялось в прошлом</td></tr>
+      <tr><td>осмеливаться</td><td class="en">dare</td><td>вызов, дерзость</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Главная ловушка темы</h3>
+  <div class="rule warn">
+    <b><code>mustn't</code> и <code>don't have to</code> означают противоположное</b>
+    <p>В утверждении <code>must</code> и <code>have to</code> почти одинаковы. В отрицании они расходятся полностью.</p>
+    <div class="scroller" style="margin-top:.6rem">
+    <table>
+      <thead><tr><th>Фраза</th><th>Смысл</th></tr></thead>
+      <tbody>
+        <tr><td class="en">You <b>mustn't</b> come</td><td>тебе <b>нельзя</b> приходить</td></tr>
+        <tr><td class="en">You <b>don't have to</b> come</td><td>можешь <b>не</b> приходить, но можешь</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><span class="en">They don't have to come here every Sunday.</span> — не обязаны, у них свои дела<br>
+       <span class="en">You mustn't touch the statues.</span> — трогать запрещено</p>
+  </div>
+
+  <h3>У <code>must</code> и <code>can</code> нет форм времени</h3>
+  <div class="rule warn">
+    <b>Прошедшее и будущее берут у заменителей</b>
+    <div class="scroller" style="margin-top:.6rem">
+    <table>
+      <thead><tr><th></th><th>Настоящее</th><th>Прошедшее</th><th>Будущее</th></tr></thead>
+      <tbody>
+        <tr><td><b>обязанность</b></td><td class="en">must / have to</td><td class="en">had to</td><td class="en">will have to</td></tr>
+        <tr><td><b>возможность</b></td><td class="en">can</td><td class="en">could</td><td class="en">will be able to</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><span class="good">We won't be able to open the door.</span><br>
+       <span class="bad">We won't can open the door</span></p>
+    <p><span class="good">When will you be able to repeat the rule?</span></p>
+  </div>
+
+  <h3><code>used to</code> — привычка в прошлом</h3>
+  <div class="rule tip">
+    <b>То, что повторялось раньше, но уже не повторяется</b>
+    <p>Переводится как «бывало», «раньше». Формально не модальный глагол, но ведёт себя так же: дальше чистая форма.</p>
+    <ul>
+      <li><span class="en">Steve <b>used to decorate</b> the rooms.</span> — бывало, Стив украшал комнаты</li>
+      <li><span class="en">We <b>used to perform</b> on stage together.</span> — бывало, мы выступали вместе</li>
+      <li><span class="en">She <b>used to paint</b> pictures and sell them.</span> — после <code>and</code> конструкция не повторяется</li>
+    </ul>
+    <p><b>Отрицание и вопрос:</b> <span class="en">didn't use to</span>, <span class="en">did you use to…?</span> — здесь <code>used</code> теряет <code>-d</code>, потому что прошедшее уже в <code>did</code>.</p>
+  </div>
+
+  <h3>Просьбы и разрешения</h3>
+  <div class="rule">
+    <b><code>may</code> вежливее, чем <code>can</code></b>
+    <p><span class="en"><b>May</b> I use your umbrella?</span> — вежливо<br>
+       <span class="en"><b>Can</b> I use your umbrella?</span> — обычно, разговорно<br>
+       <span class="en"><b>Could</b> I use your umbrella?</span> — ещё мягче</p>
+    <p>Но <code>may</code> — именно про <b>разрешение</b>. Если речь о возможности, он не подходит:</p>
+    <p><span class="bad">We may not open the door, we won't be at home</span><br>
+       <span class="good">We won't be able to open the door</span></p>
+  </div>
+
+  <h3><code>dare</code> — осмеливаться</h3>
+  <div class="rule">
+    <b>Ведёт себя двояко</b>
+    <p><b>Как модальный</b> — в вопросах и отрицаниях, без <code>to</code>:<br>
+      <span class="en">Dare you argue with the teacher?</span> · <span class="en">He daren't say a word.</span></p>
+    <p><b>Как обычный глагол</b> — с <code>do</code> и с <code>to</code>:<br>
+      <span class="en">Do you dare to argue?</span> · <span class="en">He doesn't dare to say a word.</span></p>
+    <p>Оба варианта верны. Первый звучит книжнее и драматичнее.</p>
+  </div>
+
+  <h3>Частые ошибки</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Было</th><th>Надо</th><th>Почему</th></tr></thead>
+    <tbody>
+      <tr><td class="bad">Nick have to get up</td><td class="good">Nick has to get up</td><td>has с he/she/it</td></tr>
+      <tr><td class="bad">used to decorated</td><td class="good">used to decorate</td><td>прошедшее помечено один раз</td></tr>
+      <tr><td class="bad">could the children sang</td><td class="good">could the children sing</td><td>после модального чистая форма</td></tr>
+      <tr><td class="bad">they must not come (не обязаны)</td><td class="good">they don't have to come</td><td>запрет против отсутствия нужды</td></tr>
+      <tr><td class="bad">we may not open the door</td><td class="good">we won't be able to open</td><td>may — разрешение, не возможность</td></tr>
+      <tr><td class="bad">them needn't draw</td><td class="good">they needn't draw</td><td>them не бывает подлежащим</td></tr>
+      <tr><td class="bad">you dare argue?</td><td class="good">dare you argue?</td><td>в вопросе dare выходит вперёд</td></tr>
+      <tr><td class="bad">must to visit</td><td class="good">must visit</td><td>после модального нет to</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ========== СТРАДАТЕЛЬНЫЙ ЗАЛОГ ========== -->
+<div class="page" id="passive" data-group="Залог" data-title="Страдательный залог">
+  <h2>Страдательный залог</h2>
+  <p class="lede">Подлежащее не делает действие, а испытывает его на себе. Схема всегда одна: <code>be + V3</code>. Меняется только <code>be</code> — он берёт на себя время, лицо и число.</p>
+
+  <h3>Все формы одной таблицей</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th></th><th>Indefinite</th><th>Continuous</th><th>Perfect</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Present</b></td>
+        <td><code>am / is / are + V3</code><br><span class="en">This house <b>is built</b>.</span><br><span style="color:var(--ink-soft);font-size:.9em">Дом строят.</span></td>
+        <td><code>am / is / are being + V3</code><br><span class="en">This house <b>is being built</b>.</span><br><span style="color:var(--ink-soft);font-size:.9em">Дом строится сейчас.</span></td>
+        <td><code>have / has been + V3</code><br><span class="en">This house <b>has been built</b>.</span><br><span style="color:var(--ink-soft);font-size:.9em">Дом уже построен.</span></td>
+      </tr>
+      <tr>
+        <td><b>Past</b></td>
+        <td><code>was / were + V3</code><br><span class="en">This house <b>was built</b> last year.</span><br><span style="color:var(--ink-soft);font-size:.9em">Дом построили в прошлом году.</span></td>
+        <td><code>was / were being + V3</code><br><span class="en">This house <b>was being built</b>.</span><br><span style="color:var(--ink-soft);font-size:.9em">Дом строился тогда.</span></td>
+        <td><code>had been + V3</code><br><span class="en">This house <b>had been built</b> before I came.</span><br><span style="color:var(--ink-soft);font-size:.9em">Дом был построен до того, как я приехал.</span></td>
+      </tr>
+      <tr>
+        <td><b>Future</b></td>
+        <td><code>will be + V3</code><br><span class="en">This house <b>will be built</b>.</span><br><span style="color:var(--ink-soft);font-size:.9em">Дом будет построен.</span></td>
+        <td style="color:var(--ink-faint)">не употребляется</td>
+        <td><code>will have been + V3</code><br><span class="en">It <b>will have been built</b> by January.</span><br><span style="color:var(--ink-soft);font-size:.9em">Дом будет построен к январю.</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="rule">
+    <b>Как читать таблицу</b>
+    <p>Третья форма глагола не меняется никогда. Всё время, лицо и число живут в <code>be</code>.</p>
+    <p><code>be</code> превращается в <span class="en">is, are, was, were, been, being, will be</span> — и этим задаёт форму.</p>
+    <p>Future Continuous в пассиве не существует: сказать «дом будет строиться» одним словом нельзя, нужна перестройка фразы.</p>
+  </div>
+
+  <h3>Когда ставят пассив</h3>
+  <div class="grid2">
+    <div class="rule tip">
+      <b>Исполнитель неважен или неизвестен</b>
+      <p><span class="en">The grapes <b>are picked</b> and <b>crushed</b>.</span><br>Кто именно собирает виноград — неважно.</p>
+      <p>Поэтому рецепты, инструкции и описания процессов почти целиком идут в пассиве.</p>
+    </div>
+    <div class="rule tip">
+      <b>Важен результат, а не действующий</b>
+      <p><span class="en">The compass <b>was invented</b> in ancient China.</span><br>Важно, что изобрели, а не кто.</p>
+    </div>
+  </div>
+
+  <div class="rule">
+    <b>Исполнитель вводится через <code>by</code></b>
+    <p>Если назвать того, кто действует, перед ним обязателен предлог <code>by</code>.</p>
+    <p><span class="good">The housework was done <b>by</b> his grandmother.</span><br>
+       <span class="bad">The housework was done his grandmother</span></p>
+    <p>Но чаще исполнителя вообще не называют — в этом и смысл конструкции.</p>
+  </div>
+
+  <h3>Русские безличные фразы</h3>
+  <div class="rule warn">
+    <b>Подлежащим становится человек, а не предмет</b>
+    <p>Русские конструкции «мне показали», «ему дали», «вам предложили» не имеют подлежащего. В английском оно обязательно, и им становится <b>получатель</b>.</p>
+    <div class="scroller" style="margin-top:.6rem">
+    <table>
+      <thead><tr><th>Русское</th><th>Английское</th></tr></thead>
+      <tbody>
+        <tr><td>Мне показали</td><td class="en">I was shown</td></tr>
+        <tr><td>Ему дали</td><td class="en">He was given</td></tr>
+        <tr><td>Вам покажут</td><td class="en">You will be shown</td></tr>
+        <tr><td>Ей продиктовали письмо</td><td class="en">She was dictated a letter</td></tr>
+        <tr><td>Каждому студенту дадут стипендию</td><td class="en">Every student will be given a scholarship</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Кажется, что подлежащим должно стать то, что показали. Но английский ставит вперёд человека.</p>
+  </div>
+
+  <h3>Глаголы с предлогом</h3>
+  <div class="rule warn">
+    <b>Предлог остаётся при глаголе и висит в конце</b>
+    <p>В русском «за доктором послали» предлог срастается с глаголом. В английском так же: <code>send for</code> — единое целое.</p>
+    <p><span class="en">They sent for the doctor</span> → <span class="en">The doctor <b>was sent for</b>.</span></p>
+    <div class="scroller" style="margin-top:.6rem">
+    <table>
+      <thead><tr><th>Актив</th><th>Пассив</th><th>Перевод</th></tr></thead>
+      <tbody>
+        <tr><td class="en">send for the doctor</td><td class="en">the doctor was sent <b>for</b></td><td>за доктором послали</td></tr>
+        <tr><td class="en">listen to the teacher</td><td class="en">the teacher was listened <b>to</b></td><td>учителя слушали</td></tr>
+        <tr><td class="en">look after her</td><td class="en">she is looked <b>after</b></td><td>о ней заботятся</td></tr>
+        <tr><td class="en">agree upon the plan</td><td class="en">the plan was agreed <b>upon</b></td><td>план согласовали</td></tr>
+        <tr><td class="en">refer to the article</td><td class="en">the article is referred <b>to</b></td><td>на статью ссылаются</td></tr>
+        <tr><td class="en">find fault with him</td><td class="en">he is found fault <b>with</b></td><td>к нему придираются</td></tr>
+        <tr><td class="en">live in the house</td><td class="en">the house has never been lived <b>in</b></td><td>в доме никогда не жили</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Если исполнитель тоже назван, предлогов будет два подряд — это нормально:<br>
+      <span class="en">She is looked <b>after by</b> her friends.</span></p>
+  </div>
+
+  <h3>Модальные глаголы в пассиве</h3>
+  <div class="rule">
+    <b>Схема: модальный + <code>be</code> + V3</b>
+    <p>Модальный не меняется никогда, а <code>is</code> превращается в <code>be</code> — после модального глагол всегда в чистой форме.</p>
+    <ul>
+      <li><span class="en">This dish <b>should be cooked</b> slowly.</span> — блюдо следует готовить медленно</li>
+      <li><span class="en">The work <b>must be finished</b> today.</span> — работа должна быть закончена</li>
+      <li><span class="en">It <b>can be repaired</b>.</span> — это можно починить</li>
+      <li><span class="en">How could these keys <b>be lost</b>?</span> — как ключи могли потерять?</li>
+    </ul>
+  </div>
+
+  <h3>Вопросы и отрицания</h3>
+  <div class="grid2">
+    <div class="rule warn">
+      <b>В вопросе вспомогательный выходит вперёд</b>
+      <p><span class="good">Why <b>are</b> these things being considered?</span><br>
+         <span class="bad">Why these things are being considered</span></p>
+      <p><span class="good">When <b>will</b> this film <b>be</b> shown?</span> — <code>be</code> остаётся на месте</p>
+    </div>
+    <div class="rule warn">
+      <b>Отрицание прилипает к первому слову</b>
+      <p><span class="en">Cream <b>is not</b> added.</span><br>
+         <span class="en">He <b>has not</b> been seen for a long time.</span><br>
+         <span class="en">We <b>weren't</b> shown the picture.</span></p>
+    </div>
+  </div>
+
+  <h3>Частые ошибки</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Было</th><th>Надо</th><th>Почему</th></tr></thead>
+    <tbody>
+      <tr><td class="bad">this cup has broken</td><td class="good">has been broken</td><td>в пассиве нужно been</td></tr>
+      <tr><td class="bad">the exam has just failed</td><td class="good">has just been failed by</td><td>потерялось been и by</td></tr>
+      <tr><td class="bad">we wasn't shown</td><td class="good">we weren't shown</td><td>we берёт were</td></tr>
+      <tr><td class="bad">was you shown</td><td class="good">were you shown</td><td>you всегда were</td></tr>
+      <tr><td class="bad">when will this film shown</td><td class="good">will this film be shown</td><td>be не выпадает</td></tr>
+      <tr><td class="bad">is viewed hundreds of people</td><td class="good">is viewed by hundreds</td><td>исполнитель через by</td></tr>
+      <tr><td class="bad">showen</td><td class="good">shown</td><td>третья форма от show</td></tr>
+      <tr><td class="bad">this issue has been studied</td><td class="good">is being studied</td><td>процесс идёт сейчас</td></tr>
+      <tr><td class="bad">housework were done</td><td class="good">housework was done</td><td>неисчисляемое</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ========== УСЛОВНЫЕ ПРЕДЛОЖЕНИЯ ========== -->
+<div class="page" id="conditionals" data-group="Условные" data-title="Условные предложения">
+  <h2>Условные предложения</h2>
+  <p class="lede">Четыре типа, и форма целиком зависит от типа. Поэтому порядок работы такой: сначала определи тип, потом подставляй.</p>
+
+  <h3>Четыре типа одной таблицей</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Тип</th><th>Когда</th><th>После <code>if</code></th><th>Главная часть</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="tag s">0</span></td>
+        <td>всегда так бывает, закон природы</td>
+        <td><code>Present Simple</code></td>
+        <td><code>Present Simple</code></td>
+      </tr>
+      <tr>
+        <td><span class="tag c">1</span></td>
+        <td>реально может случиться</td>
+        <td><code>Present Simple</code></td>
+        <td><code>will + V</code></td>
+      </tr>
+      <tr>
+        <td><span class="tag p">2</span></td>
+        <td>сейчас или вообще, но нереально</td>
+        <td><code>Past Simple</code></td>
+        <td><code>would + V</code></td>
+      </tr>
+      <tr>
+        <td><span class="tag pc">3</span></td>
+        <td>в прошлом, уже не изменить</td>
+        <td><code>Past Perfect</code></td>
+        <td><code>would have + V3</code></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Примеры по типам</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Тип</th><th>Английское</th><th>Перевод</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag s">0</span></td><td><span class="en">If autumn <b>comes</b>, birds <b>fly</b> to the South.</span></td><td>Если приходит осень, птицы улетают на юг.</td></tr>
+      <tr><td><span class="tag s">0</span></td><td><span class="en">When we <b>heat</b> ice, it <b>melts</b>.</span></td><td>Когда мы нагреваем лёд, он тает.</td></tr>
+      <tr><td><span class="tag c">1</span></td><td><span class="en">If you <b>see</b> your friend, you <b>will give</b> him your number.</span></td><td>Если увидишь друга, дашь ему телефон.</td></tr>
+      <tr><td><span class="tag c">1</span></td><td><span class="en">If you <b>don't hurry</b> up, you <b>will miss</b> the train.</span></td><td>Если не поторопишься, опоздаешь на поезд.</td></tr>
+      <tr><td><span class="tag p">2</span></td><td><span class="en">If he <b>worked</b> as a vet, he <b>would help</b> animals.</span></td><td>Если бы он работал ветеринаром, помогал бы животным.</td></tr>
+      <tr><td><span class="tag p">2</span></td><td><span class="en">If she <b>loved</b> apple pie, she <b>would bake</b> it more often.</span></td><td>Если бы любила пирог, пекла бы чаще.</td></tr>
+      <tr><td><span class="tag pc">3</span></td><td><span class="en">If they <b>had bought</b> a house, they <b>would have moved</b> there.</span></td><td>Если бы купили дом, переехали бы туда.</td></tr>
+      <tr><td><span class="tag pc">3</span></td><td><span class="en">If you <b>hadn't opened</b> the door, you <b>wouldn't have seen</b> them.</span></td><td>Если бы не открыл дверь, не увидел бы их.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="rule warn">
+    <b>Главное правило темы</b>
+    <p>После <code>if</code> <b>никогда</b> не ставится <code>will</code> и <code>would</code>. Условность помечается один раз — в главной части.</p>
+    <p><span class="good">If you didn't open the door, you wouldn't see a robber.</span><br>
+       <span class="bad">If you wouldn't open the door…</span></p>
+    <p><b>Проверка:</b> нашёл пропуск — посмотри, в какой он части. Если после <code>if</code>, там только настоящее или прошедшее время.</p>
+  </div>
+
+  <h3>Как определить тип</h3>
+  <div class="grid2">
+    <div class="rule tip">
+      <b>Если часть уже раскрыта</b>
+      <p>Смотри на готовую часть, она подсказывает:</p>
+      <ul>
+        <li>видишь <code>will</code> → тип 1</li>
+        <li>видишь <code>would</code> → тип 2</li>
+        <li>видишь <code>would have</code> → тип 3</li>
+        <li>обе части в настоящем → тип 0</li>
+      </ul>
+    </div>
+    <div class="rule tip">
+      <b>Если переводишь с русского</b>
+      <ul>
+        <li>«если… то всегда», закон природы → тип 0</li>
+        <li>обычное будущее: «если придёшь, увидишь» → тип 1</li>
+        <li>«бы» + сейчас или вообще → тип 2</li>
+        <li>«бы» + есть «вчера», «в прошлом году» → тип 3</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule">
+    <b>Чем второй тип отличается от третьего</b>
+    <p>Во <b>втором</b> речь о сейчас или вообще — ситуация нереальна, но гипотетически возможна.<br>
+      <span class="en">If she <b>loved</b> apple pie, she <b>would bake</b> it.</span> — она не любит, но могла бы</p>
+    <p>В <b>третьем</b> речь о конкретном прошлом, которое уже не переиграть.<br>
+      <span class="en">If she <b>had loved</b> apple pie, she <b>would have baked</b> it.</span> — тогда не любила, и ничего не изменить</p>
+    <p>Маркер третьего типа — слова вроде <span class="en">yesterday, last year, then</span>.</p>
+  </div>
+
+  <h3>Нулевой тип и <code>when</code></h3>
+  <div class="rule tip">
+    <b>В нулевом типе <code>if</code> и <code>when</code> взаимозаменяемы</b>
+    <p>Раз речь о том, что происходит всегда, разницы между «если» и «когда» нет:</p>
+    <p><span class="en"><b>If</b> you heat ice, it melts.</span> = <span class="en"><b>When</b> you heat ice, it melts.</span></p>
+    <p>В остальных типах такая замена не работает: <code>when</code> означает, что событие точно будет, а <code>if</code> — что оно под вопросом.</p>
+  </div>
+
+  <h3>Порядок частей</h3>
+  <div class="rule">
+    <b>Части можно менять местами</b>
+    <p>Если условие идёт первым, между частями ставится запятая. Если первой идёт главная часть, запятая не нужна.</p>
+    <p><span class="en">If you studied harder, you would pass the exams.</span><br>
+       <span class="en">You would pass the exams if you studied harder.</span></p>
+    <p>Смысл одинаковый, форма глаголов тоже. Меняется только порядок и запятая.</p>
+  </div>
+
+  <h3>Частые ошибки</h3>
+  <div class="scroller">
+  <table>
+    <thead><tr><th>Было</th><th>Надо</th><th>Почему</th></tr></thead>
+    <tbody>
+      <tr><td class="bad">If you wouldn't open</td><td class="good">If you didn't open</td><td>would не бывает после if</td></tr>
+      <tr><td class="bad">If she wouldn't get</td><td class="good">If she hadn't got</td><td>третий тип: Past Perfect после if</td></tr>
+      <tr><td class="bad">If you would know</td><td class="good">If you knew</td><td>второй тип: Past Simple после if</td></tr>
+      <tr><td class="bad">If autumn come</td><td class="good">If autumn comes</td><td>третье лицо, нужно -s</td></tr>
+      <tr><td class="bad">If the vase fall</td><td class="good">If the vase falls</td><td>то же правило</td></tr>
+      <tr><td class="bad">If Jack sees (при not see)</td><td class="good">If Jack doesn't see</td><td>потерялось отрицание</td></tr>
+      <tr><td class="bad">had tryed</td><td class="good">had tried</td><td>y меняется на i</td></tr>
+      <tr><td class="bad">she would bake more often</td><td class="good">she would bake it more often</td><td>нужно дополнение</td></tr>
+      <tr><td class="bad">the police arrest you</td><td class="good">the police will arrest you</td><td>первый тип: will в главной части</td></tr>
+    </tbody>
+  </table>
   </div>
 </div>
 
@@ -2898,6 +3304,599 @@ var VOCAB_EXT4 = [
 ];
 
 
+/* ---------- СЛОВА ИЗ ТЕКСТОВ И ЗАДАНИЙ ---------- */
+var VOCAB_EXT5 = [
+/* --- Вино --- */
+{en:"wine", tr:"/waɪn/", ru:"вино", note:"неисчисляемое", topic:"Вино", set:"basic"},
+{en:"vine", tr:"/vaɪn/", ru:"виноградная лоза", note:"не путать с wine", topic:"Вино", set:"basic"},
+{en:"vineyard", tr:"/ˈvɪnjəd/", ru:"виноградник", note:"«ВИН-йед», не «вайн-ярд»", topic:"Вино", set:"basic"},
+{en:"grape variety", tr:"/ɡreɪp vəˈraɪəti/", ru:"сорт винограда", note:"", topic:"Вино", set:"basic"},
+{en:"dry red wine", tr:"/draɪ red waɪn/", ru:"красное сухое", note:"dry — сухое", topic:"Вино", set:"basic"},
+{en:"ferment", tr:"/fəˈment/", ru:"бродить", note:"ударение на второй слог", topic:"Вино", set:"basic"},
+{en:"yeast", tr:"/jiːst/", ru:"дрожжи", note:"неисчисляемое", topic:"Вино", set:"basic"},
+{en:"crush", tr:"/krʌʃ/", ru:"давить", note:"the grapes are crushed", topic:"Вино", set:"basic"},
+{en:"skins", tr:"/skɪnz/", ru:"кожица", note:"у винограда; даёт цвет", topic:"Вино", set:"basic"},
+{en:"oak barrel", tr:"/əʊk ˈbærəl/", ru:"дубовая бочка", note:"", topic:"Вино", set:"basic"},
+{en:"steel tank", tr:"/stiːl tæŋk/", ru:"стальная ёмкость", note:"", topic:"Вино", set:"basic"},
+{en:"soil", tr:"/sɔɪl/", ru:"земля, почва", note:"влияет на вкус", topic:"Вино", set:"basic"},
+{en:"trace", tr:"/treɪs/", ru:"след", note:"the oldest traces", topic:"Вино", set:"basic"},
+{en:"by accident", tr:"/baɪ ˈæksɪdənt/", ru:"случайно", note:"", topic:"Вино", set:"basic"},
+{en:"pour", tr:"/pɔː/", ru:"наливать", note:"", topic:"Вино", set:"basic"},
+{en:"a glass of wine", tr:"/ə ɡlɑːs əv waɪn/", ru:"бокал вина", note:"", topic:"Вино", set:"basic"},
+{en:"pomegranate", tr:"/ˈpɒmɪɡrænɪt/", ru:"гранат", note:"«ПО-мигрэнит»", topic:"Вино", set:"basic"},
+{en:"hedonist", tr:"/ˈhiːdənɪst/", ru:"гедонист", note:"«ХИ-донист»", topic:"Вино", set:"basic"},
+{en:"aesthetics", tr:"/iːsˈθetɪks/", ru:"эстетика", note:"«ис-ТЕ-тикс»", topic:"Вино", set:"basic"},
+{en:"pleasure", tr:"/ˈpleʒə/", ru:"удовольствие", note:"s читается как «ж»", topic:"Вино", set:"basic"},
+{en:"poor quality", tr:"/pɔː ˈkwɒləti/", ru:"плохое качество", note:"", topic:"Вино", set:"basic"},
+{en:"harmful", tr:"/ˈhɑːmfl/", ru:"вредный", note:"", topic:"Вино", set:"basic"},
+{en:"drunkard", tr:"/ˈdrʌŋkəd/", ru:"пьяница", note:"", topic:"Вино", set:"basic"},
+
+/* --- Кухня и рецепты --- */
+{en:"cuisine", tr:"/kwɪˈziːn/", ru:"кухня (как стиль)", note:"не kitchen — то комната", topic:"Кухня и рецепты", set:"basic"},
+{en:"recipe", tr:"/ˈresəpi/", ru:"рецепт", note:"три слога, не «ресайп»", topic:"Кухня и рецепты", set:"basic"},
+{en:"ingredient", tr:"/ɪnˈɡriːdiənt/", ru:"ингредиент", note:"", topic:"Кухня и рецепты", set:"basic"},
+{en:"egg yolk", tr:"/eɡ jəʊk/", ru:"яичный желток", note:"l не читается", topic:"Кухня и рецепты", set:"basic"},
+{en:"pork belly", tr:"/pɔːk ˈbeli/", ru:"свиная грудинка", note:"", topic:"Кухня и рецепты", set:"basic"},
+{en:"pork cheek", tr:"/pɔːk tʃiːk/", ru:"свиная щека", note:"guanciale", topic:"Кухня и рецепты", set:"basic"},
+{en:"dried", tr:"/draɪd/", ru:"вяленый, сушёный", note:"третья форма от dry", topic:"Кухня и рецепты", set:"basic"},
+{en:"sauce", tr:"/sɔːs/", ru:"соус", note:"звучит как source", topic:"Кухня и рецепты", set:"basic"},
+{en:"creamy", tr:"/ˈkriːmi/", ru:"кремовый", note:"", topic:"Кухня и рецепты", set:"basic"},
+{en:"take off the heat", tr:"/teɪk ɒf ðə hiːt/", ru:"снять с огня", note:"предлог off, не from", topic:"Кухня и рецепты", set:"basic"},
+{en:"mix with", tr:"/mɪks wɪð/", ru:"смешивать с", note:"", topic:"Кухня и рецепты", set:"basic"},
+{en:"replace with", tr:"/rɪˈpleɪs wɪð/", ru:"заменять на", note:"", topic:"Кухня и рецепты", set:"basic"},
+{en:"include", tr:"/ɪnˈkluːd/", ru:"включать в себя", note:"", topic:"Кухня и рецепты", set:"basic"},
+{en:"taste better", tr:"/teɪst ˈbetə/", ru:"быть вкуснее", note:"taste — состояние", topic:"Кухня и рецепты", set:"basic"},
+{en:"strictly", tr:"/ˈstrɪktli/", ru:"строго", note:"", topic:"Кухня и рецепты", set:"basic"},
+{en:"by the rules", tr:"/baɪ ðə ruːlz/", ru:"по правилам", note:"", topic:"Кухня и рецепты", set:"basic"},
+{en:"cherry pie", tr:"/ˈtʃeri paɪ/", ru:"вишнёвый пирог", note:"", topic:"Кухня и рецепты", set:"basic"},
+{en:"spill", tr:"/spɪl/", ru:"пролить", note:"spilt / spilt", topic:"Кухня и рецепты", set:"basic"},
+{en:"dust the room", tr:"/dʌst/", ru:"вытирать пыль", note:"dust — и пыль, и глагол", topic:"Кухня и рецепты", set:"basic"},
+
+/* --- Книги и кино --- */
+{en:"fantasy writer", tr:"/ˈfæntəsi ˈraɪtə/", ru:"автор фэнтези", note:"", topic:"Книги и кино", set:"basic"},
+{en:"novel", tr:"/ˈnɒvl/", ru:"роман", note:"не «новелла»", topic:"Книги и кино", set:"basic"},
+{en:"short story", tr:"/ʃɔːt ˈstɔːri/", ru:"рассказ", note:"", topic:"Книги и кино", set:"basic"},
+{en:"collection", tr:"/kəˈlekʃn/", ru:"сборник", note:"", topic:"Книги и кино", set:"basic"},
+{en:"series", tr:"/ˈsɪəriːz/", ru:"серия; сериал", note:"и ед., и мн. ч.", topic:"Книги и кино", set:"basic"},
+{en:"character", tr:"/ˈkærəktə/", ru:"персонаж", note:"также «характер»", topic:"Книги и кино", set:"basic"},
+{en:"main character", tr:"/meɪn ˈkærəktə/", ru:"главный герой", note:"", topic:"Книги и кино", set:"basic"},
+{en:"plot", tr:"/plɒt/", ru:"сюжет", note:"", topic:"Книги и кино", set:"basic"},
+{en:"chapter", tr:"/ˈtʃæptə/", ru:"глава", note:"", topic:"Книги и кино", set:"basic"},
+{en:"author", tr:"/ˈɔːθə/", ru:"автор", note:"th читается как «θ»", topic:"Книги и кино", set:"basic"},
+{en:"be based on", tr:"/beɪst ɒn/", ru:"быть основанным на", note:"a series based on books", topic:"Книги и кино", set:"basic"},
+{en:"be translated into", tr:"/trænsˈleɪtɪd/", ru:"быть переведённым на", note:"", topic:"Книги и кино", set:"basic"},
+{en:"take third place", tr:"/teɪk θɜːd pleɪs/", ru:"занять третье место", note:"take, не win", topic:"Книги и кино", set:"basic"},
+{en:"competition", tr:"/ˌkɒmpəˈtɪʃn/", ru:"конкурс", note:"", topic:"Книги и кино", set:"basic"},
+{en:"sorceress", tr:"/ˈsɔːsərəs/", ru:"чародейка", note:"", topic:"Книги и кино", set:"basic"},
+{en:"mutant", tr:"/ˈmjuːtənt/", ru:"мутант", note:"", topic:"Книги и кино", set:"basic"},
+{en:"monster", tr:"/ˈmɒnstə/", ru:"чудовище", note:"", topic:"Книги и кино", set:"basic"},
+{en:"be thought out", tr:"/θɔːt aʊt/", ru:"быть продуманным", note:"", topic:"Книги и кино", set:"basic"},
+{en:"feel real", tr:"/fiːl rɪəl/", ru:"казаться настоящим", note:"", topic:"Книги и кино", set:"basic"},
+{en:"good and evil", tr:"/ɡʊd ənd ˈiːvl/", ru:"добро и зло", note:"", topic:"Книги и кино", set:"basic"},
+{en:"break up", tr:"/breɪk ʌp/", ru:"расставаться", note:"об отношениях", topic:"Книги и кино", set:"basic"},
+{en:"fit a role", tr:"/fɪt ə rəʊl/", ru:"подходить на роль", note:"", topic:"Книги и кино", set:"basic"},
+
+/* --- Город и жизнь --- */
+{en:"home city", tr:"/həʊm ˈsɪti/", ru:"родной город", note:"не native city", topic:"Город и жизнь", set:"basic"},
+{en:"a city of contrasts", tr:"/ˈkɒntrɑːsts/", ru:"город контрастов", note:"во мн. ч.", topic:"Город и жизнь", set:"basic"},
+{en:"nationality", tr:"/ˌnæʃəˈnæləti/", ru:"народ, национальность", note:"мн. ч. nationalities", topic:"Город и жизнь", set:"basic"},
+{en:"migrant", tr:"/ˈmaɪɡrənt/", ru:"мигрант", note:"", topic:"Город и жизнь", set:"basic"},
+{en:"Central Asia", tr:"/ˈsentrəl ˈeɪʃə/", ru:"Средняя Азия", note:"с заглавных", topic:"Город и жизнь", set:"basic"},
+{en:"food court", tr:"/fuːd kɔːt/", ru:"фудкорт", note:"", topic:"Город и жизнь", set:"basic"},
+{en:"former", tr:"/ˈfɔːmə/", ru:"бывший", note:"a former depot", topic:"Город и жизнь", set:"basic"},
+{en:"turn into", tr:"/tɜːn ˈɪntuː/", ru:"превращать в", note:"turned into — превращённый", topic:"Город и жизнь", set:"basic"},
+{en:"factory", tr:"/ˈfæktri/", ru:"завод", note:"два слога, не три", topic:"Город и жизнь", set:"basic"},
+{en:"housing", tr:"/ˈhaʊzɪŋ/", ru:"жильё", note:"неисчисляемое", topic:"Город и жизнь", set:"basic"},
+{en:"cost a lot", tr:"/kɒst ə lɒt/", ru:"стоить дорого", note:"cost / cost", topic:"Город и жизнь", set:"basic"},
+{en:"keep doing", tr:"/kiːp/", ru:"продолжать делать", note:"дальше -ing", topic:"Город и жизнь", set:"basic"},
+{en:"whole district", tr:"/həʊl ˈdɪstrɪkt/", ru:"целый район", note:"w не читается", topic:"Город и жизнь", set:"basic"},
+{en:"anthill", tr:"/ˈænthɪl/", ru:"муравейник", note:"", topic:"Город и жизнь", set:"basic"},
+{en:"at the same time", tr:"/ət ðə seɪm taɪm/", ru:"при этом", note:"связка между абзацами", topic:"Город и жизнь", set:"basic"},
+{en:"public transport", tr:"/ˈpʌblɪk ˈtrænspɔːt/", ru:"общественный транспорт", note:"амер. transportation", topic:"Город и жизнь", set:"basic"},
+{en:"work of art", tr:"/wɜːk əv ɑːt/", ru:"произведение искусства", note:"мн. ч. works of art", topic:"Город и жизнь", set:"basic"},
+{en:"exist", tr:"/ɪɡˈzɪst/", ru:"существовать", note:"", topic:"Город и жизнь", set:"basic"},
+{en:"protect", tr:"/prəˈtekt/", ru:"защищать", note:"", topic:"Город и жизнь", set:"basic"},
+{en:"celebrate", tr:"/ˈseləbreɪt/", ru:"отмечать, праздновать", note:"", topic:"Город и жизнь", set:"basic"},
+
+/* --- Глаголы с предлогом (пассив) --- */
+{en:"send for", tr:"/send fɔː/", ru:"послать за", note:"the doctor was sent for", topic:"Глаголы с предлогом", set:"hw"},
+{en:"listen to", tr:"/ˈlɪsn tuː/", ru:"слушать", note:"was listened to attentively", topic:"Глаголы с предлогом", set:"hw"},
+{en:"look after", tr:"/lʊk ˈɑːftə/", ru:"заботиться о", note:"is looked after by her friends", topic:"Глаголы с предлогом", set:"hw"},
+{en:"agree upon", tr:"/əˈɡriː əˈpɒn/", ru:"согласовать", note:"the plan was agreed upon", topic:"Глаголы с предлогом", set:"hw"},
+{en:"refer to", tr:"/rɪˈfɜː tuː/", ru:"ссылаться на", note:"referred — удвоение r", topic:"Глаголы с предлогом", set:"hw"},
+{en:"speak about", tr:"/spiːk əˈbaʊt/", ru:"говорить о", note:"is much spoken about", topic:"Глаголы с предлогом", set:"hw"},
+{en:"find fault with", tr:"/faɪnd fɔːlt wɪð/", ru:"придираться к", note:"he is always found fault with", topic:"Глаголы с предлогом", set:"hw"},
+{en:"live in", tr:"/lɪv ɪn/", ru:"жить в", note:"the house has never been lived in", topic:"Глаголы с предлогом", set:"hw"},
+{en:"pay attention to", tr:"/peɪ əˈtenʃn tuː/", ru:"обращать внимание на", note:"", topic:"Глаголы с предлогом", set:"hw"},
+{en:"give in to", tr:"/ɡɪv ɪn tuː/", ru:"поддаваться", note:"give in to requests", topic:"Глаголы с предлогом", set:"hw"},
+{en:"obey", tr:"/əˈbeɪ/", ru:"соблюдать, подчиняться", note:"без предлога", topic:"Глаголы с предлогом", set:"hw"},
+{en:"remind somebody to", tr:"/rɪˈmaɪnd/", ru:"напоминать кому-то", note:"дальше инфинитив с to", topic:"Глаголы с предлогом", set:"hw"},
+{en:"expel from", tr:"/ɪkˈspel/", ru:"исключать из", note:"expelled — удвоение l", topic:"Глаголы с предлогом", set:"hw"},
+{en:"air the room", tr:"/eə ðə ruːm/", ru:"проветрить комнату", note:"air — и воздух, и глагол", topic:"Глаголы с предлогом", set:"hw"},
+{en:"give a lift", tr:"/ɡɪv ə lɪft/", ru:"подвезти", note:"give you a lift", topic:"Глаголы с предлогом", set:"hw"},
+{en:"be in force", tr:"/biː ɪn fɔːs/", ru:"действовать (о законе)", note:"", topic:"Глаголы с предлогом", set:"hw"},
+{en:"lead to", tr:"/liːd tuː/", ru:"привести к", note:"led / led", topic:"Глаголы с предлогом", set:"hw"},
+{en:"be in demand", tr:"/ɪn dɪˈmɑːnd/", ru:"быть востребованным", note:"being in demand", topic:"Глаголы с предлогом", set:"hw"},
+{en:"buy up", tr:"/baɪ ʌp/", ru:"раскупать", note:"is bought up instantly", topic:"Глаголы с предлогом", set:"hw"},
+{en:"consider", tr:"/kənˈsɪdə/", ru:"рассматривать", note:"is being considered", topic:"Глаголы с предлогом", set:"hw"}
+];
+
+
+/* ---------- УСЛОВНЫЕ ПРЕДЛОЖЕНИЯ ---------- */
+var VOCAB_COND = [
+{en:"attack", tr:"/əˈtæk/", ru:"нападать", note:"без предлога: attack a bank", topic:"Условия и события", set:"hw"},
+{en:"arrest", tr:"/əˈrest/", ru:"арестовать", note:"", topic:"Условия и события", set:"hw"},
+{en:"turn green", tr:"/tɜːn ɡriːn/", ru:"становиться зелёным", note:"turn + цвет", topic:"Условия и события", set:"hw"},
+{en:"take medicine", tr:"/teɪk ˈmedsn/", ru:"пить лекарство", note:"take, не drink", topic:"Условия и события", set:"hw"},
+{en:"stop hurting", tr:"/stɒp ˈhɜːtɪŋ/", ru:"перестать болеть", note:"после stop идёт -ing", topic:"Условия и события", set:"hw"},
+{en:"hurry up", tr:"/ˈhʌri ʌp/", ru:"поторопиться", note:"", topic:"Условия и события", set:"hw"},
+{en:"miss the train", tr:"/mɪs ðə treɪn/", ru:"опоздать на поезд", note:"не be late for", topic:"Условия и события", set:"hw"},
+{en:"allergy to", tr:"/ˈælədʒi tuː/", ru:"аллергия на", note:"предлог to, не on", topic:"Условия и события", set:"hw"},
+{en:"dry up", tr:"/draɪ ʌp/", ru:"засыхать", note:"dries — y меняется на ie", topic:"Условия и события", set:"hw"},
+{en:"pass an exam", tr:"/pɑːs ən ɪɡˈzæm/", ru:"сдать экзамен", note:"успешно; take — просто сдавать", topic:"Условия и события", set:"hw"},
+{en:"enter university", tr:"/ˈentə/", ru:"поступить в университет", note:"enter без предлога", topic:"Условия и события", set:"hw"},
+{en:"fly into", tr:"/flaɪ ˈɪntuː/", ru:"залететь внутрь", note:"flown — третья форма", topic:"Условия и события", set:"hw"},
+{en:"vet", tr:"/vet/", ru:"ветеринар", note:"полное veterinarian", topic:"Условия и события", set:"hw"},
+{en:"work as", tr:"/wɜːk əz/", ru:"работать кем-то", note:"as — в качестве", topic:"Условия и события", set:"hw"},
+{en:"heat", tr:"/hiːt/", ru:"нагревать", note:"также жар, огонь", topic:"Условия и события", set:"hw"},
+{en:"melt", tr:"/melt/", ru:"таять", note:"", topic:"Условия и события", set:"hw"},
+{en:"cross the road", tr:"/krɒs ðə rəʊd/", ru:"перейти дорогу", note:"без предлога", topic:"Условия и события", set:"hw"},
+{en:"accident", tr:"/ˈæksɪdənt/", ru:"ДТП, авария", note:"", topic:"Условия и события", set:"hw"},
+{en:"souvenir", tr:"/ˌsuːvəˈnɪə/", ru:"сувенир", note:"ударение на последний слог", topic:"Условия и события", set:"hw"},
+{en:"acquaintance", tr:"/əˈkweɪntəns/", ru:"знакомый", note:"не occurrence", topic:"Условия и события", set:"hw"},
+{en:"inheritance", tr:"/ɪnˈherɪtəns/", ru:"наследство", note:"", topic:"Условия и события", set:"hw"},
+{en:"robber", tr:"/ˈrɒbə/", ru:"грабитель", note:"", topic:"Условия и события", set:"hw"},
+{en:"blossom", tr:"/ˈblɒsəm/", ru:"цветение", note:"see blossom everywhere", topic:"Условия и события", set:"hw"},
+{en:"each other", tr:"/iːtʃ ˈʌðə/", ru:"друг другу", note:"", topic:"Условия и события", set:"hw"},
+{en:"bake", tr:"/beɪk/", ru:"печь", note:"", topic:"Условия и события", set:"hw"},
+{en:"relatives", tr:"/ˈrelətɪvz/", ru:"родственники", note:"", topic:"Условия и события", set:"hw"}
+];
+
+/* ---------- СЛОВА ИЗ ЗАНЯТИЙ ---------- */
+var VOCAB_EXT6 = [
+/* --- Искусственный интеллект --- */
+{en:"artificial intelligence", tr:"/ˌɑːtɪˈfɪʃl ɪnˈtelɪdʒəns/", ru:"искусственный интеллект", note:"сокращённо AI, «эй-ай»", topic:"Искусственный интеллект", set:"basic"},
+{en:"mathematician", tr:"/ˌmæθəməˈtɪʃn/", ru:"математик", note:"пять слогов", topic:"Искусственный интеллект", set:"basic"},
+{en:"disappointment", tr:"/ˌdɪsəˈpɔɪntmənt/", ru:"разочарование", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"neural network", tr:"/ˈnjʊərəl ˈnetwɜːk/", ru:"нейросеть", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"data", tr:"/ˈdeɪtə/", ru:"данные", note:"неисчисляемое", topic:"Искусственный интеллект", set:"basic"},
+{en:"conditions", tr:"/kənˈdɪʃnz/", ru:"условия", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"routine tasks", tr:"/ruːˈtiːn tɑːsks/", ru:"рутинные задачи", note:"ударение на второй слог", topic:"Искусственный интеллект", set:"basic"},
+{en:"monotonous", tr:"/məˈnɒtənəs/", ru:"монотонный", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"creativity", tr:"/ˌkriːeɪˈtɪvəti/", ru:"творчество", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"hint", tr:"/hɪnt/", ru:"подсказка", note:"ask for a hint", topic:"Искусственный интеллект", set:"basic"},
+{en:"dependence", tr:"/dɪˈpendəns/", ru:"зависимость", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"gap", tr:"/ɡæp/", ru:"разрыв, пропасть", note:"the gap between people", topic:"Искусственный интеллект", set:"basic"},
+{en:"whether", tr:"/ˈweðə/", ru:"ли", note:"звучит как weather", topic:"Искусственный интеллект", set:"basic"},
+{en:"ordinary", tr:"/ˈɔːdnri/", ru:"обычный", note:"ordinary people", topic:"Искусственный интеллект", set:"basic"},
+{en:"image recognition", tr:"/ˈɪmɪdʒ ˌrekəɡˈnɪʃn/", ru:"распознавание изображений", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"come out", tr:"/kʌm aʊt/", ru:"выйти (о продукте)", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"reach", tr:"/riːtʃ/", ru:"достичь, дойти до", note:"без предлога", topic:"Искусственный интеллект", set:"basic"},
+{en:"go back to", tr:"/ɡəʊ bæk tuː/", ru:"возвращаться к", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"unnoticed", tr:"/ʌnˈnəʊtɪst/", ru:"незаметно", note:"appears unnoticed", topic:"Искусственный интеллект", set:"basic"},
+{en:"make yourself do", tr:"/meɪk jɔːˈself/", ru:"заставить себя", note:"после make нет to", topic:"Искусственный интеллект", set:"basic"},
+{en:"by a large margin", tr:"/ˈmɑːdʒɪn/", ru:"с большим отрывом", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"require", tr:"/rɪˈkwaɪə/", ru:"требовать", note:"", topic:"Искусственный интеллект", set:"basic"},
+{en:"missing", tr:"/ˈmɪsɪŋ/", ru:"отсутствующий", note:"the conditions were missing", topic:"Искусственный интеллект", set:"basic"},
+{en:"no longer", tr:"/nəʊ ˈlɒŋɡə/", ru:"больше не", note:"перед глаголом", topic:"Искусственный интеллект", set:"basic"},
+{en:"suggest", tr:"/səˈdʒest/", ru:"предложить", note:"не offer в этом значении", topic:"Искусственный интеллект", set:"basic"},
+{en:"for the first time", tr:"/fɜːst taɪm/", ru:"впервые", note:"артикль обязателен", topic:"Искусственный интеллект", set:"basic"},
+{en:"think for oneself", tr:"/θɪŋk fɔː/", ru:"думать самому", note:"", topic:"Искусственный интеллект", set:"basic"},
+
+/* --- Люди и роли --- */
+{en:"critic", tr:"/ˈkrɪtɪk/", ru:"критик", note:"the reaction of the critics", topic:"Люди и роли", set:"hw"},
+{en:"specialist", tr:"/ˈspeʃəlɪst/", ru:"специалист", note:"", topic:"Люди и роли", set:"hw"},
+{en:"lecturer", tr:"/ˈlektʃərə/", ru:"лектор", note:"", topic:"Люди и роли", set:"hw"},
+{en:"visitor", tr:"/ˈvɪzɪtə/", ru:"посетитель", note:"", topic:"Люди и роли", set:"hw"},
+{en:"gardener", tr:"/ˈɡɑːdnə/", ru:"садовод", note:"experienced gardeners", topic:"Люди и роли", set:"hw"},
+{en:"classmate", tr:"/ˈklɑːsmeɪt/", ru:"одноклассник", note:"", topic:"Люди и роли", set:"hw"},
+{en:"suspect", tr:"/ˈsʌspekt/", ru:"подозреваемый", note:"существительное — ударение на первый слог", topic:"Люди и роли", set:"hw"},
+{en:"criminal", tr:"/ˈkrɪmɪnl/", ru:"преступник", note:"", topic:"Люди и роли", set:"hw"},
+{en:"elderly woman", tr:"/ˈeldəli/", ru:"пожилая женщина", note:"вежливее, чем old", topic:"Люди и роли", set:"hw"},
+{en:"head nurse", tr:"/hed nɜːs/", ru:"старшая медсестра", note:"", topic:"Люди и роли", set:"hw"},
+{en:"plumber", tr:"/ˈplʌmə/", ru:"сантехник", note:"b не читается", topic:"Люди и роли", set:"hw"},
+{en:"owner", tr:"/ˈəʊnə/", ru:"владелец", note:"", topic:"Люди и роли", set:"hw"},
+
+/* --- Предметы и места --- */
+{en:"handwriting", tr:"/ˈhændraɪtɪŋ/", ru:"почерк", note:"in bad handwriting", topic:"Предметы и места", set:"hw"},
+{en:"magazine", tr:"/ˌmæɡəˈziːn/", ru:"журнал", note:"ударение на последний слог", topic:"Предметы и места", set:"hw"},
+{en:"hall", tr:"/hɔːl/", ru:"холл, зал", note:"", topic:"Предметы и места", set:"hw"},
+{en:"couch", tr:"/kaʊtʃ/", ru:"диван", note:"также sofa", topic:"Предметы и места", set:"hw"},
+{en:"oasis", tr:"/əʊˈeɪsɪs/", ru:"оазис", note:"«оу-ЭЙ-сис»", topic:"Предметы и места", set:"hw"},
+{en:"desert", tr:"/ˈdezət/", ru:"пустыня", note:"ударение на первый; dessert — десерт", topic:"Предметы и места", set:"hw"},
+{en:"yard", tr:"/jɑːd/", ru:"двор", note:"in the yard", topic:"Предметы и места", set:"hw"},
+{en:"agency", tr:"/ˈeɪdʒənsi/", ru:"агентство", note:"", topic:"Предметы и места", set:"hw"},
+{en:"mansion", tr:"/ˈmænʃn/", ru:"особняк", note:"", topic:"Предметы и места", set:"hw"},
+{en:"poster", tr:"/ˈpəʊstə/", ru:"плакат", note:"", topic:"Предметы и места", set:"hw"},
+{en:"statue", tr:"/ˈstætʃuː/", ru:"статуя", note:"«СТЭ-чу»", topic:"Предметы и места", set:"hw"},
+{en:"stage", tr:"/steɪdʒ/", ru:"сцена", note:"on stage, без артикля", topic:"Предметы и места", set:"hw"},
+{en:"catalogue", tr:"/ˈkætəlɒɡ/", ru:"каталог", note:"амер. catalog", topic:"Предметы и места", set:"hw"},
+{en:"folder", tr:"/ˈfəʊldə/", ru:"папка", note:"", topic:"Предметы и места", set:"hw"},
+{en:"ground", tr:"/ɡraʊnd/", ru:"земля, почва", note:"не the earth — то планета", topic:"Предметы и места", set:"hw"},
+{en:"compass", tr:"/ˈkʌmpəs/", ru:"компас", note:"ударение на первый слог", topic:"Предметы и места", set:"hw"},
+{en:"cottage", tr:"/ˈkɒtɪdʒ/", ru:"коттедж, домик", note:"stay at a cottage", topic:"Предметы и места", set:"hw"},
+{en:"bell", tr:"/bel/", ru:"звонок, колокол", note:"ring the bell", topic:"Предметы и места", set:"hw"},
+{en:"note", tr:"/nəʊt/", ru:"банкнота; записка", note:"амер. bill", topic:"Предметы и места", set:"hw"},
+{en:"apple tree", tr:"/ˈæpl triː/", ru:"яблоня", note:"", topic:"Предметы и места", set:"hw"},
+{en:"advertisement", tr:"/ədˈvɜːtɪsmənt/", ru:"объявление", note:"сокращённо ad", topic:"Предметы и места", set:"hw"},
+
+/* --- Действия --- */
+{en:"approve", tr:"/əˈpruːv/", ru:"одобрить", note:"approved by the critics", topic:"Действия", set:"hw"},
+{en:"crumple", tr:"/ˈkrʌmpl/", ru:"мять", note:"a crumpled letter", topic:"Действия", set:"hw"},
+{en:"raise", tr:"/reɪz/", ru:"поднимать", note:"raise one's head", topic:"Действия", set:"hw"},
+{en:"perform", tr:"/pəˈfɔːm/", ru:"выступать", note:"perform on stage", topic:"Действия", set:"hw"},
+{en:"decorate", tr:"/ˈdekəreɪt/", ru:"украшать", note:"", topic:"Действия", set:"hw"},
+{en:"dictate", tr:"/dɪkˈteɪt/", ru:"диктовать", note:"she was dictated a letter", topic:"Действия", set:"hw"},
+{en:"sign", tr:"/saɪn/", ru:"подписывать", note:"g не читается", topic:"Действия", set:"hw"},
+{en:"suspend", tr:"/səˈspend/", ru:"приостановить", note:"", topic:"Действия", set:"hw"},
+{en:"preserve", tr:"/prɪˈzɜːv/", ru:"сохранить", note:"preserved the humour", topic:"Действия", set:"hw"},
+{en:"expel", tr:"/ɪkˈspel/", ru:"исключить", note:"expelled — удвоение l", topic:"Действия", set:"hw"},
+{en:"air the room", tr:"/eə ðə ruːm/", ru:"проветрить комнату", note:"air — и воздух, и глагол", topic:"Действия", set:"hw"},
+{en:"drive around", tr:"/draɪv əˈraʊnd/", ru:"кататься", note:"", topic:"Действия", set:"hw"},
+{en:"show into", tr:"/ʃəʊ ˈɪntuː/", ru:"ввести, проводить куда-то", note:"was shown into the room", topic:"Действия", set:"hw"},
+{en:"come up to", tr:"/kʌm ʌp tuː/", ru:"подойти к", note:"", topic:"Действия", set:"hw"},
+{en:"step out of", tr:"/step aʊt əv/", ru:"выйти из", note:"", topic:"Действия", set:"hw"},
+{en:"growl", tr:"/ɡraʊl/", ru:"урчать, рычать", note:"his stomach was growling", topic:"Действия", set:"hw"},
+{en:"calm down", tr:"/kɑːm daʊn/", ru:"утихнуть, успокоиться", note:"l не читается", topic:"Действия", set:"hw"},
+{en:"copy out", tr:"/ˈkɒpi aʊt/", ru:"переписать", note:"copied — y меняется на i", topic:"Действия", set:"hw"},
+
+/* --- Описание --- */
+{en:"enormous", tr:"/ɪˈnɔːməs/", ru:"огромный", note:"an enormous bunch of roses", topic:"Описание и качества", set:"hw"},
+{en:"exhausted", tr:"/ɪɡˈzɔːstɪd/", ru:"измученный", note:"the exhausted child", topic:"Описание и качества", set:"hw"},
+{en:"irreversible", tr:"/ˌɪrɪˈvɜːsəbl/", ru:"необратимый", note:"irreversible consequences", topic:"Описание и качества", set:"hw"},
+{en:"ancient", tr:"/ˈeɪnʃənt/", ru:"древний", note:"«эйншент»", topic:"Описание и качества", set:"hw"},
+{en:"clear", tr:"/klɪə/", ru:"ясный", note:"о небе: the sky was clear", topic:"Описание и качества", set:"hw"},
+{en:"bright", tr:"/braɪt/", ru:"яркий", note:"", topic:"Описание и качества", set:"hw"},
+{en:"wet", tr:"/wet/", ru:"мокрый", note:"", topic:"Описание и качества", set:"hw"},
+{en:"deep", tr:"/diːp/", ru:"глубокий", note:"a deep lake", topic:"Описание и качества", set:"hw"},
+{en:"huge", tr:"/hjuːdʒ/", ru:"огромный", note:"«хьюдж»", topic:"Описание и качества", set:"hw"},
+{en:"sparkling", tr:"/ˈspɑːklɪŋ/", ru:"искрящийся", note:"sparkling humour", topic:"Описание и качества", set:"hw"},
+{en:"impressive", tr:"/ɪmˈpresɪv/", ru:"впечатляющий", note:"", topic:"Описание и качества", set:"hw"},
+{en:"attentively", tr:"/əˈtentɪvli/", ru:"внимательно", note:"", topic:"Описание и качества", set:"hw"},
+{en:"instantly", tr:"/ˈɪnstəntli/", ru:"мгновенно", note:"", topic:"Описание и качества", set:"hw"},
+{en:"intuitively", tr:"/ɪnˈtjuːɪtɪvli/", ru:"интуитивно", note:"", topic:"Описание и качества", set:"hw"},
+{en:"own", tr:"/əʊn/", ru:"собственный", note:"her own key", topic:"Описание и качества", set:"hw"},
+
+/* --- Школа и экзамены --- */
+{en:"scholarship", tr:"/ˈskɒləʃɪp/", ru:"стипендия", note:"", topic:"Школа и экзамены", set:"hw"},
+{en:"explanation", tr:"/ˌekspləˈneɪʃn/", ru:"объяснение", note:"", topic:"Школа и экзамены", set:"hw"},
+{en:"mission", tr:"/ˈmɪʃn/", ru:"задание", note:"a new mission", topic:"Школа и экзамены", set:"hw"},
+{en:"composition", tr:"/ˌkɒmpəˈzɪʃn/", ru:"сочинение", note:"также essay", topic:"Школа и экзамены", set:"hw"},
+{en:"rules of behaviour", tr:"/bɪˈheɪvjə/", ru:"правила поведения", note:"амер. behavior", topic:"Школа и экзамены", set:"hw"},
+{en:"traffic rules", tr:"/ˈtræfɪk ruːlz/", ru:"правила дорожного движения", note:"obey traffic rules", topic:"Школа и экзамены", set:"hw"},
+{en:"efforts", tr:"/ˈefəts/", ru:"усилия", note:"despite all the efforts", topic:"Школа и экзамены", set:"hw"},
+{en:"excursion", tr:"/ɪkˈskɜːʃn/", ru:"экскурсия", note:"on excursions", topic:"Школа и экзамены", set:"hw"},
+{en:"ghost story", tr:"/ɡəʊst ˈstɔːri/", ru:"история о привидениях", note:"gh даёт звук «г»", topic:"Школа и экзамены", set:"hw"},
+{en:"advice", tr:"/ədˈvaɪs/", ru:"совет", note:"неисчисляемое, без -s", topic:"Школа и экзамены", set:"hw"},
+{en:"dozen", tr:"/ˈdʌzn/", ru:"дюжина", note:"half a dozen — полдюжины", topic:"Школа и экзамены", set:"hw"},
+{en:"consequences", tr:"/ˈkɒnsɪkwənsɪz/", ru:"последствия", note:"", topic:"Школа и экзамены", set:"hw"},
+{en:"puppy", tr:"/ˈpʌpi/", ru:"щенок", note:"", topic:"Школа и экзамены", set:"hw"},
+{en:"inheritance", tr:"/ɪnˈherɪtəns/", ru:"наследство", note:"", topic:"Школа и экзамены", set:"hw"},
+{en:"request", tr:"/rɪˈkwest/", ru:"просьба", note:"give in to requests", topic:"Школа и экзамены", set:"hw"}
+];
+
+
+/* ---------- ЧАСТЫЕ ГЛАГОЛЫ B1–B2 ---------- */
+var VOCAB_EXT7 = [
+{en:"accept", tr:"/əkˈsept/", ru:"принимать", note:"accept an offer", topic:"Частые глаголы", set:"basic"},
+{en:"achieve", tr:"/əˈtʃiːv/", ru:"достигать", note:"achieve a goal", topic:"Частые глаголы", set:"basic"},
+{en:"admit", tr:"/ədˈmɪt/", ru:"признавать", note:"admitted — удвоение t", topic:"Частые глаголы", set:"basic"},
+{en:"affect", tr:"/əˈfekt/", ru:"влиять на", note:"глагол; effect — существительное", topic:"Частые глаголы", set:"basic"},
+{en:"allow", tr:"/əˈlaʊ/", ru:"позволять", note:"allow somebody to do", topic:"Частые глаголы", set:"basic"},
+{en:"announce", tr:"/əˈnaʊns/", ru:"объявлять", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"apply for", tr:"/əˈplaɪ fɔː/", ru:"подавать заявку на", note:"applied — y меняется на i", topic:"Частые глаголы", set:"basic"},
+{en:"approach", tr:"/əˈprəʊtʃ/", ru:"подходить к", note:"без предлога", topic:"Частые глаголы", set:"basic"},
+{en:"arrange", tr:"/əˈreɪndʒ/", ru:"устраивать, договариваться", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"attempt", tr:"/əˈtempt/", ru:"пытаться; попытка", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"attend", tr:"/əˈtend/", ru:"посещать", note:"без предлога: attend a lesson", topic:"Частые глаголы", set:"basic"},
+{en:"avoid", tr:"/əˈvɔɪd/", ru:"избегать", note:"дальше -ing", topic:"Частые глаголы", set:"basic"},
+{en:"behave", tr:"/bɪˈheɪv/", ru:"вести себя", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"belong to", tr:"/bɪˈlɒŋ tuː/", ru:"принадлежать", note:"состояние, без -ing", topic:"Частые глаголы", set:"basic"},
+{en:"blame", tr:"/bleɪm/", ru:"винить", note:"blame somebody for", topic:"Частые глаголы", set:"basic"},
+{en:"burn", tr:"/bɜːn/", ru:"гореть, жечь", note:"burnt / burnt", topic:"Частые глаголы", set:"basic"},
+{en:"cause", tr:"/kɔːz/", ru:"вызывать; причина", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"claim", tr:"/kleɪm/", ru:"утверждать; требовать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"collect", tr:"/kəˈlekt/", ru:"собирать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"compare", tr:"/kəmˈpeə/", ru:"сравнивать", note:"compare with / to", topic:"Частые глаголы", set:"basic"},
+{en:"complain", tr:"/kəmˈpleɪn/", ru:"жаловаться", note:"complain about", topic:"Частые глаголы", set:"basic"},
+{en:"complete", tr:"/kəmˈpliːt/", ru:"завершать; полный", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"concern", tr:"/kənˈsɜːn/", ru:"касаться; беспокойство", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"confuse", tr:"/kənˈfjuːz/", ru:"путать", note:"confusing — сбивающий с толку", topic:"Частые глаголы", set:"basic"},
+{en:"connect", tr:"/kəˈnekt/", ru:"соединять", note:"connect to / with", topic:"Частые глаголы", set:"basic"},
+{en:"contain", tr:"/kənˈteɪn/", ru:"содержать", note:"состояние, без -ing", topic:"Частые глаголы", set:"basic"},
+{en:"continue", tr:"/kənˈtɪnjuː/", ru:"продолжать", note:"дальше -ing или to", topic:"Частые глаголы", set:"basic"},
+{en:"control", tr:"/kənˈtrəʊl/", ru:"контролировать", note:"controlled — удвоение l", topic:"Частые глаголы", set:"basic"},
+{en:"convince", tr:"/kənˈvɪns/", ru:"убеждать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"count", tr:"/kaʊnt/", ru:"считать", note:"count on — рассчитывать на", topic:"Частые глаголы", set:"basic"},
+{en:"create", tr:"/kriˈeɪt/", ru:"создавать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"damage", tr:"/ˈdæmɪdʒ/", ru:"повреждать; ущерб", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"deal with", tr:"/diːl wɪð/", ru:"иметь дело с, решать", note:"dealt / dealt", topic:"Частые глаголы", set:"basic"},
+{en:"deliver", tr:"/dɪˈlɪvə/", ru:"доставлять", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"demand", tr:"/dɪˈmɑːnd/", ru:"требовать; спрос", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"deny", tr:"/dɪˈnaɪ/", ru:"отрицать", note:"дальше -ing", topic:"Частые глаголы", set:"basic"},
+{en:"depend on", tr:"/dɪˈpend ɒn/", ru:"зависеть от", note:"предлог on", topic:"Частые глаголы", set:"basic"},
+{en:"describe", tr:"/dɪˈskraɪb/", ru:"описывать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"deserve", tr:"/dɪˈzɜːv/", ru:"заслуживать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"develop", tr:"/dɪˈveləp/", ru:"развивать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"disagree", tr:"/ˌdɪsəˈɡriː/", ru:"не соглашаться", note:"disagree with", topic:"Частые глаголы", set:"basic"},
+{en:"divide", tr:"/dɪˈvaɪd/", ru:"делить", note:"divide into", topic:"Частые глаголы", set:"basic"},
+{en:"doubt", tr:"/daʊt/", ru:"сомневаться; сомнение", note:"b не читается", topic:"Частые глаголы", set:"basic"},
+{en:"employ", tr:"/ɪmˈplɔɪ/", ru:"нанимать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"encourage", tr:"/ɪnˈkʌrɪdʒ/", ru:"поощрять, подбадривать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"escape", tr:"/ɪˈskeɪp/", ru:"сбежать", note:"escape from", topic:"Частые глаголы", set:"basic"},
+{en:"establish", tr:"/ɪˈstæblɪʃ/", ru:"основать, установить", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"expect", tr:"/ɪkˈspekt/", ru:"ожидать", note:"expect somebody to do", topic:"Частые глаголы", set:"basic"},
+{en:"express", tr:"/ɪkˈspres/", ru:"выражать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"fight", tr:"/faɪt/", ru:"драться, бороться", note:"fought / fought", topic:"Частые глаголы", set:"basic"},
+{en:"fill in", tr:"/fɪl ɪn/", ru:"заполнять", note:"fill in a form", topic:"Частые глаголы", set:"basic"},
+{en:"focus on", tr:"/ˈfəʊkəs ɒn/", ru:"сосредоточиться на", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"force", tr:"/fɔːs/", ru:"заставлять; сила", note:"force somebody to do", topic:"Частые глаголы", set:"basic"},
+{en:"gain", tr:"/ɡeɪn/", ru:"получать, приобретать", note:"gain experience", topic:"Частые глаголы", set:"basic"},
+{en:"guess", tr:"/ɡes/", ru:"угадывать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"handle", tr:"/ˈhændl/", ru:"справляться с", note:"без предлога", topic:"Частые глаголы", set:"basic"},
+{en:"happen", tr:"/ˈhæpən/", ru:"случаться", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"harm", tr:"/hɑːm/", ru:"вредить; вред", note:"harmful — вредный", topic:"Частые глаголы", set:"basic"},
+{en:"hate", tr:"/heɪt/", ru:"ненавидеть", note:"состояние", topic:"Частые глаголы", set:"basic"},
+{en:"hide", tr:"/haɪd/", ru:"прятать", note:"hid / hidden", topic:"Частые глаголы", set:"basic"},
+{en:"hire", tr:"/ˈhaɪə/", ru:"нанимать; брать напрокат", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"hold", tr:"/həʊld/", ru:"держать", note:"held / held", topic:"Частые глаголы", set:"basic"},
+{en:"identify", tr:"/aɪˈdentɪfaɪ/", ru:"определять, опознавать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"ignore", tr:"/ɪɡˈnɔː/", ru:"игнорировать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"imagine", tr:"/ɪˈmædʒɪn/", ru:"представлять себе", note:"дальше -ing", topic:"Частые глаголы", set:"basic"},
+{en:"increase", tr:"/ɪnˈkriːs/", ru:"увеличивать", note:"глагол — ударение на второй слог", topic:"Частые глаголы", set:"basic"},
+{en:"influence", tr:"/ˈɪnfluəns/", ru:"влиять; влияние", note:"ударение на первый слог", topic:"Частые глаголы", set:"basic"},
+{en:"inform", tr:"/ɪnˈfɔːm/", ru:"сообщать", note:"inform somebody about", topic:"Частые глаголы", set:"basic"},
+{en:"injure", tr:"/ˈɪndʒə/", ru:"ранить", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"intend", tr:"/ɪnˈtend/", ru:"намереваться", note:"дальше инфинитив с to", topic:"Частые глаголы", set:"basic"},
+{en:"involve", tr:"/ɪnˈvɒlv/", ru:"вовлекать, включать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"judge", tr:"/dʒʌdʒ/", ru:"судить; судья", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"lack", tr:"/læk/", ru:"не хватать; нехватка", note:"lack of money", topic:"Частые глаголы", set:"basic"},
+{en:"lean", tr:"/liːn/", ru:"наклоняться, опираться", note:"lean on", topic:"Частые глаголы", set:"basic"},
+{en:"limit", tr:"/ˈlɪmɪt/", ru:"ограничивать; предел", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"lock", tr:"/lɒk/", ru:"запирать; замок", note:"lock the door", topic:"Частые глаголы", set:"basic"},
+{en:"maintain", tr:"/meɪnˈteɪn/", ru:"поддерживать, содержать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"manage to", tr:"/ˈmænɪdʒ tuː/", ru:"суметь, удаться", note:"дальше инфинитив с to", topic:"Частые глаголы", set:"basic"},
+{en:"matter", tr:"/ˈmætə/", ru:"иметь значение; дело", note:"it doesn't matter", topic:"Частые глаголы", set:"basic"},
+{en:"measure", tr:"/ˈmeʒə/", ru:"измерять; мера", note:"s читается как «ж»", topic:"Частые глаголы", set:"basic"},
+{en:"mention", tr:"/ˈmenʃn/", ru:"упоминать", note:"без предлога", topic:"Частые глаголы", set:"basic"},
+{en:"mix", tr:"/mɪks/", ru:"смешивать", note:"mix with", topic:"Частые глаголы", set:"basic"},
+{en:"occur", tr:"/əˈkɜː/", ru:"происходить", note:"occurred — удвоение r", topic:"Частые глаголы", set:"basic"},
+{en:"offer", tr:"/ˈɒfə/", ru:"предлагать; предложение", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"oppose", tr:"/əˈpəʊz/", ru:"противостоять", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"organise", tr:"/ˈɔːɡənaɪz/", ru:"организовывать", note:"амер. organize", topic:"Частые глаголы", set:"basic"},
+{en:"owe", tr:"/əʊ/", ru:"быть должным (деньги)", note:"I owe you ten pounds", topic:"Частые глаголы", set:"basic"},
+{en:"permit", tr:"/pəˈmɪt/", ru:"разрешать", note:"permitted — удвоение t", topic:"Частые глаголы", set:"basic"},
+{en:"persuade", tr:"/pəˈsweɪd/", ru:"убеждать", note:"persuade somebody to do", topic:"Частые глаголы", set:"basic"},
+{en:"possess", tr:"/pəˈzes/", ru:"владеть", note:"состояние", topic:"Частые глаголы", set:"basic"},
+{en:"prefer", tr:"/prɪˈfɜː/", ru:"предпочитать", note:"preferred — удвоение r", topic:"Частые глаголы", set:"basic"},
+{en:"prepare", tr:"/prɪˈpeə/", ru:"готовить", note:"prepare for", topic:"Частые глаголы", set:"basic"},
+{en:"prevent", tr:"/prɪˈvent/", ru:"предотвращать", note:"prevent somebody from doing", topic:"Частые глаголы", set:"basic"},
+{en:"produce", tr:"/prəˈdjuːs/", ru:"производить", note:"глагол — ударение на второй слог", topic:"Частые глаголы", set:"basic"},
+{en:"prove", tr:"/pruːv/", ru:"доказывать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"provide", tr:"/prəˈvaɪd/", ru:"предоставлять", note:"provide somebody with", topic:"Частые глаголы", set:"basic"},
+{en:"quit", tr:"/kwɪt/", ru:"бросать, увольняться", note:"quit / quit", topic:"Частые глаголы", set:"basic"},
+{en:"realise", tr:"/ˈrɪəlaɪz/", ru:"осознавать", note:"амер. realize", topic:"Частые глаголы", set:"basic"},
+{en:"receive", tr:"/rɪˈsiːv/", ru:"получать", note:"i перед e после c", topic:"Частые глаголы", set:"basic"},
+{en:"recognise", tr:"/ˈrekəɡnaɪz/", ru:"узнавать", note:"амер. recognize", topic:"Частые глаголы", set:"basic"},
+{en:"recommend", tr:"/ˌrekəˈmend/", ru:"рекомендовать", note:"одна c, две m", topic:"Частые глаголы", set:"basic"},
+{en:"reduce", tr:"/rɪˈdjuːs/", ru:"сокращать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"refuse", tr:"/rɪˈfjuːz/", ru:"отказываться", note:"дальше инфинитив с to", topic:"Частые глаголы", set:"basic"},
+{en:"regret", tr:"/rɪˈɡret/", ru:"сожалеть", note:"regretted — удвоение t", topic:"Частые глаголы", set:"basic"},
+{en:"rely on", tr:"/rɪˈlaɪ ɒn/", ru:"полагаться на", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"remain", tr:"/rɪˈmeɪn/", ru:"оставаться", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"reply", tr:"/rɪˈplaɪ/", ru:"отвечать", note:"reply to", topic:"Частые глаголы", set:"basic"},
+{en:"represent", tr:"/ˌreprɪˈzent/", ru:"представлять", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"respect", tr:"/rɪˈspekt/", ru:"уважать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"respond", tr:"/rɪˈspɒnd/", ru:"реагировать, отвечать", note:"respond to", topic:"Частые глаголы", set:"basic"},
+{en:"reveal", tr:"/rɪˈviːl/", ru:"раскрывать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"satisfy", tr:"/ˈsætɪsfaɪ/", ru:"удовлетворять", note:"satisfied — довольный", topic:"Частые глаголы", set:"basic"},
+{en:"scare", tr:"/skeə/", ru:"пугать", note:"scared — испуганный", topic:"Частые глаголы", set:"basic"},
+{en:"seem", tr:"/siːm/", ru:"казаться", note:"состояние; дальше прилагательное", topic:"Частые глаголы", set:"basic"},
+{en:"separate", tr:"/ˈsepəreɪt/", ru:"разделять", note:"прилагательное — /ˈseprət/", topic:"Частые глаголы", set:"basic"},
+{en:"serve", tr:"/sɜːv/", ru:"обслуживать, подавать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"settle", tr:"/ˈsetl/", ru:"уладить; поселиться", note:"settle down", topic:"Частые глаголы", set:"basic"},
+{en:"solve", tr:"/sɒlv/", ru:"решать (задачу)", note:"solve a problem", topic:"Частые глаголы", set:"basic"},
+{en:"spread", tr:"/spred/", ru:"распространять", note:"spread / spread", topic:"Частые глаголы", set:"basic"},
+{en:"stick to", tr:"/stɪk tuː/", ru:"придерживаться", note:"stuck / stuck", topic:"Частые глаголы", set:"basic"},
+{en:"stress", tr:"/stres/", ru:"подчёркивать; стресс", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"struggle", tr:"/ˈstrʌɡl/", ru:"бороться, мучиться", note:"struggle with", topic:"Частые глаголы", set:"basic"},
+{en:"succeed", tr:"/səkˈsiːd/", ru:"преуспеть", note:"succeed in doing", topic:"Частые глаголы", set:"basic"},
+{en:"suffer", tr:"/ˈsʌfə/", ru:"страдать", note:"suffer from", topic:"Частые глаголы", set:"basic"},
+{en:"supply", tr:"/səˈplaɪ/", ru:"снабжать; поставка", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"support", tr:"/səˈpɔːt/", ru:"поддерживать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"survive", tr:"/səˈvaɪv/", ru:"выживать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"tend to", tr:"/tend tuː/", ru:"иметь склонность", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"touch", tr:"/tʌtʃ/", ru:"трогать", note:"без предлога", topic:"Частые глаголы", set:"basic"},
+{en:"treat", tr:"/triːt/", ru:"обращаться с; лечить", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"warn", tr:"/wɔːn/", ru:"предупреждать", note:"warn somebody about", topic:"Частые глаголы", set:"basic"},
+{en:"waste", tr:"/weɪst/", ru:"тратить впустую", note:"waste time", topic:"Частые глаголы", set:"basic"},
+{en:"welcome", tr:"/ˈwelkəm/", ru:"приветствовать", note:"you're welcome — пожалуйста", topic:"Частые глаголы", set:"basic"},
+{en:"wonder", tr:"/ˈwʌndə/", ru:"интересоваться, гадать", note:"I wonder if…", topic:"Частые глаголы", set:"basic"}
+];
+
+
+/* ---------- СУЩЕСТВИТЕЛЬНЫЕ И ПОНЯТИЯ ---------- */
+var VOCAB_EXT8 = [
+{en:"amount", tr:"/əˈmaʊnt/", ru:"количество", note:"для неисчисляемых; number — для исчисляемых", topic:"Понятия", set:"basic"},
+{en:"attitude", tr:"/ˈætɪtjuːd/", ru:"отношение", note:"attitude to / towards", topic:"Понятия", set:"basic"},
+{en:"balance", tr:"/ˈbæləns/", ru:"равновесие, баланс", note:"", topic:"Понятия", set:"basic"},
+{en:"benefit", tr:"/ˈbenɪfɪt/", ru:"польза, выгода", note:"", topic:"Понятия", set:"basic"},
+{en:"challenge", tr:"/ˈtʃælɪndʒ/", ru:"сложная задача, вызов", note:"", topic:"Понятия", set:"basic"},
+{en:"chance", tr:"/tʃɑːns/", ru:"шанс, возможность", note:"a chance to do", topic:"Понятия", set:"basic"},
+{en:"choice", tr:"/tʃɔɪs/", ru:"выбор", note:"make a choice", topic:"Понятия", set:"basic"},
+{en:"comfort", tr:"/ˈkʌmfət/", ru:"удобство, утешение", note:"", topic:"Понятия", set:"basic"},
+{en:"crowd", tr:"/kraʊd/", ru:"толпа", note:"crowded — переполненный", topic:"Понятия", set:"basic"},
+{en:"effect", tr:"/ɪˈfekt/", ru:"эффект, следствие", note:"существительное; affect — глагол", topic:"Понятия", set:"basic"},
+{en:"environment", tr:"/ɪnˈvaɪrənmənt/", ru:"окружающая среда", note:"", topic:"Понятия", set:"basic"},
+{en:"event", tr:"/ɪˈvent/", ru:"событие, мероприятие", note:"", topic:"Понятия", set:"basic"},
+{en:"evidence", tr:"/ˈevɪdəns/", ru:"доказательства", note:"неисчисляемое", topic:"Понятия", set:"basic"},
+{en:"fault", tr:"/fɔːlt/", ru:"вина, недостаток", note:"it's my fault", topic:"Понятия", set:"basic"},
+{en:"favour", tr:"/ˈfeɪvə/", ru:"одолжение", note:"do me a favour; амер. favor", topic:"Понятия", set:"basic"},
+{en:"fear", tr:"/fɪə/", ru:"страх; бояться", note:"", topic:"Понятия", set:"basic"},
+{en:"feature", tr:"/ˈfiːtʃə/", ru:"особенность, черта", note:"", topic:"Понятия", set:"basic"},
+{en:"goal", tr:"/ɡəʊl/", ru:"цель", note:"также гол", topic:"Понятия", set:"basic"},
+{en:"habit", tr:"/ˈhæbɪt/", ru:"привычка", note:"", topic:"Понятия", set:"basic"},
+{en:"issue", tr:"/ˈɪʃuː/", ru:"вопрос, проблема", note:"", topic:"Понятия", set:"basic"},
+{en:"item", tr:"/ˈaɪtəm/", ru:"предмет, пункт", note:"«АЙ-тэм»", topic:"Понятия", set:"basic"},
+{en:"knowledge", tr:"/ˈnɒlɪdʒ/", ru:"знания", note:"неисчисляемое; k не читается", topic:"Понятия", set:"basic"},
+{en:"level", tr:"/ˈlevl/", ru:"уровень", note:"", topic:"Понятия", set:"basic"},
+{en:"link", tr:"/lɪŋk/", ru:"связь, ссылка", note:"", topic:"Понятия", set:"basic"},
+{en:"loss", tr:"/lɒs/", ru:"потеря", note:"от lose", topic:"Понятия", set:"basic"},
+{en:"method", tr:"/ˈmeθəd/", ru:"метод", note:"", topic:"Понятия", set:"basic"},
+{en:"moment", tr:"/ˈməʊmənt/", ru:"момент", note:"at the moment — сейчас", topic:"Понятия", set:"basic"},
+{en:"mood", tr:"/muːd/", ru:"настроение", note:"in a good mood", topic:"Понятия", set:"basic"},
+{en:"opinion", tr:"/əˈpɪnjən/", ru:"мнение", note:"in my opinion", topic:"Понятия", set:"basic"},
+{en:"opportunity", tr:"/ˌɒpəˈtjuːnəti/", ru:"возможность", note:"", topic:"Понятия", set:"basic"},
+{en:"pattern", tr:"/ˈpætn/", ru:"схема, узор", note:"", topic:"Понятия", set:"basic"},
+{en:"point", tr:"/pɔɪnt/", ru:"смысл, пункт; указывать", note:"what's the point?", topic:"Понятия", set:"basic"},
+{en:"position", tr:"/pəˈzɪʃn/", ru:"положение, должность", note:"", topic:"Понятия", set:"basic"},
+{en:"power", tr:"/ˈpaʊə/", ru:"власть, сила, энергия", note:"", topic:"Понятия", set:"basic"},
+{en:"practice", tr:"/ˈpræktɪs/", ru:"практика", note:"существительное с c, глагол с s", topic:"Понятия", set:"basic"},
+{en:"process", tr:"/ˈprəʊses/", ru:"процесс", note:"", topic:"Понятия", set:"basic"},
+{en:"progress", tr:"/ˈprəʊɡres/", ru:"прогресс", note:"неисчисляемое", topic:"Понятия", set:"basic"},
+{en:"purpose", tr:"/ˈpɜːpəs/", ru:"цель, назначение", note:"on purpose — намеренно", topic:"Понятия", set:"basic"},
+{en:"quality", tr:"/ˈkwɒləti/", ru:"качество", note:"", topic:"Понятия", set:"basic"},
+{en:"quantity", tr:"/ˈkwɒntəti/", ru:"количество", note:"", topic:"Понятия", set:"basic"},
+{en:"range", tr:"/reɪndʒ/", ru:"диапазон, ассортимент", note:"a range of", topic:"Понятия", set:"basic"},
+{en:"rate", tr:"/reɪt/", ru:"скорость, ставка", note:"", topic:"Понятия", set:"basic"},
+{en:"reason", tr:"/ˈriːzn/", ru:"причина", note:"the reason for", topic:"Понятия", set:"basic"},
+{en:"result", tr:"/rɪˈzʌlt/", ru:"результат", note:"as a result — в результате", topic:"Понятия", set:"basic"},
+{en:"risk", tr:"/rɪsk/", ru:"риск", note:"take a risk", topic:"Понятия", set:"basic"},
+{en:"role", tr:"/rəʊl/", ru:"роль", note:"play a role", topic:"Понятия", set:"basic"},
+{en:"rule", tr:"/ruːl/", ru:"правило; править", note:"", topic:"Понятия", set:"basic"},
+{en:"sense", tr:"/sens/", ru:"смысл, чувство", note:"make sense — иметь смысл", topic:"Понятия", set:"basic"},
+{en:"shape", tr:"/ʃeɪp/", ru:"форма", note:"in good shape — в форме", topic:"Понятия", set:"basic"},
+{en:"situation", tr:"/ˌsɪtʃuˈeɪʃn/", ru:"ситуация", note:"", topic:"Понятия", set:"basic"},
+{en:"source", tr:"/sɔːs/", ru:"источник", note:"звучит как sauce", topic:"Понятия", set:"basic"},
+{en:"staff", tr:"/stɑːf/", ru:"персонал", note:"глагол во мн. ч.", topic:"Понятия", set:"basic"},
+{en:"standard", tr:"/ˈstændəd/", ru:"стандарт, уровень", note:"", topic:"Понятия", set:"basic"},
+{en:"state", tr:"/steɪt/", ru:"состояние; государство", note:"", topic:"Понятия", set:"basic"},
+{en:"step", tr:"/step/", ru:"шаг", note:"step by step", topic:"Понятия", set:"basic"},
+{en:"strength", tr:"/streŋθ/", ru:"сила", note:"от strong", topic:"Понятия", set:"basic"},
+{en:"surface", tr:"/ˈsɜːfɪs/", ru:"поверхность", note:"ударение на первый слог", topic:"Понятия", set:"basic"},
+{en:"system", tr:"/ˈsɪstəm/", ru:"система", note:"", topic:"Понятия", set:"basic"},
+{en:"threat", tr:"/θret/", ru:"угроза", note:"«θрет», не «θрит»", topic:"Понятия", set:"basic"},
+{en:"tool", tr:"/tuːl/", ru:"инструмент", note:"", topic:"Понятия", set:"basic"},
+{en:"trade", tr:"/treɪd/", ru:"торговля", note:"", topic:"Понятия", set:"basic"},
+{en:"trouble", tr:"/ˈtrʌbl/", ru:"неприятности", note:"be in trouble", topic:"Понятия", set:"basic"},
+{en:"truth", tr:"/truːθ/", ru:"правда", note:"true — правдивый", topic:"Понятия", set:"basic"},
+{en:"value", tr:"/ˈvæljuː/", ru:"ценность", note:"", topic:"Понятия", set:"basic"},
+{en:"view", tr:"/vjuː/", ru:"вид; взгляд", note:"point of view — точка зрения", topic:"Понятия", set:"basic"},
+{en:"voice", tr:"/vɔɪs/", ru:"голос", note:"", topic:"Понятия", set:"basic"},
+
+/* ---------- ПРИЛАГАТЕЛЬНЫЕ B1–B2 ---------- */
+{en:"able", tr:"/ˈeɪbl/", ru:"способный", note:"be able to — мочь", topic:"Качества", set:"basic"},
+{en:"available", tr:"/əˈveɪləbl/", ru:"доступный", note:"", topic:"Качества", set:"basic"},
+{en:"aware of", tr:"/əˈweər əv/", ru:"осведомлённый о", note:"be aware of", topic:"Качества", set:"basic"},
+{en:"brief", tr:"/briːf/", ru:"краткий", note:"", topic:"Качества", set:"basic"},
+{en:"broad", tr:"/brɔːd/", ru:"широкий", note:"«брод»", topic:"Качества", set:"basic"},
+{en:"certain", tr:"/ˈsɜːtn/", ru:"уверенный; определённый", note:"", topic:"Качества", set:"basic"},
+{en:"common", tr:"/ˈkɒmən/", ru:"обычный, общий", note:"", topic:"Качества", set:"basic"},
+{en:"entire", tr:"/ɪnˈtaɪə/", ru:"целый", note:"", topic:"Качества", set:"basic"},
+{en:"equal", tr:"/ˈiːkwəl/", ru:"равный", note:"", topic:"Качества", set:"basic"},
+{en:"exact", tr:"/ɪɡˈzækt/", ru:"точный", note:"exactly — точно", topic:"Качества", set:"basic"},
+{en:"fair", tr:"/feə/", ru:"справедливый", note:"", topic:"Качества", set:"basic"},
+{en:"familiar", tr:"/fəˈmɪliə/", ru:"знакомый", note:"familiar with", topic:"Качества", set:"basic"},
+{en:"final", tr:"/ˈfaɪnl/", ru:"последний, окончательный", note:"", topic:"Качества", set:"basic"},
+{en:"frequent", tr:"/ˈfriːkwənt/", ru:"частый", note:"", topic:"Качества", set:"basic"},
+{en:"general", tr:"/ˈdʒenrəl/", ru:"общий", note:"in general — вообще", topic:"Качества", set:"basic"},
+{en:"generous", tr:"/ˈdʒenərəs/", ru:"щедрый", note:"", topic:"Качества", set:"basic"},
+{en:"honest", tr:"/ˈɒnɪst/", ru:"честный", note:"h не читается", topic:"Качества", set:"basic"},
+{en:"human", tr:"/ˈhjuːmən/", ru:"человеческий", note:"", topic:"Качества", set:"basic"},
+{en:"likely", tr:"/ˈlaɪkli/", ru:"вероятный", note:"be likely to do", topic:"Качества", set:"basic"},
+{en:"local", tr:"/ˈləʊkl/", ru:"местный", note:"", topic:"Качества", set:"basic"},
+{en:"loud", tr:"/laʊd/", ru:"громкий", note:"", topic:"Качества", set:"basic"},
+{en:"lucky", tr:"/ˈlʌki/", ru:"удачливый", note:"", topic:"Качества", set:"basic"},
+{en:"main", tr:"/meɪn/", ru:"главный", note:"", topic:"Качества", set:"basic"},
+{en:"necessary", tr:"/ˈnesəsəri/", ru:"необходимый", note:"одна c, две s", topic:"Качества", set:"basic"},
+{en:"obvious", tr:"/ˈɒbviəs/", ru:"очевидный", note:"", topic:"Качества", set:"basic"},
+{en:"particular", tr:"/pəˈtɪkjələ/", ru:"особенный, конкретный", note:"in particular — в частности", topic:"Качества", set:"basic"},
+{en:"physical", tr:"/ˈfɪzɪkl/", ru:"физический", note:"", topic:"Качества", set:"basic"},
+{en:"popular", tr:"/ˈpɒpjələ/", ru:"популярный", note:"", topic:"Качества", set:"basic"},
+{en:"previous", tr:"/ˈpriːviəs/", ru:"предыдущий", note:"", topic:"Качества", set:"basic"},
+{en:"private", tr:"/ˈpraɪvət/", ru:"частный, личный", note:"", topic:"Качества", set:"basic"},
+{en:"public", tr:"/ˈpʌblɪk/", ru:"общественный", note:"", topic:"Качества", set:"basic"},
+{en:"rare", tr:"/reə/", ru:"редкий", note:"rarely — редко", topic:"Качества", set:"basic"},
+{en:"responsible for", tr:"/rɪˈspɒnsəbl/", ru:"ответственный за", note:"", topic:"Качества", set:"basic"},
+{en:"rough", tr:"/rʌf/", ru:"грубый, неровный", note:"«раф»", topic:"Качества", set:"basic"},
+{en:"several", tr:"/ˈsevrəl/", ru:"несколько", note:"", topic:"Качества", set:"basic"},
+{en:"similar to", tr:"/ˈsɪmələ tuː/", ru:"похожий на", note:"предлог to", topic:"Качества", set:"basic"},
+{en:"slight", tr:"/slaɪt/", ru:"небольшой, лёгкий", note:"slightly — слегка", topic:"Качества", set:"basic"},
+{en:"smooth", tr:"/smuːð/", ru:"гладкий", note:"th звонкое", topic:"Качества", set:"basic"},
+{en:"steady", tr:"/ˈstedi/", ru:"устойчивый, ровный", note:"", topic:"Качества", set:"basic"},
+{en:"strange", tr:"/streɪndʒ/", ru:"странный", note:"stranger — незнакомец", topic:"Качества", set:"basic"},
+{en:"strict", tr:"/strɪkt/", ru:"строгий", note:"", topic:"Качества", set:"basic"},
+{en:"suitable for", tr:"/ˈsuːtəbl/", ru:"подходящий для", note:"", topic:"Качества", set:"basic"},
+{en:"tiny", tr:"/ˈtaɪni/", ru:"крошечный", note:"", topic:"Качества", set:"basic"},
+{en:"total", tr:"/ˈtəʊtl/", ru:"полный, общий", note:"", topic:"Качества", set:"basic"},
+{en:"typical", tr:"/ˈtɪpɪkl/", ru:"типичный", note:"typical of", topic:"Качества", set:"basic"},
+{en:"unusual", tr:"/ʌnˈjuːʒuəl/", ru:"необычный", note:"", topic:"Качества", set:"basic"},
+{en:"useful", tr:"/ˈjuːsfl/", ru:"полезный", note:"", topic:"Качества", set:"basic"},
+{en:"various", tr:"/ˈveəriəs/", ru:"различные", note:"", topic:"Качества", set:"basic"},
+{en:"wide", tr:"/waɪd/", ru:"широкий", note:"", topic:"Качества", set:"basic"},
+{en:"wild", tr:"/waɪld/", ru:"дикий", note:"", topic:"Качества", set:"basic"},
+{en:"willing to", tr:"/ˈwɪlɪŋ tuː/", ru:"готовый что-то сделать", note:"", topic:"Качества", set:"basic"},
+{en:"worth", tr:"/wɜːθ/", ru:"стоящий", note:"worth doing — стоит делать", topic:"Качества", set:"basic"},
+
+/* ---------- СВЯЗКИ И НАРЕЧИЯ ---------- */
+{en:"according to", tr:"/əˈkɔːdɪŋ tuː/", ru:"согласно", note:"", topic:"Связки речи", set:"basic"},
+{en:"although", tr:"/ɔːlˈðəʊ/", ru:"хотя", note:"= though", topic:"Связки речи", set:"basic"},
+{en:"among", tr:"/əˈmʌŋ/", ru:"среди", note:"для многих; between — для двух", topic:"Связки речи", set:"basic"},
+{en:"due to", tr:"/djuː tuː/", ru:"из-за", note:"перед существительным", topic:"Связки речи", set:"basic"},
+{en:"either", tr:"/ˈaɪðə/", ru:"любой из двух; тоже не", note:"either… or", topic:"Связки речи", set:"basic"},
+{en:"especially", tr:"/ɪˈspeʃəli/", ru:"особенно", note:"", topic:"Связки речи", set:"basic"},
+{en:"except", tr:"/ɪkˈsept/", ru:"кроме", note:"", topic:"Связки речи", set:"basic"},
+{en:"fortunately", tr:"/ˈfɔːtʃənətli/", ru:"к счастью", note:"unfortunately — к сожалению", topic:"Связки речи", set:"basic"},
+{en:"forward", tr:"/ˈfɔːwəd/", ru:"вперёд", note:"look forward to", topic:"Связки речи", set:"basic"},
+{en:"further", tr:"/ˈfɜːðə/", ru:"дальше, далее", note:"о степени; farther — о расстоянии", topic:"Связки речи", set:"basic"},
+{en:"however", tr:"/haʊˈevə/", ru:"однако", note:"обычно в начале с запятой", topic:"Связки речи", set:"basic"},
+{en:"indeed", tr:"/ɪnˈdiːd/", ru:"действительно", note:"", topic:"Связки речи", set:"basic"},
+{en:"instead of", tr:"/ɪnˈsted əv/", ru:"вместо", note:"дальше -ing", topic:"Связки речи", set:"basic"},
+{en:"moreover", tr:"/mɔːrˈəʊvə/", ru:"более того", note:"", topic:"Связки речи", set:"basic"},
+{en:"nearly", tr:"/ˈnɪəli/", ru:"почти", note:"= almost", topic:"Связки речи", set:"basic"},
+{en:"neither", tr:"/ˈnaɪðə/", ru:"ни один из двух", note:"neither… nor", topic:"Связки речи", set:"basic"},
+{en:"otherwise", tr:"/ˈʌðəwaɪz/", ru:"иначе", note:"", topic:"Связки речи", set:"basic"},
+{en:"plenty of", tr:"/ˈplenti əv/", ru:"много, полно", note:"", topic:"Связки речи", set:"basic"},
+{en:"probably", tr:"/ˈprɒbəbli/", ru:"вероятно", note:"", topic:"Связки речи", set:"basic"},
+{en:"rather", tr:"/ˈrɑːðə/", ru:"довольно; скорее", note:"would rather — предпочёл бы", topic:"Связки речи", set:"basic"},
+{en:"since", tr:"/sɪns/", ru:"с тех пор; так как", note:"два разных значения", topic:"Связки речи", set:"basic"},
+{en:"therefore", tr:"/ˈðeəfɔː/", ru:"поэтому", note:"книжное", topic:"Связки речи", set:"basic"},
+{en:"though", tr:"/ðəʊ/", ru:"хотя", note:"в конце фразы — «впрочем»", topic:"Связки речи", set:"basic"},
+{en:"towards", tr:"/təˈwɔːdz/", ru:"по направлению к", note:"амер. toward", topic:"Связки речи", set:"basic"},
+{en:"unless", tr:"/ənˈles/", ru:"если не", note:"заменяет if not", topic:"Связки речи", set:"basic"}
+];
+
+
+
+/* ---------- ДОБАВКА ---------- */
+var VOCAB_EXT9 = [
+{en:"recent", tr:"/ˈriːsnt/", ru:"недавний", note:"recently — недавно", topic:"Качества", set:"basic"},
+{en:"relax", tr:"/rɪˈlæks/", ru:"расслабляться", note:"relaxed — расслабленный", topic:"Частые глаголы", set:"basic"},
+{en:"remind", tr:"/rɪˈmaɪnd/", ru:"напоминать", note:"remind somebody to do", topic:"Частые глаголы", set:"basic"},
+{en:"remove", tr:"/rɪˈmuːv/", ru:"убирать, удалять", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"replace", tr:"/rɪˈpleɪs/", ru:"заменять", note:"replace with", topic:"Частые глаголы", set:"basic"},
+{en:"report", tr:"/rɪˈpɔːt/", ru:"сообщать; доклад", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"save", tr:"/seɪv/", ru:"спасать; экономить", note:"save money, save time", topic:"Частые глаголы", set:"basic"},
+{en:"shake", tr:"/ʃeɪk/", ru:"трясти", note:"shook / shaken", topic:"Частые глаголы", set:"basic"},
+{en:"shout", tr:"/ʃaʊt/", ru:"кричать", note:"shout at somebody", topic:"Частые глаголы", set:"basic"},
+{en:"simple", tr:"/ˈsɪmpl/", ru:"простой", note:"simply — просто", topic:"Качества", set:"basic"},
+{en:"sort", tr:"/sɔːt/", ru:"вид, сорт; сортировать", note:"a sort of — вроде", topic:"Понятия", set:"basic"},
+{en:"straight", tr:"/streɪt/", ru:"прямой, прямо", note:"go straight on", topic:"Качества", set:"basic"},
+{en:"surprise", tr:"/səˈpraɪz/", ru:"удивлять; сюрприз", note:"surprised — удивлённый", topic:"Частые глаголы", set:"basic"},
+{en:"sweet", tr:"/swiːt/", ru:"сладкий", note:"", topic:"Качества", set:"basic"},
+{en:"whole", tr:"/həʊl/", ru:"целый", note:"w не читается; the whole day", topic:"Качества", set:"basic"},
+{en:"share", tr:"/ʃeə/", ru:"делиться; доля", note:"share with somebody", topic:"Частые глаголы", set:"basic"},
+{en:"subject", tr:"/ˈsʌbdʒɪkt/", ru:"тема; предмет", note:"change the subject", topic:"Понятия", set:"basic"},
+{en:"term", tr:"/tɜːm/", ru:"термин; семестр", note:"", topic:"Понятия", set:"basic"},
+{en:"throw", tr:"/θrəʊ/", ru:"бросать", note:"threw / thrown", topic:"Частые глаголы", set:"basic"},
+{en:"trust", tr:"/trʌst/", ru:"доверять", note:"без предлога", topic:"Частые глаголы", set:"basic"},
+{en:"upset", tr:"/ʌpˈset/", ru:"расстроенный; расстраивать", note:"upset / upset", topic:"Качества", set:"basic"},
+{en:"suppose", tr:"/səˈpəʊz/", ru:"полагать", note:"I suppose so", topic:"Частые глаголы", set:"basic"},
+{en:"require", tr:"/rɪˈkwaɪə/", ru:"требовать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"repair", tr:"/rɪˈpeə/", ru:"чинить", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"repeat", tr:"/rɪˈpiːt/", ru:"повторять", note:"", topic:"Частые глаголы", set:"basic"}
+];
+
 /* ---------- СБОРКА ----------
 
    Записи вида «arm / leg» и «one, two, three» разбиваются на отдельные слова:
@@ -2941,7 +3940,7 @@ function splitEntry(w){
 }
 
 var VOCAB = (function(){
-  var all = [].concat(VOCAB_BASIC, VOCAB_EXT1, VOCAB_EXT2, VOCAB_EXT3, VOCAB_EXT4, VOCAB_DAILY, VOCAB_HW);
+  var all = [].concat(VOCAB_BASIC, VOCAB_EXT1, VOCAB_EXT2, VOCAB_EXT3, VOCAB_EXT4, VOCAB_EXT5, VOCAB_EXT6, VOCAB_EXT7, VOCAB_EXT8, VOCAB_EXT9, VOCAB_COND, VOCAB_DAILY, VOCAB_HW);
   var seen = {}, out = [];
   all.forEach(function(entry){
     splitEntry(entry).forEach(function(w){
@@ -3086,7 +4085,125 @@ var GAPS = [
 {q:"___ the door, he went in.",v:"open",a:["opening"],why:"Почти одно движение, одновременность → -ing.",t:"participle"},
 {q:"I saw her ___ the street.",v:"cross",a:["crossing"],why:"После see — конструкция с -ing.",t:"participle"},
 {q:"This grammar rule is really ___.",v:"confuse",a:["confusing"],why:"Правило само сбивает с толку → -ing.",t:"participle"},
-{q:"___ along the street, I met an old friend.",v:"walk",a:["walking"],why:"Действия одновременны → -ing.",t:"participle"}
+{q:"___ along the street, I met an old friend.",v:"walk",a:["walking"],why:"Действия одновременны → -ing.",t:"participle"},
+
+/* ---------- СТРАДАТЕЛЬНЫЙ ЗАЛОГ ---------- */
+{q:"The picture ___ by a great artist.",v:"paint",a:["was painted"],why:"Исполнитель назван — пассив в прошедшем с by.",t:"passive"},
+{q:"The letter ___ tomorrow.",v:"post",a:["will be posted"],why:"tomorrow — будущее: will be + 3-я форма.",t:"passive"},
+{q:"Your report ___ next week.",v:"discuss",a:["will be discussed"],why:"Будущее в пассиве.",t:"passive"},
+{q:"The letter ___ recently.",v:"bring",a:["has been brought"],why:"recently — маркер перфекта.",t:"passive"},
+{q:"Milk ___ just ___ by Jack.",v:"spill",a:["has just been spilt","has just been spilled"],why:"just между has и been.",t:"passive"},
+{q:"This cup ___ by my little brother.",v:"break",a:["has been broken","was broken"],why:"В перфекте нужно been, иначе выйдет актив.",t:"passive"},
+{q:"She ___ the shortest way to the station.",v:"show",a:["was shown"],why:"Получатель становится подлежащим.",t:"passive"},
+{q:"The doctor ___.",v:"send for",a:["was sent for"],why:"Предлог остаётся висеть в конце.",t:"passive"},
+{q:"The teacher ___ attentively.",v:"listen to",a:["was listened to"],why:"listen to — предлог при глаголе.",t:"passive"},
+{q:"This article ___ often ___.",v:"refer to",a:["is often referred to"],why:"referred — удвоение r; предлог в конце.",t:"passive"},
+{q:"The plan ___.",v:"agree upon",a:["was agreed upon"],why:"Предлог upon остаётся.",t:"passive"},
+{q:"He ___ always ___.",v:"find fault with",a:["is always found fault with"],why:"Выражение из трёх слов, with в конце.",t:"passive"},
+{q:"This house ___ never ___.",v:"live in",a:["has never been lived in"],why:"never между has и been, in в конце.",t:"passive"},
+{q:"I ___ how it is done.",v:"show",a:["was shown"],why:"«Мне показали» — подлежащее I.",t:"passive"},
+{q:"Nobody ___ anything.",v:"promise",a:["was promised"],why:"Одно отрицание на предложение.",t:"passive"},
+{q:"Every student ___ a scholarship.",v:"give",a:["will be given"],why:"Получатель вперёд, будущее в пассиве.",t:"passive"},
+{q:"While breakfast ___, the mother came up to the child.",v:"prepare",a:["was being prepared"],why:"Процесс в прошлом: was being + 3-я форма.",t:"passive"},
+{q:"Ann ___ when I came into the room.",v:"ask",a:["was being asked"],why:"Её спрашивали в тот момент — Continuous.",t:"passive"},
+{q:"The text ___ now because its topic is boring.",v:"not translate",a:["is not being translated","isn't being translated"],why:"Процесс в настоящем с отрицанием.",t:"passive"},
+{q:"This issue ___ already ___ and soon we will get answers.",v:"study",a:["is already being studied"],why:"Изучают сейчас, работа не закончена.",t:"passive"},
+{q:"The work ___ by the end of this week.",v:"finish",a:["will have been finished"],why:"Срок в будущем: will have been + 3-я форма.",t:"passive"},
+{q:"He ___ for a long time.",v:"not see",a:["has not been seen","hasn't been seen"],why:"«Давно не видели» — перфект с отрицанием.",t:"passive"},
+{q:"Two new houses ___ near the railway bridge.",v:"build",a:["are being built"],why:"Строятся прямо сейчас, подлежащее во мн. ч.",t:"passive"},
+{q:"How ___ these keys ___?",v:"can lose",a:["could these keys be lost","can these keys be lost"],why:"Модальный + be + 3-я форма.",t:"passive"},
+{q:"This dish ___ slowly.",v:"should cook",a:["should be cooked"],why:"После модального be, не is.",t:"passive"},
+{q:"The law ___ by 1995.",v:"pass",a:["had been passed"],why:"Срок в прошлом — Past Perfect.",t:"passive"},
+{q:"The bed ___ and the chair was broken.",v:"not make",a:["was not made","wasn't made"],why:"make the bed — застелить постель.",t:"passive"},
+{q:"The door was opened by an elderly woman and Jane ___ into a small room.",v:"show",a:["was shown"],why:"show into — ввести куда-то.",t:"passive"},
+{q:"All the housework ___ by his grandmother.",v:"do",a:["was done"],why:"housework неисчисляемое — was, не were.",t:"passive"},
+{q:"Guanciale ___ with bacon in other countries.",v:"replace",a:["is replaced"],why:"replace with — заменять на.",t:"passive"},
+{q:"The grapes ___ and ___.",v:"pick, crush",a:["are picked and crushed"],why:"Описание процесса — пассив в настоящем.",t:"passive"},
+{q:"Cream ___ to classic carbonara.",v:"not add",a:["is not added","isn't added"],why:"Правило, действующее всегда.",t:"passive"},
+{q:"Vineyards ___ all over Europe by the Romans.",v:"plant",a:["were planted"],why:"Событие в прошлом, исполнитель через by.",t:"passive"},
+{q:"The oldest traces of wine ___ in Georgia.",v:"find",a:["were found"],why:"found — и вторая, и третья форма.",t:"passive"},
+{q:"Wine ___ for about eight thousand years.",v:"make",a:["has been made"],why:"Делают до сих пор — перфект в пассиве.",t:"passive"},
+{q:"When ___ this film ___?",v:"show",a:["will this film be shown"],why:"В вопросе will вперёд, be остаётся.",t:"passive"},
+{q:"Why ___ we ___ this?",v:"not tell",a:["weren't we told","were we not told"],why:"we берёт were.",t:"passive"},
+{q:"___ you ___ this catalogue?",v:"show",a:["were you shown"],why:"you всегда were, никогда was.",t:"passive"},
+{q:"The exam ___ just ___ by almost half of the group.",v:"fail",a:["has just been failed"],why:"Экзамен провалили — нужен пассив, иначе смысл перевернётся.",t:"passive"},
+{q:"The advertisement ___ by hundreds of people every day.",v:"view",a:["is viewed"],why:"Исполнитель назван — предлог by обязателен.",t:"passive"},
+
+/* ---------- МОДАЛЬНЫЕ ГЛАГОЛЫ ---------- */
+{q:"Nick ___ get up at nine in the morning.",v:"приходится",a:["has to"],why:"Обстоятельства обязывают; has с he.",t:"modal"},
+{q:"They ___ swim in this deep lake.",v:"нельзя",a:["must not","mustn't"],why:"Запрет — mustn't.",t:"modal"},
+{q:"___ the children sing last year?",v:"умели",a:["could"],why:"Прошедшее от can, в вопросе вперёд.",t:"modal"},
+{q:"Steve ___ decorate the rooms for the whole family.",v:"бывало",a:["used to"],why:"Привычка в прошлом; дальше чистая форма.",t:"modal"},
+{q:"Tom ___ visit a doctor: he has a stomach ache.",v:"следует",a:["should"],why:"Совет — should.",t:"modal"},
+{q:"We ___ open the door, we won't be at home.",v:"не сможем",a:["won't be able to","will not be able to"],why:"У can нет будущего, берём be able to.",t:"modal"},
+{q:"Her friend ___ go shopping alone.",v:"бывало",a:["used to"],why:"Повторялось раньше.",t:"modal"},
+{q:"Jane ___ get up early every morning.",v:"обязана",a:["must","has to"],why:"Обязанность.",t:"modal"},
+{q:"They ___ draw such huge posters.",v:"не нужно",a:["needn't","don't have to"],why:"Нет необходимости, а не запрет.",t:"modal"},
+{q:"The child ___ be late for the lesson.",v:"не следует",a:["shouldn't","should not"],why:"Совет не делать.",t:"modal"},
+{q:"They ___ obey traffic rules.",v:"должны",a:["must","have to"],why:"Правило, закон.",t:"modal"},
+{q:"When ___ you ___ repeat the rule?",v:"сможешь",a:["will you be able to"],why:"Будущее от can.",t:"modal"},
+{q:"We ___ perform on stage together.",v:"бывало",a:["used to"],why:"Привычка в прошлом.",t:"modal"},
+{q:"___ I use your umbrella?",v:"могу ли",a:["may","can","could"],why:"Просьба; may вежливее.",t:"modal"},
+{q:"Jane ___ give you a lift by car tomorrow.",v:"сможет",a:["will be able to"],why:"Будущее от can.",t:"modal"},
+{q:"Rob ___ pay attention to other people's opinion.",v:"не следует",a:["shouldn't","should not"],why:"Совет не делать.",t:"modal"},
+{q:"I ___ turn on these songs and listen to them again.",v:"бывало",a:["used to"],why:"Повторялось раньше.",t:"modal"},
+{q:"You ___ touch the statues in the museum.",v:"нельзя",a:["must not","mustn't"],why:"Запрет, а не отсутствие нужды.",t:"modal"},
+{q:"___ we discuss this question?",v:"можем ли",a:["may","can","could"],why:"Просьба.",t:"modal"},
+{q:"I ___ give in to your requests.",v:"не следует",a:["shouldn't","should not"],why:"Совет самому себе.",t:"modal"},
+{q:"He ___ hide things from his classmates.",v:"бывало",a:["used to"],why:"Привычка в прошлом.",t:"modal"},
+{q:"They ___ do everything they are told at work.",v:"обязаны",a:["must","have to"],why:"Обязанность на работе.",t:"modal"},
+{q:"I ___ speak French, but I know Chinese.",v:"не умею",a:["can't","cannot","can not"],why:"Способность в настоящем.",t:"modal"},
+{q:"This boy ___ listen to the teachers or he will be expelled.",v:"обязан",a:["must","has to"],why:"Иначе последствия — must.",t:"modal"},
+{q:"She ___ paint beautiful pictures and sell them in a local shop.",v:"бывало",a:["used to"],why:"После and конструкция не повторяется.",t:"modal"},
+{q:"Tom ___ remind his grandmother to take pills.",v:"приходится",a:["has to"],why:"Обстоятельства обязывают.",t:"modal"},
+{q:"___ I open the window and air the room?",v:"могу ли",a:["may","can","could"],why:"Просьба о разрешении.",t:"modal"},
+{q:"The children ___ get up early to be at school by 8:15.",v:"приходится",a:["have to"],why:"Расписание обязывает; children — мн. ч.",t:"modal"},
+{q:"She ___ work hard on the report: it is not ready at all.",v:"приходится",a:["has to"],why:"Обстоятельства.",t:"modal"},
+{q:"They ___ come here every Sunday: they have their own business.",v:"не обязаны",a:["don't have to","needn't"],why:"Не запрет, а отсутствие необходимости.",t:"modal"},
+{q:"They ___ look at the results of their work: it is impressive.",v:"следует",a:["should"],why:"Совет.",t:"modal"},
+{q:"The girl ___ dance only next year.",v:"сможет",a:["will be able to"],why:"Будущее от can.",t:"modal"},
+{q:"___ you argue with the teacher?",v:"осмеливаешься",a:["dare"],why:"В вопросе dare выходит вперёд, без to.",t:"modal"},
+{q:"You ___ go to the doctor, your tooth hurts.",v:"следует",a:["should"],why:"Совет.",t:"modal"},
+{q:"Jane ___ take her father's car and drive around.",v:"бывало",a:["used to"],why:"Привычка в прошлом.",t:"modal"},
+{q:"We ___ go to this cinema and watch old films.",v:"бывало",a:["used to"],why:"Повторялось раньше.",t:"modal"},
+
+/* ---------- УСЛОВНЫЕ ПРЕДЛОЖЕНИЯ ---------- */
+{q:"If you ___ a text, the teacher will not check it.",v:"not write",a:["don't write","do not write"],why:"В главной части will → тип 1, после if настоящее.",t:"conditional"},
+{q:"If autumn ___, birds fly to the South.",v:"come",a:["comes"],why:"Тип 0; autumn — третье лицо, нужно -s.",t:"conditional"},
+{q:"I ___ you a present if you had a birthday.",v:"give",a:["would give"],why:"После if стоит had → тип 2, в главной would.",t:"conditional"},
+{q:"We would discuss this topic if the teacher ___.",v:"ask",a:["asked"],why:"В главной would → тип 2, после if Past Simple.",t:"conditional"},
+{q:"If she ___ it, she would have been much happier.",v:"try",a:["had tried"],why:"would have → тип 3; y меняется на i.",t:"conditional"},
+{q:"They wouldn't study Spanish if they ___ at a Spanish school.",v:"not study",a:["didn't study","did not study"],why:"Тип 2: после if простое прошедшее.",t:"conditional"},
+{q:"If Jack ___ his friends, he won't say hello.",v:"not see",a:["doesn't see","does not see"],why:"Тип 1; не теряй отрицание.",t:"conditional"},
+{q:"When you go to the street, you ___ fresh air.",v:"feel",a:["feel"],why:"Тип 0: обе части в настоящем.",t:"conditional"},
+{q:"I ___ a pie if mum doesn't buy any apples.",v:"not cook",a:["won't cook","will not cook"],why:"Тип 1: will в главной части.",t:"conditional"},
+{q:"If they had had problems, granny ___ them.",v:"help",a:["would have helped"],why:"Тип 3; had had — это нормально.",t:"conditional"},
+{q:"You ___ the exams better if you studied harder.",v:"pass",a:["would pass"],why:"После if прошедшее → тип 2.",t:"conditional"},
+{q:"If the vase ___, it breaks.",v:"fall",a:["falls"],why:"Тип 0; the vase — третье лицо.",t:"conditional"},
+{q:"If children ___ to school tomorrow, the teacher will be angry.",v:"not go",a:["don't go","do not go"],why:"Тип 1: после if настоящее, даже про завтра.",t:"conditional"},
+{q:"If she ___ cook, we would be happy.",v:"can",a:["could"],why:"Тип 2: прошедшая форма от can.",t:"conditional"},
+{q:"When spring ___, you see blossom everywhere.",v:"come",a:["comes"],why:"Тип 0; spring — третье лицо.",t:"conditional"},
+{q:"If I ___ a car, I would have driven it.",v:"buy",a:["had bought"],why:"would have → тип 3.",t:"conditional"},
+{q:"Kate ___ relatives if they lived far.",v:"not visit",a:["wouldn't visit","would not visit"],why:"После if прошедшее → тип 2, в главной would.",t:"conditional"},
+{q:"If you ___ the door, you wouldn't see a robber.",v:"not open",a:["didn't open","did not open"],why:"Пропуск после if — значит never would.",t:"conditional"},
+{q:"If she ___ the inheritance, she wouldn't have been so rich.",v:"not get",a:["hadn't got","had not got","hadn't gotten"],why:"Тип 3: после if Past Perfect.",t:"conditional"},
+{q:"If you ___ it, you would tell about it.",v:"know",a:["knew"],why:"Тип 2: после if простое прошедшее.",t:"conditional"},
+{q:"If you attack a bank, the police ___ you.",v:"arrest",a:["will arrest"],why:"Тип 1; the police — множественное число.",t:"conditional"},
+{q:"When spring comes, trees ___ green.",v:"turn",a:["turn"],why:"Тип 0; trees — множественное, без -s.",t:"conditional"},
+{q:"If you hadn't opened the door yesterday, you ___ your best friends.",v:"not see",a:["wouldn't have seen","would not have seen"],why:"Тип 3: would have + 3-я форма.",t:"conditional"},
+{q:"When you take medicine, your head ___ hurting.",v:"stop",a:["stops"],why:"Тип 0; head — третье лицо.",t:"conditional"},
+{q:"If you don't hurry up, you ___ the train.",v:"miss",a:["will miss"],why:"Тип 1: will в главной части.",t:"conditional"},
+{q:"If you ___ swim, you wouldn't fly to Turkey every year.",v:"not can",a:["couldn't","could not"],why:"Тип 2: прошедшая форма от can с отрицанием.",t:"conditional"},
+{q:"If Sonya didn't have an allergy to fish, she ___ it more often.",v:"eat",a:["would eat"],why:"Тип 2; не забудь дополнение it.",t:"conditional"},
+{q:"When a flower stands without water for a long time, it ___ up.",v:"dry",a:["dries"],why:"Тип 0; y меняется на ie перед -s.",t:"conditional"},
+{q:"You would remember this date if you ___ there with us.",v:"go",a:["went"],why:"Тип 2: после if простое прошедшее.",t:"conditional"},
+{q:"If Nick ___ the exam, he won't enter university.",v:"not pass",a:["doesn't pass","does not pass"],why:"Тип 1; Nick — he, нужно doesn't.",t:"conditional"},
+{q:"If she hadn't opened the window yesterday, the bird ___ into the room.",v:"not fly",a:["wouldn't have flown","would not have flown"],why:"Тип 3; flown — третья форма от fly.",t:"conditional"},
+{q:"If mum didn't love roses, dad ___ them to her.",v:"not give",a:["wouldn't give","would not give"],why:"Тип 2.",t:"conditional"},
+{q:"If they ___ friends, they would write letters to each other.",v:"be",a:["were"],why:"Тип 2: во всех лицах were, даже с he и she.",t:"conditional"},
+{q:"If he ___ as a vet, he would help animals.",v:"work",a:["worked"],why:"Тип 2; work as — работать кем-то.",t:"conditional"},
+{q:"If Anna ___ the road in the right place, the accident wouldn't have happened.",v:"cross",a:["had crossed"],why:"Тип 3.",t:"conditional"},
+{q:"If you ___ to Paris in summer, you would have brought many souvenirs.",v:"fly",a:["had flown"],why:"Тип 3; flown — третья форма.",t:"conditional"}
 ];
 
 var TRANSLATE = [
@@ -3129,7 +4246,57 @@ var TRANSLATE = [
 {ru:"Мы прожили в деревне два месяца, когда мой брат приехал навестить нас.",a:["We had been living in the village for two months when my brother came to see us.","We had lived in the village for two months when my brother came to see us."],why:"Период набежал к приезду брата."},
 {ru:"Пока он ждал, он слышал, как внизу в саду играют дети.",a:["While he was waiting, he heard children playing down in the garden."],why:"После hear — без союза, с -ing."},
 {ru:"Он взял картофелину и осторожно положил её обратно туда, где мы её нашли.",a:["He took the potato and carefully put it back where we had found it."],why:"«обратно» указывает на предшествование."},
-{ru:"Мистер Мэтлок посмотрел на своего сына, его взгляд смягчился.",a:["Mr Matlock looked at his son, and his look softened.","Mr Matlock looked at his son, and his eyes softened."],why:"Один слой времени — Past Perfect не нужен."}
+{ru:"Мистер Мэтлок посмотрел на своего сына, его взгляд смягчился.",a:["Mr Matlock looked at his son, and his look softened.","Mr Matlock looked at his son, and his eyes softened."],why:"Один слой времени — Past Perfect не нужен."},
+
+/* ---------- ПАССИВ И МОДАЛЬНЫЕ ---------- */
+{ru:"Мне показали, как это делается.",a:["I was shown how it is done."],why:"Получатель становится подлежащим."},
+{ru:"Ей пообещали хорошую работу.",a:["She was promised a good job."],why:"«Ей пообещали» — подлежащее she."},
+{ru:"Никаких объяснений мне не дали в отеле.",a:["I was not given any explanations at the hotel.","I wasn't given any explanations at the hotel."],why:"Одно отрицание на предложение."},
+{ru:"Эту работу дали кому-то другому.",a:["This work was given to somebody else."],why:"Получатель вводится через to."},
+{ru:"Нам картину не показали.",a:["We weren't shown the picture.","We were not shown the picture."],why:"we берёт were."},
+{ru:"Когда вам рассказали эту историю?",a:["When were you told this story?"],why:"you всегда were; в вопросе вспомогательный вперёд."},
+{ru:"Почему мне не дали словаря в библиотеке?",a:["Why wasn't I given a dictionary at the library?","Why was I not given a dictionary at the library?"],why:"I всегда с заглавной."},
+{ru:"Каждому студенту дадут стипендию.",a:["Every student will be given a scholarship."],why:"Будущее в пассиве."},
+{ru:"Лекции этого профессора всегда слушают с большим интересом.",a:["This professor's lectures are always listened to with great interest."],why:"Притяжательная форма + предлог в конце."},
+{ru:"О ней заботятся её друзья.",a:["She is looked after by her friends."],why:"Два предлога подряд: after от глагола, by перед исполнителем."},
+{ru:"Об этом фильме много говорят.",a:["This film is much spoken about.","This film is spoken about much."],why:"spoken — третья форма от speak."},
+{ru:"Его давно не видели.",a:["He has not been seen for a long time.","He hasn't been seen for a long time."],why:"Отрицание в перфекте."},
+{ru:"К концу этой недели работа будет завершена.",a:["The work will have been finished by the end of this week."],why:"Future Perfect в пассиве."},
+{ru:"Пока комнату убирали, дети украшали ёлку.",a:["While the room was being cleaned, the children were decorating the Christmas tree."],why:"Процесс в пассиве и процесс в активе одновременно."},
+{ru:"Мне сказали, что около моста строятся два новых дома.",a:["I was told that two new houses are being built near the bridge."],why:"Дома строятся сейчас — Continuous в пассиве."},
+{ru:"Этот вопрос уже изучают.",a:["This issue is already being studied."],why:"Работа идёт, не закончена."},
+{ru:"Нику приходится вставать в девять утра.",a:["Nick has to get up at nine in the morning."],why:"has to с he."},
+{ru:"Они не должны плавать в этом глубоком озере.",a:["They mustn't swim in this deep lake.","They must not swim in this deep lake."],why:"Запрет."},
+{ru:"Бывало, Стив украшал комнаты для всей семьи.",a:["Steve used to decorate the rooms for the whole family."],why:"После used to чистая форма."},
+{ru:"Мы не сможем открыть ему дверь, нас не будет дома.",a:["We won't be able to open the door for him, we won't be at home."],why:"Будущее от can."},
+{ru:"Им не нужно рисовать такие огромные плакаты.",a:["They needn't draw such huge posters.","They don't have to draw such huge posters."],why:"Нет необходимости, а не запрет."},
+{ru:"Могу ли я воспользоваться твоим зонтом?",a:["May I use your umbrella?","Can I use your umbrella?"],why:"Просьба; may вежливее."},
+{ru:"Они не обязаны приходить сюда каждое воскресенье.",a:["They don't have to come here every Sunday."],why:"mustn't значило бы «нельзя»."},
+{ru:"Ты осмеливаешься спорить с учителем?",a:["Dare you argue with the teacher?","Do you dare to argue with the teacher?"],why:"dare ведёт себя двояко."},
+{ru:"Я не умею говорить по-французски, но я знаю китайский.",a:["I can't speak French, but I know Chinese."],why:"Языки с заглавной буквы."},
+{ru:"Этот мальчик обязан слушать учителей, или его исключат из школы.",a:["This boy must listen to the teachers, or he will be expelled from school."],why:"Пассив в будущем во второй части."},
+{ru:"Девочка сможет танцевать только в следующем году.",a:["The girl will be able to dance only next year."],why:"Будущее от can."},
+{ru:"Детям приходится вставать рано, чтобы успевать в школу.",a:["The children have to get up early in order to be at school on time."],why:"children — множественное, have to."},
+
+/* ---------- УСЛОВНЫЕ ПРЕДЛОЖЕНИЯ ---------- */
+{ru:"Если приходит осень, птицы улетают в тёплые страны.",a:["If autumn comes, birds fly away to warm countries."],why:"Тип 0: закон природы, обе части в настоящем."},
+{ru:"Если ты увидишь своего друга, ты дашь ему свой телефон.",a:["If you see your friend, you will give him your phone number."],why:"Тип 1; не забудь him."},
+{ru:"Если бы она любила яблочный пирог, она пекла бы его чаще.",a:["If she loved apple pie, she would bake it more often."],why:"Тип 2; нужно дополнение it."},
+{ru:"Если бы вы не пошли вчера в театр, вы бы не встретили своих друзей.",a:["If you hadn't gone to the theatre yesterday, you wouldn't have met your friends.","If you had not gone to the theatre yesterday, you would not have met your friends."],why:"Тип 3: есть «вчера»."},
+{ru:"Когда наступает зима, люди одевают тёплые вещи.",a:["When winter comes, people put on warm clothes."],why:"Тип 0; перед people артикль не нужен."},
+{ru:"Вам понравится рыба, если вы закажете её в этом ресторане.",a:["You will like the fish if you order it in this restaurant."],why:"Тип 1; order требует дополнения."},
+{ru:"Если она откроет дверь, она увидит своих знакомых.",a:["If she opens the door, she will see her acquaintances."],why:"Тип 1; opens с -s."},
+{ru:"Если бы он работал ветеринаром, он бы помогал животным.",a:["If he worked as a vet, he would help animals."],why:"Тип 2; work as — работать кем-то."},
+{ru:"Если бы они были друзьями, они бы писали письма друг другу.",a:["If they were friends, they would write letters to each other."],why:"Тип 2."},
+{ru:"Когда мы нагреваем лёд, он тает.",a:["When we heat ice, it melts."],why:"Тип 0; melts с -s."},
+{ru:"Если бы Анна перешла дорогу в нужном месте, ДТП не случилось бы.",a:["If Anna had crossed the road in the right place, the accident wouldn't have happened."],why:"Тип 3."},
+{ru:"Если вы нападёте на банк, полиция арестует вас.",a:["If you attack a bank, the police will arrest you."],why:"Тип 1; the police — множественное число."},
+{ru:"Когда приходит весна, деревья становятся зелёными.",a:["When spring comes, trees turn green."],why:"Тип 0; turn + цвет."},
+{ru:"Если ты не поторопишься, ты опоздаешь на поезд.",a:["If you don't hurry up, you will miss the train."],why:"Тип 1; miss the train, не be late for."},
+{ru:"Если бы у Сони не было аллергии на рыбу, она бы ела её чаще.",a:["If Sonya didn't have an allergy to fish, she would eat it more often."],why:"Тип 2; allergy to, не on."},
+{ru:"Если Ник не сдаст экзамен, он не поступит в университет.",a:["If Nick doesn't pass the exam, he won't enter university."],why:"Тип 1; pass — сдать успешно."},
+{ru:"Если бы она не открыла окно вчера, птица не залетела бы в комнату.",a:["If she hadn't opened the window yesterday, the bird wouldn't have flown into the room."],why:"Тип 3; into — движение внутрь."},
+{ru:"Вы бы помнили эту дату, если бы ходили туда вместе с нами.",a:["You would remember this date if you went there with us."],why:"Тип 2; главная часть идёт первой, запятая не нужна."}
 ];
 
 </script>
@@ -3158,6 +4325,8 @@ var GROUPS = {
   'Начало':      {v:'--g-home',   b:'--g-home-bg',   icon:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>'},
   'Времена':     {v:'--g-tense',  b:'--g-tense-bg',  icon:'<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/>'},
   'Глагол':      {v:'--g-verb',   b:'--g-verb-bg',   icon:'<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>'},
+  'Залог':       {v:'--g-voice',  b:'--g-voice-bg',  icon:'<path d="M17 7 7 17"/><path d="M7 11V7h4"/><path d="M17 13v4h-4"/>'},
+  'Условные':    {v:'--g-cond',   b:'--g-cond-bg',   icon:'<path d="M6 3v12"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M18 8.5c0 6-12 3-12 9"/>'},
   'Части речи':  {v:'--g-part',   b:'--g-part-bg',   icon:'<path d="M4 19V7a3 3 0 0 1 3-3h9"/><path d="M8 9h8M8 13h5"/><path d="M20 4v16H7a3 3 0 0 0-3 3"/>'},
   'Структуры':   {v:'--g-struct', b:'--g-struct-bg', icon:'<rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="10" height="6" rx="2"/>'},
   'Проверка':    {v:'--g-check',  b:'--g-check-bg',  icon:'<path d="M20 6 9 17l-5-5"/>'},

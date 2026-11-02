@@ -26,6 +26,8 @@
   --g-check:#E0355A;   --g-check-bg:#E0355A14;
   --g-dict:#C63DAE;    --g-dict-bg:#C63DAE14;
   --g-train:#0BA5C6;   --g-train-bg:#0BA5C614;
+  --g-voice:#C2410C;   --g-voice-bg:#C2410C14;
+  --g-cond:#7C3AED;    --g-cond-bg:#7C3AED14;
   --g-home:#16172B;    --g-home-bg:#16172B0F;
 
   --ok:#0E9F6E;   --ok-bg:#0E9F6E14;   --ok-line:#0E9F6E3D;
@@ -67,6 +69,8 @@
   --g-check:#FF7A96;   --g-check-bg:#FF7A961C;
   --g-dict:#E486D2;    --g-dict-bg:#E486D21C;
   --g-train:#4CC9E4;   --g-train-bg:#4CC9E41C;
+  --g-voice:#FB923C;   --g-voice-bg:#FB923C1C;
+  --g-cond:#B49BFF;    --g-cond-bg:#B49BFF1C;
   --g-home:#ECEDF6;    --g-home-bg:#ECEDF612;
 
   --ok:#3FD3A0;   --ok-bg:#3FD3A016;   --ok-line:#3FD3A040;
