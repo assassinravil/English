@@ -507,18 +507,6 @@ footer a{color:var(--brand)}
   .flash-word{font-size:1.55rem}
   h3{margin-top:2.2rem}
 
-  table.stack{min-width:0;display:block}
-  table.stack thead{display:none}
-  table.stack tbody,table.stack tr,table.stack td{display:block;width:100%}
-  table.stack tr{border-bottom:1px solid var(--line);padding:.85rem .9rem;position:relative}
-  table.stack tr:last-child{border-bottom:none}
-  table.stack td{border:none;padding:.1rem 0}
-  table.stack td:empty{display:none}
-  table.stack td[data-label]::before{content:attr(data-label) " ";color:var(--ink-faint);font-size:.76rem}
-  table.stack td.chkcell{position:absolute;right:.7rem;top:.85rem;width:auto;padding:0}
-  table.stack td.chkcell::before{content:none}
-  table.stack .chk{width:1.3rem;height:1.3rem}
-  table.stack td.main{font-size:1.04rem;padding-right:2.2rem;font-weight:600}
 }
 
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
@@ -561,13 +549,7 @@ tr.lv2 td.main,tr.lv2 td:nth-child(4){opacity:.55}
 }
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.62}}
 
-@media (max-width:640px){
-  .flash-lvl{top:2.7rem}
-  table.stack tr{padding-top:2.6rem}
-  table.stack td[data-label="Уровень"]{position:absolute;top:.8rem;left:.9rem;padding:0}
-  table.stack td[data-label="Уровень"]::before{content:none}
-  table.stack td.main{padding-right:0}
-}
+
 
 /* выпадающий список голосов */
 select{
@@ -584,9 +566,101 @@ select:focus{border-color:var(--brand)}
 }
 .skill.done{background:var(--ok-bg);color:var(--ok)}
 .flash-lvl{display:flex;gap:.4rem;align-items:center;justify-content:center;flex-wrap:wrap}
-@media (max-width:640px){
-  .skills{display:flex;margin:.35rem 0 0}
+
+
+/* опасная зона */
+.dangerzone{
+  margin-top:2.5rem;padding:1rem 1.15rem;border-radius:var(--r);
+  border:1px solid var(--no-line);background:var(--no-bg);
 }
+.dangerzone h5{margin:0 0 .35rem;font-size:.82rem;font-weight:600;color:var(--no)}
+.dangerzone p{margin:0 0 .75rem;font-size:.87rem;color:var(--ink-soft)}
+.btn.danger{border-color:var(--no);color:var(--no)}
+.btn.danger:hover{background:var(--no);color:var(--on-brand);border-color:var(--no)}
+.btn.danger.armed{background:var(--no);color:#fff;font-weight:600}
+
+/* отметка «пора повторить» */
+.duemark{
+  display:inline-block;margin-left:.35rem;font-size:.68rem;font-weight:600;
+  padding:.1em .45em;border-radius:5px;color:var(--warn);background:var(--warn-bg);
+  vertical-align:middle;
+}
+
+
+/* =====================================================
+   МОБИЛЬНАЯ ВЁРСТКА ТАБЛИЦ
+   Строка превращается в карточку: сверху слово,
+   под ним транскрипция, перевод и заметка,
+   уровень и навыки — отдельной полосой внизу.
+   ===================================================== */
+@media (max-width:640px){
+  table.stack{min-width:0;display:block}
+  table.stack thead{display:none}
+  table.stack tbody,table.stack tr,table.stack td{display:block;width:100%}
+
+  table.stack tr{
+    border-bottom:1px solid var(--line);
+    padding:.9rem .95rem;
+  }
+  table.stack tr:last-child{border-bottom:none}
+  table.stack tr:hover{background:transparent}
+
+  table.stack td{border:none;padding:0;margin:0}
+  table.stack td:empty{display:none}
+  table.stack td[data-label]::before{
+    content:attr(data-label) " ";
+    color:var(--ink-faint);font-size:.75rem;
+  }
+  table.stack td[data-label="—"]::before{content:none}
+
+  /* слово — первой строкой, крупно */
+  table.stack td.main{
+    font-size:1.08rem;font-weight:600;line-height:1.35;
+    margin-bottom:.15rem;padding-right:0;
+  }
+  table.stack td.ipa{font-size:.86rem;margin-bottom:.2rem}
+
+  /* уровень и навыки — полосой под текстом */
+  table.stack td[data-label="Уровень"]{
+    display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;
+    margin-top:.55rem;
+  }
+  table.stack td[data-label="Уровень"]::before{content:none}
+  table.stack td[data-label="Уровень"] .skills{margin:0}
+  table.stack .lvl{font-size:.7rem}
+  table.stack .skill{font-size:.68rem}
+
+  /* заметка — помельче и приглушённее */
+  table.stack td:last-child{font-size:.84rem;line-height:1.45;margin-top:.2rem}
+
+  /* неправильные глаголы: формы в строку */
+  table.stack td[data-label="2-я"],
+  table.stack td[data-label="3-я"]{display:inline-block;width:auto;margin-right:.9rem}
+}
+
+/* карточка тренажёра: уровень и навыки не должны налезать */
+@media (max-width:640px){
+  .deck{height:25rem}
+  .flash-lvl{
+    position:static;transform:none;
+    margin:.5rem 0 .9rem;display:flex;gap:.35rem;
+    align-items:center;justify-content:center;flex-wrap:wrap;
+  }
+  .flash-topic{position:static;transform:none;margin-bottom:.3rem;display:inline-block}
+  .swipe-card{padding:1.6rem 1.1rem;justify-content:flex-start}
+  .swipe-card .flash-word{margin-top:auto}
+  .swipe-card .flash-hint{position:static;margin-top:auto;padding-top:1rem}
+  .stamp{top:1.1rem}
+
+  /* панель настроек: чипы не должны прижиматься */
+  .settings{padding:.9rem 1rem}
+  .topicchip{padding:.34rem .75rem}
+  .settings .setrow{gap:.35rem}
+  .settings .setrow .btn{flex:1 1 auto;min-width:auto}
+}
+
+/* пометка синонимов в словаре */
+.synmark{color:var(--info);font-size:.9em}
 
 </style>
 </head>
@@ -647,11 +721,13 @@ select:focus{border-color:var(--brand)}
 
   <div class="controls chips" id="topicbar"></div>
 
-  <div class="controls">
+  <div class="controls chips">
     <button class="btn on" data-lvl="all" type="button">Любой уровень</button>
     <button class="btn" data-lvl="0" type="button">Не выучено</button>
     <button class="btn" data-lvl="1" type="button">Повторение</button>
     <button class="btn" data-lvl="2" type="button">Выучено</button>
+    <button class="btn" data-lvl="due" type="button">Пора повторить</button>
+    <button class="btn" data-lvl="stale" type="button">Выучено, но пора повторить</button>
   </div>
 
   <div class="controls">
@@ -659,7 +735,6 @@ select:focus{border-color:var(--brand)}
     <button class="btn" id="export" type="button">Сохранить прогресс в файл</button>
     <label class="btn" for="importfile" style="cursor:pointer">Загрузить из файла</label>
     <input type="file" id="importfile" accept="application/json,.json" style="display:none">
-    <button class="btn" id="reset" type="button">Сбросить прогресс</button>
   </div>
   <div id="io-msg"></div>
 
@@ -668,6 +743,13 @@ select:focus{border-color:var(--brand)}
     <thead><tr><th>Уровень</th><th>Слово</th><th>Транскрипция</th><th>Перевод</th><th>Заметка</th></tr></thead>
     <tbody id="rows"></tbody>
   </table>
+  </div>
+
+  <div class="dangerzone">
+    <h5>Опасная зона</h5>
+    <p>Сброс удалит весь прогресс без возможности вернуть. Сначала сохрани файл.</p>
+    <button class="btn danger" id="reset" type="button">Сбросить весь прогресс</button>
+    <div id="reset-msg"></div>
   </div>
 </div>
 
@@ -2179,14 +2261,14 @@ var VOCAB_HW = [
 {en:"visit", tr:"/ˈvɪzɪt/", ru:"навещать, посещать", note:"Без предлога: visit you", topic:"Глаголы", set:"hw"},
 {en:"call on", tr:"/kɔːl ɒn/", ru:"зайти к кому-то", note:"We called on Mrs Chandler.", topic:"Глаголы", set:"hw"},
 {en:"wait for", tr:"/weɪt fɔː/", ru:"ждать кого-то", note:"Предлог обязателен", topic:"Глаголы", set:"hw"},
-{en:"look for", tr:"/lʊk fɔː/", ru:"искать", note:"I've been looking for you everywhere.", topic:"Глаголы", set:"hw"},
+{en:"look for", tr:"/lʊk fɔː/", ru:"искать", note:"обычное слово для поиска предмета", topic:"Глаголы", set:"hw"},
 {en:"find", tr:"/faɪnd/", ru:"находить", note:"found / found, без предлога", topic:"Глаголы", set:"hw"},
 {en:"find out", tr:"/faɪnd aʊt/", ru:"узнать, выяснить", note:"", topic:"Глаголы", set:"hw"},
 {en:"try to", tr:"/traɪ tə/", ru:"пытаться", note:"После try — инфинитив с to", topic:"Глаголы", set:"hw"},
 {en:"ring up", tr:"/rɪŋ ʌp/", ru:"звонить по телефону", note:"ring him up — местоимение внутрь", topic:"Глаголы", set:"hw"},
 {en:"shake one's head", tr:"/ʃeɪk hed/", ru:"покачать головой", note:"shook his head", topic:"Глаголы", set:"hw"},
 {en:"smile at", tr:"/smaɪl ət/", ru:"улыбаться кому-то", note:"Не smile to", topic:"Глаголы", set:"hw"},
-{en:"leave", tr:"/liːv/", ru:"уходить, уезжать; оставлять", note:"left / left", topic:"Глаголы", set:"hw"},
+{en:"leave", tr:"/liːv/", ru:"уходить, уезжать", note:"left / left; покидать место", topic:"Глаголы", set:"hw"},
 {en:"discover", tr:"/dɪˈskʌvə/", ru:"обнаружить", note:"", topic:"Глаголы", set:"hw"},
 {en:"enable", tr:"/ɪˈneɪbl/", ru:"позволять, давать возможность", note:"enable somebody to do", topic:"Глаголы", set:"hw"},
 {en:"destroy", tr:"/dɪˈstrɔɪ/", ru:"разрушать, уничтожать", note:"", topic:"Глаголы", set:"hw"},
@@ -2207,7 +2289,7 @@ var VOCAB_HW = [
 {en:"suspend", tr:"/səˈspend/", ru:"приостановить, отложить", note:"suspend their decision", topic:"Глаголы", set:"hw"},
 {en:"request", tr:"/rɪˈkwest/", ru:"попросить (формально)", note:"", topic:"Глаголы", set:"hw"},
 {en:"have a bath", tr:"/hæv ə bɑːθ/", ru:"принимать ванну", note:"также take a bath", topic:"Глаголы", set:"hw"},
-{en:"sit down", tr:"/sɪt daʊn/", ru:"садиться", note:"sat / sat; не set", topic:"Глаголы", set:"hw"},
+{en:"sit down", tr:"/sɪt daʊn/", ru:"садиться на стул", note:"sat / sat", topic:"Глаголы", set:"hw"},
 {en:"wear", tr:"/weə/", ru:"носить (одежду)", note:"wore / worn", topic:"Глаголы", set:"hw"},
 {en:"look after", tr:"/lʊk ˈɑːftə/", ru:"ухаживать за, присматривать", note:"", topic:"Глаголы", set:"hw"},
 {en:"show", tr:"/ʃəʊ/", ru:"показывать", note:"showed / shown", topic:"Глаголы", set:"hw"},
@@ -2254,7 +2336,7 @@ var VOCAB_HW = [
 {en:"publishing house", tr:"/ˈpʌblɪʃɪŋ haʊs/", ru:"издательство", note:"", topic:"Существительные", set:"hw"},
 {en:"exhibition", tr:"/ˌeksɪˈbɪʃn/", ru:"выставка", note:"первая h не читается", topic:"Существительные", set:"hw"},
 {en:"guide", tr:"/ɡaɪd/", ru:"экскурсовод, гид", note:"", topic:"Существительные", set:"hw"},
-{en:"drawing room", tr:"/ˈdrɔːɪŋ ruːm/", ru:"гостиная", note:"также living room", topic:"Существительные", set:"hw"},
+{en:"drawing room", tr:"/ˈdrɔːɪŋ ruːm/", ru:"гостиная", note:"старомодное, в классической литературе", topic:"Существительные", set:"hw"},
 {en:"fireplace", tr:"/ˈfaɪəpleɪs/", ru:"камин", note:"in front of the fire", topic:"Существительные", set:"hw"},
 {en:"sapling", tr:"/ˈsæplɪŋ/", ru:"деревце, саженец", note:"", topic:"Существительные", set:"hw"},
 {en:"storm", tr:"/stɔːm/", ru:"буря, гроза", note:"", topic:"Существительные", set:"hw"},
@@ -2287,7 +2369,7 @@ var VOCAB_HW = [
 {en:"suddenly", tr:"/ˈsʌdnli/", ru:"вдруг, внезапно", note:"", topic:"Прилагательные и наречия", set:"hw"},
 {en:"upstairs", tr:"/ˌʌpˈsteəz/", ru:"наверху, наверх", note:"одно слово, без предлога", topic:"Прилагательные и наречия", set:"hw"},
 {en:"everywhere", tr:"/ˈevriweə/", ru:"повсюду", note:"", topic:"Прилагательные и наречия", set:"hw"},
-{en:"alone", tr:"/əˈləʊn/", ru:"один, в одиночестве", note:"", topic:"Прилагательные и наречия", set:"hw"},
+{en:"alone", tr:"/əˈləʊn/", ru:"один, в одиночестве", note:"без компании; one — число", topic:"Прилагательные и наречия", set:"hw"},
 {en:"loudly", tr:"/ˈlaʊdli/", ru:"громко", note:"", topic:"Прилагательные и наречия", set:"hw"},
 {en:"greatly", tr:"/ˈɡreɪtli/", ru:"сильно, очень", note:"", topic:"Прилагательные и наречия", set:"hw"},
 {en:"mortally", tr:"/ˈmɔːtəli/", ru:"смертельно", note:"только про смерть", topic:"Прилагательные и наречия", set:"hw"},
@@ -2330,7 +2412,7 @@ var VOCAB_HW = [
 {en:"canal", tr:"/kəˈnæl/", ru:"канал", note:"ударение на второй слог", topic:"Города и рынки", set:"hw"},
 {en:"floating market", tr:"/ˈfləʊtɪŋ ˈmɑːkɪt/", ru:"плавучий рынок", note:"", topic:"Города и рынки", set:"hw"},
 {en:"stall", tr:"/stɔːl/", ru:"прилавок, лоток", note:"packed with stalls", topic:"Города и рынки", set:"hw"},
-{en:"seller", tr:"/ˈselə/", ru:"продавец", note:"", topic:"Города и рынки", set:"hw"},
+{en:"seller", tr:"/ˈselə/", ru:"продавец", note:"тот, кто продаёт, в том числе на рынке", topic:"Города и рынки", set:"hw"},
 {en:"pavement", tr:"/ˈpeɪvmənt/", ru:"тротуар", note:"амер. sidewalk", topic:"Города и рынки", set:"hw"},
 {en:"bunch of flowers", tr:"/bʌntʃ/", ru:"букет цветов", note:"", topic:"Города и рынки", set:"hw"},
 {en:"herbs", tr:"/hɜːbs/", ru:"травы, зелень", note:"в амер. h не читается", topic:"Города и рынки", set:"hw"},
@@ -2525,7 +2607,7 @@ var VOCAB_DAILY = [
 {en:"team", tr:"/tiːm/", ru:"команда", note:"", topic:"Спорт и хобби", set:"basic"},
 {en:"match", tr:"/mætʃ/", ru:"матч; подходить друг другу", note:"", topic:"Спорт и хобби", set:"basic"},
 {en:"drawing", tr:"/ˈdrɔːɪŋ/", ru:"рисование, рисунок", note:"", topic:"Спорт и хобби", set:"basic"},
-{en:"trip", tr:"/trɪp/", ru:"поездка", note:"go on a trip", topic:"Спорт и хобби", set:"basic"},
+{en:"trip", tr:"/trɪp/", ru:"поездка, выезд", note:"короткая поездка туда и обратно", topic:"Спорт и хобби", set:"basic"},
 {en:"book a table", tr:"/bʊk ə ˈteɪbl/", ru:"забронировать столик", note:"", topic:"Спорт и хобби", set:"basic"},
 {en:"have fun", tr:"/hæv fʌn/", ru:"весело провести время", note:"", topic:"Спорт и хобби", set:"basic"},
 {en:"be worth", tr:"/biː wɜːθ/", ru:"стоить того", note:"дальше -ing: worth seeing", topic:"Спорт и хобби", set:"basic"}
@@ -2697,7 +2779,7 @@ var VOCAB_EXT1 = [
 {en:"furniture", tr:"/ˈfɜːnɪtʃə/", ru:"мебель", note:"неисчисляемое, без -s", topic:"Дом и быт", set:"basic"},
 {en:"chair", tr:"/tʃeə/", ru:"стул", note:"", topic:"Дом и быт", set:"basic"},
 {en:"armchair", tr:"/ˈɑːmtʃeə/", ru:"кресло", note:"", topic:"Дом и быт", set:"basic"},
-{en:"sofa", tr:"/ˈsəʊfə/", ru:"диван", note:"брит. также settee", topic:"Дом и быт", set:"basic"},
+{en:"sofa", tr:"/ˈsəʊfə/", ru:"диван", note:"обычное слово; couch разговорнее", topic:"Дом и быт", set:"basic"},
 {en:"table", tr:"/ˈteɪbl/", ru:"стол", note:"desk — письменный", topic:"Дом и быт", set:"basic"},
 {en:"bed", tr:"/bed/", ru:"кровать", note:"go to bed — без артикля", topic:"Дом и быт", set:"basic"},
 {en:"wardrobe", tr:"/ˈwɔːdrəʊb/", ru:"платяной шкаф", note:"", topic:"Дом и быт", set:"basic"},
@@ -2712,7 +2794,7 @@ var VOCAB_EXT1 = [
 {en:"bathroom", tr:"/ˈbɑːθruːm/", ru:"ванная", note:"", topic:"Дом и быт", set:"basic"},
 {en:"bedroom", tr:"/ˈbedruːm/", ru:"спальня", note:"", topic:"Дом и быт", set:"basic"},
 {en:"kitchen", tr:"/ˈkɪtʃɪn/", ru:"кухня", note:"", topic:"Дом и быт", set:"basic"},
-{en:"living room", tr:"/ˈlɪvɪŋ ruːm/", ru:"гостиная", note:"", topic:"Дом и быт", set:"basic"},
+{en:"living room", tr:"/ˈlɪvɪŋ ruːm/", ru:"гостиная", note:"современное слово", topic:"Дом и быт", set:"basic"},
 {en:"switch on / switch off", tr:"/swɪtʃ ɒn, swɪtʃ ɒf/", ru:"включить / выключить", note:"также turn on / off", topic:"Дом и быт", set:"basic"},
 {en:"washing machine", tr:"/ˈwɒʃɪŋ məˌʃiːn/", ru:"стиральная машина", note:"", topic:"Дом и быт", set:"basic"},
 {en:"fridge", tr:"/frɪdʒ/", ru:"холодильник", note:"полное refrigerator", topic:"Дом и быт", set:"basic"},
@@ -2809,7 +2891,7 @@ var VOCAB_EXT1 = [
 {en:"lawyer", tr:"/ˈlɔɪə/", ru:"юрист, адвокат", note:"", topic:"Работа и профессии", set:"basic"},
 {en:"accountant", tr:"/əˈkaʊntənt/", ru:"бухгалтер", note:"", topic:"Работа и профессии", set:"basic"},
 {en:"cook / chef", tr:"/kʊk, ʃef/", ru:"повар / шеф-повар", note:"", topic:"Работа и профессии", set:"basic"},
-{en:"shop assistant", tr:"/ʃɒp əˈsɪstənt/", ru:"продавец", note:"", topic:"Работа и профессии", set:"basic"},
+{en:"shop assistant", tr:"/ʃɒp əˈsɪstənt/", ru:"продавец в магазине", note:"работник торгового зала", topic:"Работа и профессии", set:"basic"},
 {en:"builder", tr:"/ˈbɪldə/", ru:"строитель", note:"", topic:"Работа и профессии", set:"basic"},
 {en:"farmer", tr:"/ˈfɑːmə/", ru:"фермер", note:"", topic:"Работа и профессии", set:"basic"},
 {en:"journalist", tr:"/ˈdʒɜːnəlɪst/", ru:"журналист", note:"", topic:"Работа и профессии", set:"basic"},
@@ -2890,7 +2972,7 @@ var VOCAB_EXT2 = [
 {en:"beach", tr:"/biːtʃ/", ru:"пляж", note:"", topic:"Транспорт и поездки", set:"basic"},
 {en:"camping", tr:"/ˈkæmpɪŋ/", ru:"поход с палаткой", note:"go camping", topic:"Транспорт и поездки", set:"basic"},
 {en:"guidebook", tr:"/ˈɡaɪdbʊk/", ru:"путеводитель", note:"", topic:"Транспорт и поездки", set:"basic"},
-{en:"map", tr:"/mæp/", ru:"карта", note:"", topic:"Транспорт и поездки", set:"basic"},
+{en:"map", tr:"/mæp/", ru:"карта местности", note:"a map of the city", topic:"Транспорт и поездки", set:"basic"},
 {en:"get lost", tr:"/ɡet lɒst/", ru:"заблудиться", note:"", topic:"Транспорт и поездки", set:"basic"},
 {en:"How do I get to…?", tr:"/haʊ duː aɪ ɡet tuː/", ru:"Как пройти к…?", note:"", topic:"Транспорт и поездки", set:"basic"},
 
@@ -2913,7 +2995,7 @@ var VOCAB_EXT2 = [
 /* --- Покупки --- */
 {en:"customer", tr:"/ˈkʌstəmə/", ru:"покупатель, клиент", note:"", topic:"Покупки и деньги", set:"basic"},
 {en:"cash", tr:"/kæʃ/", ru:"наличные", note:"pay in cash", topic:"Покупки и деньги", set:"basic"},
-{en:"card", tr:"/kɑːd/", ru:"карта", note:"pay by card", topic:"Покупки и деньги", set:"basic"},
+{en:"card", tr:"/kɑːd/", ru:"карта, карточка", note:"банковская или открытка", topic:"Покупки и деньги", set:"basic"},
 {en:"sale", tr:"/seɪl/", ru:"распродажа", note:"on sale", topic:"Покупки и деньги", set:"basic"},
 {en:"free", tr:"/friː/", ru:"бесплатный; свободный", note:"", topic:"Покупки и деньги", set:"basic"},
 {en:"pay for", tr:"/peɪ fɔː/", ru:"платить за", note:"paid / paid", topic:"Покупки и деньги", set:"basic"},
@@ -2991,7 +3073,7 @@ var VOCAB_EXT2 = [
 {en:"file / folder", tr:"/faɪl, ˈfəʊldə/", ru:"файл / папка", note:"", topic:"Технологии", set:"basic"},
 {en:"password", tr:"/ˈpɑːswɜːd/", ru:"пароль", note:"", topic:"Технологии", set:"basic"},
 {en:"download", tr:"/ˌdaʊnˈləʊd/", ru:"скачивать", note:"upload — загружать", topic:"Технологии", set:"basic"},
-{en:"search", tr:"/sɜːtʃ/", ru:"искать", note:"search for something", topic:"Технологии", set:"basic"},
+{en:"search", tr:"/sɜːtʃ/", ru:"искать тщательно", note:"search for; обыскивать место", topic:"Технологии", set:"basic"},
 {en:"website", tr:"/ˈwebsaɪt/", ru:"сайт", note:"", topic:"Технологии", set:"basic"},
 {en:"email", tr:"/ˈiːmeɪl/", ru:"электронная почта", note:"send an email", topic:"Технологии", set:"basic"},
 {en:"message", tr:"/ˈmesɪdʒ/", ru:"сообщение", note:"", topic:"Технологии", set:"basic"},
@@ -3021,7 +3103,7 @@ var VOCAB_EXT2 = [
 var VOCAB_EXT3 = [
 /* --- Повседневные глаголы --- */
 {en:"wake up", tr:"/weɪk ʌp/", ru:"просыпаться", note:"woke / woken", topic:"Базовые глаголы", set:"basic"},
-{en:"get up", tr:"/ɡet ʌp/", ru:"вставать", note:"", topic:"Базовые глаголы", set:"basic"},
+{en:"get up", tr:"/ɡet ʌp/", ru:"вставать с постели", note:"после сна", topic:"Базовые глаголы", set:"basic"},
 {en:"wash", tr:"/wɒʃ/", ru:"мыть, стирать", note:"", topic:"Базовые глаголы", set:"basic"},
 {en:"brush teeth", tr:"/brʌʃ tiːθ/", ru:"чистить зубы", note:"", topic:"Базовые глаголы", set:"basic"},
 {en:"cook", tr:"/kʊk/", ru:"готовить", note:"", topic:"Базовые глаголы", set:"basic"},
@@ -3031,7 +3113,7 @@ var VOCAB_EXT3 = [
 {en:"dream", tr:"/driːm/", ru:"мечтать; сон", note:"dream about", topic:"Базовые глаголы", set:"basic"},
 {en:"wait", tr:"/weɪt/", ru:"ждать", note:"wait for somebody", topic:"Базовые глаголы", set:"basic"},
 {en:"hurry", tr:"/ˈhʌri/", ru:"торопиться", note:"hurry up!", topic:"Базовые глаголы", set:"basic"},
-{en:"stay", tr:"/steɪ/", ru:"оставаться", note:"", topic:"Базовые глаголы", set:"basic"},
+{en:"stay", tr:"/steɪ/", ru:"оставаться где-то", note:"stay at home, stay in a hotel", topic:"Базовые глаголы", set:"basic"},
 {en:"live", tr:"/lɪv/", ru:"жить", note:"live in a city", topic:"Базовые глаголы", set:"basic"},
 {en:"meet", tr:"/miːt/", ru:"встречать", note:"met / met, без предлога", topic:"Базовые глаголы", set:"basic"},
 {en:"invite", tr:"/ɪnˈvaɪt/", ru:"приглашать", note:"invite somebody to", topic:"Базовые глаголы", set:"basic"},
@@ -3223,7 +3305,7 @@ var VOCAB_EXT4 = [
 {en:"water the plants", tr:"/ˈwɔːtə/", ru:"поливать растения", note:"water как глагол", topic:"Дом и быт", set:"basic"},
 {en:"make the bed", tr:"/meɪk ðə bed/", ru:"заправлять постель", note:"make, не do", topic:"Дом и быт", set:"basic"},
 {en:"do the shopping", tr:"/ˈʃɒpɪŋ/", ru:"ходить за покупками", note:"", topic:"Дом и быт", set:"basic"},
-{en:"repair", tr:"/rɪˈpeə/", ru:"чинить", note:"", topic:"Дом и быт", set:"basic"},
+{en:"repair", tr:"/rɪˈpeə/", ru:"ремонтировать", note:"о технике и зданиях, формальнее", topic:"Дом и быт", set:"basic"},
 {en:"share", tr:"/ʃeə/", ru:"делить, делиться", note:"share with somebody", topic:"Дом и быт", set:"basic"},
 {en:"tidy / messy", tr:"/ˈtaɪdi, ˈmesi/", ru:"прибранный / беспорядок", note:"", topic:"Дом и быт", set:"basic"},
 {en:"rent", tr:"/rent/", ru:"снимать жильё; аренда", note:"", topic:"Дом и быт", set:"basic"},
@@ -3501,7 +3583,7 @@ var VOCAB_EXT6 = [
 {en:"handwriting", tr:"/ˈhændraɪtɪŋ/", ru:"почерк", note:"in bad handwriting", topic:"Предметы и места", set:"hw"},
 {en:"magazine", tr:"/ˌmæɡəˈziːn/", ru:"журнал", note:"ударение на последний слог", topic:"Предметы и места", set:"hw"},
 {en:"hall", tr:"/hɔːl/", ru:"холл, зал", note:"", topic:"Предметы и места", set:"hw"},
-{en:"couch", tr:"/kaʊtʃ/", ru:"диван", note:"также sofa", topic:"Предметы и места", set:"hw"},
+{en:"couch", tr:"/kaʊtʃ/", ru:"диван", note:"разговорнее; в учебниках чаще sofa", topic:"Предметы и места", set:"hw"},
 {en:"oasis", tr:"/əʊˈeɪsɪs/", ru:"оазис", note:"«оу-ЭЙ-сис»", topic:"Предметы и места", set:"hw"},
 {en:"desert", tr:"/ˈdezət/", ru:"пустыня", note:"ударение на первый; dessert — десерт", topic:"Предметы и места", set:"hw"},
 {en:"yard", tr:"/jɑːd/", ru:"двор", note:"in the yard", topic:"Предметы и места", set:"hw"},
@@ -3608,7 +3690,7 @@ var VOCAB_EXT7 = [
 {en:"control", tr:"/kənˈtrəʊl/", ru:"контролировать", note:"controlled — удвоение l", topic:"Частые глаголы", set:"basic"},
 {en:"convince", tr:"/kənˈvɪns/", ru:"убеждать", note:"", topic:"Частые глаголы", set:"basic"},
 {en:"count", tr:"/kaʊnt/", ru:"считать", note:"count on — рассчитывать на", topic:"Частые глаголы", set:"basic"},
-{en:"create", tr:"/kriˈeɪt/", ru:"создавать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"create", tr:"/kriˈeɪt/", ru:"создавать с нуля", note:"make — изготовить, create — придумать", topic:"Частые глаголы", set:"basic"},
 {en:"damage", tr:"/ˈdæmɪdʒ/", ru:"повреждать; ущерб", note:"", topic:"Частые глаголы", set:"basic"},
 {en:"deal with", tr:"/diːl wɪð/", ru:"иметь дело с, решать", note:"dealt / dealt", topic:"Частые глаголы", set:"basic"},
 {en:"deliver", tr:"/dɪˈlɪvə/", ru:"доставлять", note:"", topic:"Частые глаголы", set:"basic"},
@@ -3683,8 +3765,8 @@ var VOCAB_EXT7 = [
 {en:"refuse", tr:"/rɪˈfjuːz/", ru:"отказываться", note:"дальше инфинитив с to", topic:"Частые глаголы", set:"basic"},
 {en:"regret", tr:"/rɪˈɡret/", ru:"сожалеть", note:"regretted — удвоение t", topic:"Частые глаголы", set:"basic"},
 {en:"rely on", tr:"/rɪˈlaɪ ɒn/", ru:"полагаться на", note:"", topic:"Частые глаголы", set:"basic"},
-{en:"remain", tr:"/rɪˈmeɪn/", ru:"оставаться", note:"", topic:"Частые глаголы", set:"basic"},
-{en:"reply", tr:"/rɪˈplaɪ/", ru:"отвечать", note:"reply to", topic:"Частые глаголы", set:"basic"},
+{en:"remain", tr:"/rɪˈmeɪn/", ru:"оставаться в состоянии", note:"книжное: remain silent", topic:"Частые глаголы", set:"basic"},
+{en:"reply", tr:"/rɪˈplaɪ/", ru:"отвечать", note:"reply to; answer — без предлога", topic:"Частые глаголы", set:"basic"},
 {en:"represent", tr:"/ˌreprɪˈzent/", ru:"представлять", note:"", topic:"Частые глаголы", set:"basic"},
 {en:"respect", tr:"/rɪˈspekt/", ru:"уважать", note:"", topic:"Частые глаголы", set:"basic"},
 {en:"respond", tr:"/rɪˈspɒnd/", ru:"реагировать, отвечать", note:"respond to", topic:"Частые глаголы", set:"basic"},
@@ -3789,7 +3871,7 @@ var VOCAB_EXT8 = [
 {en:"available", tr:"/əˈveɪləbl/", ru:"доступный", note:"", topic:"Качества", set:"basic"},
 {en:"aware of", tr:"/əˈweər əv/", ru:"осведомлённый о", note:"be aware of", topic:"Качества", set:"basic"},
 {en:"brief", tr:"/briːf/", ru:"краткий", note:"", topic:"Качества", set:"basic"},
-{en:"broad", tr:"/brɔːd/", ru:"широкий", note:"«брод»", topic:"Качества", set:"basic"},
+{en:"broad", tr:"/brɔːd/", ru:"широкий", note:"книжнее; broad shoulders, broad view", topic:"Качества", set:"basic"},
 {en:"certain", tr:"/ˈsɜːtn/", ru:"уверенный; определённый", note:"", topic:"Качества", set:"basic"},
 {en:"common", tr:"/ˈkɒmən/", ru:"обычный, общий", note:"", topic:"Качества", set:"basic"},
 {en:"entire", tr:"/ɪnˈtaɪə/", ru:"целый", note:"", topic:"Качества", set:"basic"},
@@ -3819,7 +3901,7 @@ var VOCAB_EXT8 = [
 {en:"rare", tr:"/reə/", ru:"редкий", note:"rarely — редко", topic:"Качества", set:"basic"},
 {en:"responsible for", tr:"/rɪˈspɒnsəbl/", ru:"ответственный за", note:"", topic:"Качества", set:"basic"},
 {en:"rough", tr:"/rʌf/", ru:"грубый, неровный", note:"«раф»", topic:"Качества", set:"basic"},
-{en:"several", tr:"/ˈsevrəl/", ru:"несколько", note:"", topic:"Качества", set:"basic"},
+{en:"several", tr:"/ˈsevrəl/", ru:"несколько", note:"больше, чем a few; без артикля", topic:"Качества", set:"basic"},
 {en:"similar to", tr:"/ˈsɪmələ tuː/", ru:"похожий на", note:"предлог to", topic:"Качества", set:"basic"},
 {en:"slight", tr:"/slaɪt/", ru:"небольшой, лёгкий", note:"slightly — слегка", topic:"Качества", set:"basic"},
 {en:"smooth", tr:"/smuːð/", ru:"гладкий", note:"th звонкое", topic:"Качества", set:"basic"},
@@ -3833,7 +3915,7 @@ var VOCAB_EXT8 = [
 {en:"unusual", tr:"/ʌnˈjuːʒuəl/", ru:"необычный", note:"", topic:"Качества", set:"basic"},
 {en:"useful", tr:"/ˈjuːsfl/", ru:"полезный", note:"", topic:"Качества", set:"basic"},
 {en:"various", tr:"/ˈveəriəs/", ru:"различные", note:"", topic:"Качества", set:"basic"},
-{en:"wide", tr:"/waɪd/", ru:"широкий", note:"", topic:"Качества", set:"basic"},
+{en:"wide", tr:"/waɪd/", ru:"широкий", note:"о дороге, реке, расстоянии", topic:"Качества", set:"basic"},
 {en:"wild", tr:"/waɪld/", ru:"дикий", note:"", topic:"Качества", set:"basic"},
 {en:"willing to", tr:"/ˈwɪlɪŋ tuː/", ru:"готовый что-то сделать", note:"", topic:"Качества", set:"basic"},
 {en:"worth", tr:"/wɜːθ/", ru:"стоящий", note:"worth doing — стоит делать", topic:"Качества", set:"basic"},
@@ -3897,6 +3979,157 @@ var VOCAB_EXT9 = [
 {en:"repeat", tr:"/rɪˈpiːt/", ru:"повторять", note:"", topic:"Частые глаголы", set:"basic"}
 ];
 
+
+/* ---------- УТОЧНЕНИЯ ДЛЯ СИНОНИМОВ ----------
+   Применяются после разделения составных записей.
+   Нужны там, где разные слова переводятся одинаково:
+   без пояснения непонятно, какое из них выбрать. */
+var CLARIFY = {
+  "almost":         {ru:"почти",                    note:"= nearly, взаимозаменяемы"},
+  "nearly":         {ru:"почти",                    note:"= almost, взаимозаменяемы"},
+  "term":           {ru:"семестр, четверть",        note:"учебный период; также термин"},
+  "quarter":        {ru:"четверть",                 note:"одна четвёртая; a quarter past"},
+  "film":           {ru:"фильм",                    note:"британское"},
+  "movie":          {ru:"фильм",                    note:"американское"},
+  "hoover":         {ru:"пылесосить",               note:"британское, от марки пылесоса"},
+  "vacuum":         {ru:"пылесосить",               note:"американское"},
+  "about":          {ru:"примерно; о, об",          note:"about ten people; talk about"},
+  "around":         {ru:"примерно; вокруг",         note:"around ten people; walk around"},
+  "upstairs":       {ru:"наверх, на верхний этаж",  note:"о доме; без предлога"},
+  "at the top":     {ru:"наверху чего-то",          note:"at the top of the page"},
+  "ferment":        {ru:"бродить (о вине)",         note:"о жидкости и тесте"},
+  "wander":         {ru:"бродить, гулять",          note:"о человеке; не wonder"},
+  "soil":           {ru:"почва",                    note:"для растений: good soil"},
+  "ground":         {ru:"земля под ногами",         note:"the ground was wet"},
+  "enormous":       {ru:"огромный",                 note:"книжнее, чем huge"},
+  "huge":           {ru:"огромный",                 note:"разговорнее, чем enormous"},
+  "convince":       {ru:"убедить в чём-то",         note:"convince that — изменить мнение"},
+  "persuade":       {ru:"уговорить сделать",        note:"persuade to do — добиться действия"},
+  "amount":         {ru:"количество неисчисляемого", note:"amount of water"},
+  "quantity":       {ru:"количество исчисляемого",  note:"a large quantity of books"},
+  "entire":         {ru:"целый, весь",              note:"книжнее; the entire country"},
+  "whole":          {ru:"целый, весь",              note:"обычное; the whole day"},
+  "familiar":       {ru:"знакомый (прилагательное)", note:"familiar with — знаком с чем-то"},
+  "acquaintance":   {ru:"знакомый (человек)",       note:"существительное"},
+  "although":       {ru:"хотя",                     note:"в начале предложения"},
+  "though":         {ru:"хотя; впрочем",            note:"в конце фразы — «впрочем»"},
+  "must":           {ru:"должен по правилу",        note:"закон, внутренний долг"},
+  "have to":        {ru:"приходится",               note:"обязывают обстоятельства"},
+  "question":       {ru:"вопрос, который задают",   note:"ask a question"},
+  "issue":          {ru:"вопрос, проблема",         note:"тема для обсуждения"},
+  "speed":          {ru:"скорость движения",        note:"at high speed"},
+  "rate":           {ru:"темп, ставка",             note:"birth rate, interest rate"},
+  "throw":          {ru:"бросать предмет",          note:"threw / thrown"},
+  "give up":        {ru:"бросать привычку",         note:"give up smoking"},
+  "quit":           {ru:"бросать работу, уходить",  note:"quit / quit"},
+  "soft":           {ru:"мягкий на ощупь",          note:"soft pillow"},
+  "gentle":         {ru:"мягкий, нежный",           note:"о характере и движении"},
+  "calm":           {ru:"спокойный (человек)",      note:"l не читается"},
+  "peaceful":       {ru:"спокойный (место)",        note:"a peaceful village"},
+  "story":          {ru:"история, рассказ",         note:"общее слово"},
+  "short story":    {ru:"рассказ как жанр",         note:"литературный термин"},
+  "narrative":      {ru:"повествование",            note:"книжное"},
+  "exciting":       {ru:"захватывающий",            note:"вызывает возбуждение"},
+  "fascinating":    {ru:"увлекательный",            note:"затягивает интересом"},
+  "share":          {ru:"делиться с кем-то",        note:"share with somebody"},
+  "divide":         {ru:"делить на части",          note:"divide into"},
+  "ordinary":       {ru:"обычный, рядовой",         note:"ничем не выделяется"},
+  "common":         {ru:"распространённый",         note:"встречается часто"},
+  "allow":          {ru:"разрешать",                note:"allow somebody to do"},
+  "enable":         {ru:"давать возможность",       note:"enable somebody to do"},
+  "gain":           {ru:"приобретать",              note:"gain experience, gain weight"},
+  "receive":        {ru:"получать присланное",      note:"receive a letter"},
+  "maintain":       {ru:"поддерживать в порядке",   note:"maintain a car"},
+  "support":        {ru:"поддерживать морально",    note:"support a friend"},
+  "goal":           {ru:"цель, которой добиваешься", note:"achieve a goal"},
+  "purpose":        {ru:"назначение, смысл",        note:"on purpose — намеренно"},
+  "point":          {ru:"смысл, суть",              note:"what's the point?"},
+  "sense":          {ru:"чувство; смысл",           note:"make sense — иметь смысл"},
+  "scarcely":       {ru:"едва",                     note:"книжнее, чем hardly"},
+  "hardly":         {ru:"едва, почти не",           note:"обычное; не путать с hard"},
+  "a few":          {ru:"несколько",                note:"для исчисляемых: a few books"},
+  "several":        {ru:"несколько",                note:"больше, чем a few"},
+  "sofa":           {ru:"диван",                    note:"обычное слово"},
+  "couch":          {ru:"диван",                    note:"разговорнее"},
+  "pill":           {ru:"таблетка",                 note:"круглая, глотают целиком"},
+  "tablet":         {ru:"таблетка; планшет",        note:"плоская"},
+  "do":             {ru:"делать, выполнять",        note:"do homework; make — создавать"},
+  "make":           {ru:"делать, изготавливать",    note:"make a cake; do — выполнять"},
+  "one":            {ru:"один (число)",            note:"число; alone — в одиночестве"},
+  "alone":          {ru:"один, в одиночестве",     note:"без компании; one — число"},
+  "light":          {ru:"лёгкий по весу; свет",    note:"heavy — тяжёлый; easy — несложный"},
+  "easy":           {ru:"лёгкий, несложный",       note:"difficult — трудный; light — по весу"},
+  "answer":         {ru:"отвечать; ответ",         note:"без предлога; reply требует to"},
+  "reply":          {ru:"отвечать",                note:"reply to; answer — без предлога"},
+  "also":           {ru:"тоже",                    note:"в середине фразы: I also like it"},
+  "too":            {ru:"тоже",                    note:"в конце фразы: I like it too"},
+  "a little":       {ru:"немного",                 note:"для неисчисляемых: a little water"},
+  "some":           {ru:"немного, какой-нибудь",   note:"в утверждении; any — в вопросе"},
+  "a few":          {ru:"несколько",               note:"для исчисляемых: a few books"},
+  "several":        {ru:"несколько",               note:"больше, чем a few; без артикля"},
+  "many":           {ru:"много",                   note:"для исчисляемых: many books"},
+  "much":           {ru:"много",                   note:"для неисчисляемых: much water"},
+  "maybe":          {ru:"может быть",              note:"разговорное, обычно в начале"},
+  "perhaps":        {ru:"может быть",              note:"чуть формальнее, чем maybe"},
+  "Thank you":      {ru:"спасибо",                 note:"полная форма, нейтрально"},
+  "Thanks":         {ru:"спасибо",                 note:"короче и разговорнее"},
+  "Sorry":          {ru:"извините",                note:"когда уже задел или виноват"},
+  "Excuse me":      {ru:"извините",                note:"чтобы обратиться или пройти"},
+  "fat":            {ru:"толстый",                 note:"грубовато; full — наполненный"},
+  "full":           {ru:"полный, наполненный",     note:"о ёмкости; fat — о человеке"},
+  "bicycle":        {ru:"велосипед",               note:"полное слово, официальнее"},
+  "bike":           {ru:"велосипед",               note:"разговорное; by bike"},
+  "journey":        {ru:"поездка, путь",           note:"сам путь из А в Б, часто долгий"},
+  "trip":           {ru:"поездка, выезд",          note:"короткая, туда и обратно"},
+  "travel":         {ru:"путешествовать",          note:"глагол; trip и journey — существительные"},
+  "ill":            {ru:"больной",                 note:"британское: he is ill"},
+  "sick":           {ru:"больной",                 note:"американское; be sick — ещё и «тошнит»"},
+  "pill":           {ru:"таблетка",                note:"круглая, глотают целиком"},
+  "tablet":         {ru:"таблетка",                note:"плоская; также планшет"},
+  "stand up":       {ru:"вставать со стула",       note:"подниматься на ноги"},
+  "get up":         {ru:"вставать с постели",      note:"после сна"},
+  "fix":            {ru:"чинить; закреплять",      note:"разговорное, широкое значение"},
+  "repair":         {ru:"ремонтировать",           note:"о технике и зданиях, формальнее"},
+  "get off":        {ru:"выходить из транспорта",  note:"автобус, поезд, самолёт"},
+  "get on":         {ru:"садиться в транспорт",    note:"автобус, поезд, самолёт"},
+  "sit down":       {ru:"садиться на стул",        note:"sat / sat"},
+  "leave":          {ru:"уходить, уезжать",        note:"left / left; покидать место"},
+  "rarely":         {ru:"редко",                   note:"обычное слово"},
+  "seldom":         {ru:"редко",                   note:"книжное, реже встречается"},
+  "wide":           {ru:"широкий",                 note:"о дороге, реке, расстоянии"},
+  "broad":          {ru:"широкий",                 note:"книжнее; broad shoulders"},
+  "map":            {ru:"карта местности",         note:"a map of the city"},
+  "card":           {ru:"карта, карточка",         note:"банковская или открытка"},
+  "search":         {ru:"искать тщательно",        note:"search for; обыскивать место"},
+  "look for":       {ru:"искать",                  note:"обычное слово для поиска"},
+  "stay":           {ru:"оставаться где-то",       note:"stay at home, stay in a hotel"},
+  "remain":         {ru:"оставаться в состоянии",  note:"книжное: remain silent"},
+  "make":           {ru:"делать, изготавливать",   note:"make a cake; do — выполнять"},
+  "do":             {ru:"делать, выполнять",       note:"do homework; make — создавать"},
+  "create":         {ru:"создавать с нуля",        note:"make — изготовить, create — придумать"},
+  "say":            {ru:"сказать",                 note:"say something; tell — кому-то"},
+  "tell":           {ru:"рассказать кому-то",      note:"tell somebody something"},
+  "speak":          {ru:"говорить",                note:"speak to somebody, speak English"},
+  "talk":           {ru:"разговаривать",           note:"talk about, talk to"},
+  "hear":           {ru:"слышать",                 note:"непроизвольно; listen — намеренно"},
+  "listen to":      {ru:"слушать",                 note:"намеренно; предлог обязателен"},
+  "see":            {ru:"видеть",                  note:"непроизвольно; look at — смотреть"},
+  "look at":        {ru:"смотреть на",             note:"намеренно, короткое действие"},
+  "watch":          {ru:"наблюдать, смотреть",     note:"долго: watch a film, без предлога"},
+  "borrow":         {ru:"брать в долг",            note:"borrow from — у кого берёшь"},
+  "lend":           {ru:"давать в долг",           note:"lend to — кому даёшь"},
+  "bring":          {ru:"приносить сюда",          note:"к говорящему"},
+  "take":           {ru:"уносить, брать",          note:"от говорящего"},
+  "carry":          {ru:"нести",                   note:"в руках, по пути"},
+  "home city":      {ru:"родной город",            note:"не native city"},
+  "shop assistant": {ru:"продавец в магазине",     note:"работник торгового зала"},
+  "seller":         {ru:"продавец",                note:"тот, кто продаёт, в том числе на рынке"},
+  "living room":    {ru:"гостиная",                note:"современное слово"},
+  "drawing room":   {ru:"гостиная",                note:"старомодное, в литературе"},
+  "sofa":           {ru:"диван",                   note:"обычное слово"},
+  "couch":          {ru:"диван",                   note:"разговорнее, чем sofa"}
+};
+
 /* ---------- СБОРКА ----------
 
    Записи вида «arm / leg» и «one, two, three» разбиваются на отдельные слова:
@@ -3945,7 +4178,11 @@ var VOCAB = (function(){
   all.forEach(function(entry){
     splitEntry(entry).forEach(function(w){
       var k = w.en.toLowerCase();
-      if (!seen[k]){ seen[k] = 1; out.push(w); }
+      if (seen[k]) return;
+      seen[k] = 1;
+      var c = CLARIFY[w.en];
+      if (c){ w = {en:w.en, tr:w.tr, ru:c.ru, note:c.note, topic:w.topic, set:w.set}; }
+      out.push(w);
     });
   });
   return out;
@@ -3957,6 +4194,40 @@ var TOPICS = (function(){
     if (seen.indexOf(w.topic) === -1){ seen.push(w.topic); out.push({name:w.topic, set:w.set}); }
   });
   return out;
+})();
+
+/* ---------- СИНОНИМЫ ----------
+   Если у двух слов перевод совпадает буква в букву, различить их
+   по подсказке невозможно. Тренажёр принимает любой вариант:
+   «тоже» — и also, и too; «больной» — и ill, и sick.
+   Карта строится сама, вручную ничего поддерживать не нужно. */
+var SYNONYMS = (function(){
+  function norm(s){
+    return String(s || '').toLowerCase()
+      .replace(/\u0451/g, '\u0435')
+      .replace(/[^\u0430-\u044f a-z,]/g, '')
+      .replace(/\s+/g, ' ').trim();
+  }
+  var map = {};
+  VOCAB.forEach(function(w){
+    var k = norm(w.ru);
+    if (!k) return;
+    (map[k] = map[k] || []).push(w.en);
+  });
+  return {
+    /* все английские варианты для этого русского перевода */
+    forRu: function(ru){ return map[norm(ru)] || []; },
+    /* что принимать как верный ответ для слова */
+    accept: function(word){
+      var list = map[norm(word.ru)] || [];
+      if (list.indexOf(word.en) === -1) list = list.concat([word.en]);
+      return list;
+    },
+    /* другие слова с тем же переводом */
+    others: function(word){
+      return (map[norm(word.ru)] || []).filter(function(x){ return x !== word.en; });
+    }
+  };
 })();
 
 </script>
@@ -4583,36 +4854,39 @@ document.addEventListener('DOMContentLoaded', function(){
    ПРОГРЕСС ПО СЛОВАМ
 
    Два навыка считаются раздельно:
-     write — написание   (тренажёр «Написание»)
-     speak — произношение (тренажёр «Произношение»)
+     w — написание   (тренажёр «Написание»)
+     s — произношение (тренажёр «Произношение»)
+   Нужно по 3 верных в каждом.
 
-   Верный ответ прибавляет к своему навыку, ошибка отнимает.
-   Нужно по 3 в каждом.
-
-   Уровень выводится из навыков:
+   Уровень хранится явно, чтобы ошибки не обнуляли накопленное:
      0 «Не выучено»  — ни один навык не набран
-     1 «Повторение»  — набран один навык
+     1 «Повторение»  — набран один навык, либо выученное слово забылось
      2 «Выучено»     — набраны оба
 
-   Карточки — чистое повторение: двигают срок возврата,
-   но навыки не трогают.
+   Ошибка НЕ отнимает у навыков. Она делает так:
+     выучено  → повторение  (одного верного ответа хватит, чтобы вернуть)
+     повторение → остаётся, пока ошибок подряд меньше пяти
+     пять ошибок подряд → полный сброс в «не выучено»
 
-   Срок возврата по уровням: сразу / 2 дня / 10 дней.
+   Уровень не понижается от времени. Проходит только срок повторения:
+     уровень 0 — сразу, 1 — через 2 дня, 2 — через 10 дней.
+   Выученное слово с наступившим сроком попадает в отдельную выборку
+   «пора повторить», но остаётся выученным.
 
-   Хранится в localStorage под ключом progress-v2 как JSON:
-     { "слово": {w:написание, s:произношение, r:верных, x:ошибок, d:срок, t:когда} }
+   Хранится в localStorage под ключом progress-v3:
+     { "слово": {l:уровень, w, s, f:ошибок подряд, r:верных, x:ошибок, d:срок, t:когда} }
    ========================================================= */
 
 var Progress = {
-  KEY: 'progress-v2',
-  NEED: 3,                     // сколько верных нужно в каждом навыке
+  KEY: 'progress-v3',
+  NEED: 3,                     // верных ответов в каждом навыке
+  FAILS_TO_RESET: 5,           // ошибок подряд до полного сброса
   DELAY: [0, 2, 10],           // задержка в днях по уровням
   NAMES: ['Не выучено', 'Повторение', 'Выучено'],
   SPEAK_KEY: 'progress-use-speak',
 
   _data: null,
 
-  /* учитывать ли произношение: без микрофона это недостижимо */
   useSpeak: function(){
     var saved = Store.get(this.SPEAK_KEY, null);
     if (saved !== null) return !!saved;
@@ -4620,38 +4894,52 @@ var Progress = {
   },
   setUseSpeak: function(v){ Store.set(this.SPEAK_KEY, !!v); },
 
+  blank: function(){ return {l:0, w:0, s:0, f:0, r:0, x:0, d:0, t:0}; },
+
   all: function(){
     if (this._data) return this._data;
     this._data = Store.get(this.KEY, null);
+    if (this._data) return this._data;
 
-    if (!this._data){
-      this._data = {};
-      var now = Date.now();
+    /* ---------- перенос старого прогресса ---------- */
+    this._data = {};
+    var self = this, now = Date.now();
 
-      /* перенос из прежней схемы с одним счётчиком */
-      var v1 = Store.get('progress-v1', null);
-      if (v1){
-        var self = this;
-        Object.keys(v1).forEach(function(k){
-          var o = v1[k];
-          var done = (o.l >= 2) ? self.NEED : (o.l === 1 ? self.NEED : (o.s || 0));
-          self._data[k] = {
-            w: Math.min(self.NEED, done),
-            s: o.l >= 2 ? self.NEED : 0,
-            r: o.r || 0, x: o.w || 0,
-            d: o.d || now, t: o.t || now
-          };
-        });
-      }
+    var v2 = Store.get('progress-v2', null);
+    if (v2){
+      Object.keys(v2).forEach(function(k){
+        var o = v2[k] || {};
+        var w = Math.min(self.NEED, o.w || 0);
+        var s = Math.min(self.NEED, o.s || 0);
+        var l = (w >= self.NEED && s >= self.NEED) ? 2
+              : (w >= self.NEED || s >= self.NEED) ? 1 : 0;
+        self._data[k] = {l:l, w:w, s:s, f:0, r:o.r||0, x:o.x||0, d:o.d||now, t:o.t||now};
+      });
+      this.save();
+      return this._data;
+    }
 
-      /* ещё более ранние отметки «выучено» */
-      var old = Store.get('vocab-learned', null);
-      if (old && !v1){
-        var me = this;
-        Object.keys(old).forEach(function(k){
-          me._data[k] = {w:me.NEED, s:me.NEED, r:me.NEED, x:0, d:now, t:now};
-        });
-      }
+    var v1 = Store.get('progress-v1', null);
+    if (v1){
+      Object.keys(v1).forEach(function(k){
+        var o = v1[k] || {};
+        var done = (o.l >= 1) ? self.NEED : (o.s || 0);
+        self._data[k] = {
+          l: o.l || 0,
+          w: Math.min(self.NEED, done),
+          s: (o.l >= 2) ? self.NEED : 0,
+          f: 0, r: o.r||0, x: o.w||0, d: o.d||now, t: o.t||now
+        };
+      });
+      this.save();
+      return this._data;
+    }
+
+    var old = Store.get('vocab-learned', null);
+    if (old){
+      Object.keys(old).forEach(function(k){
+        self._data[k] = {l:2, w:self.NEED, s:self.NEED, f:0, r:self.NEED, x:0, d:now, t:now};
+      });
       this.save();
     }
     return this._data;
@@ -4660,37 +4948,55 @@ var Progress = {
   save: function(){ Store.set(this.KEY, this._data); },
 
   of: function(en){
-    return this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    var d = this.all()[en];
+    return d || this.blank();
   },
 
-  /* уровень выводится из навыков, а не хранится */
   level: function(en){
     var d = this.of(en);
-    var wOk = d.w >= this.NEED;
-    var sOk = d.s >= this.NEED;
-    if (!this.useSpeak()) return wOk ? 2 : (d.w > 0 ? 1 : 0);
-    if (wOk && sOk) return 2;
-    if (wOk || sOk) return 1;
-    return 0;
+    /* без учёта произношения «выучено» достигается одним написанием */
+    if (!this.useSpeak() && d.w >= this.NEED) return 2;
+    return d.l || 0;
   },
 
-  /* сколько осталось до полного освоения */
   remaining: function(en){
     var d = this.of(en);
     return {
-      write: Math.max(0, this.NEED - d.w),
-      speak: this.useSpeak() ? Math.max(0, this.NEED - d.s) : 0
+      write: Math.max(0, this.NEED - (d.w || 0)),
+      speak: this.useSpeak() ? Math.max(0, this.NEED - (d.s || 0)) : 0
     };
+  },
+
+  /* пересчёт уровня вверх по навыкам */
+  _up: function(d){
+    var w = d.w >= this.NEED, s = d.s >= this.NEED;
+    if (w && s) return 2;
+    if (w || s) return Math.max(d.l, 1);
+    return d.l;
   },
 
   /* ответ в тренажёре навыка: skill — "write" или "speak" */
   answer: function(en, ok, skill){
-    var d = this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    var d = this.all()[en] || this.blank();
     var now = Date.now();
     var key = (skill === 'speak') ? 's' : 'w';
 
-    if (ok){ d[key] = Math.min(this.NEED, (d[key] || 0) + 1); d.r++; }
-    else    { d[key] = Math.max(0, (d[key] || 0) - 1);        d.x++; }
+    if (ok){
+      d.f = 0;
+      d.r++;
+      d[key] = Math.min(this.NEED, (d[key] || 0) + 1);
+      d.l = this._up(d);
+    } else {
+      d.x++;
+      d.f = (d.f || 0) + 1;
+      if (d.f >= this.FAILS_TO_RESET){
+        /* слово действительно забыто — начинаем заново */
+        d.l = 0; d.w = 0; d.s = 0; d.f = 0;
+      } else if (d.l === 2){
+        /* выученное забылось — в повторение, навыки не трогаем */
+        d.l = 1;
+      }
+    }
 
     d.t = now;
     this.all()[en] = d;
@@ -4699,9 +5005,9 @@ var Progress = {
     return d;
   },
 
-  /* карточки: только сдвигают срок, навыки не трогают */
+  /* карточки: только сдвигают срок, навыки и уровень не трогают */
   review: function(en, ok){
-    var d = this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    var d = this.all()[en] || this.blank();
     var now = Date.now();
     d.t = now;
     this.all()[en] = d;
@@ -4710,15 +5016,17 @@ var Progress = {
     return d;
   },
 
-  /* ручная установка уровня из словаря */
   setLevel: function(en, level){
-    var d = this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    var d = this.all()[en] || this.blank();
+    level = Math.max(0, Math.min(2, level));
+    d.l = level;
+    d.f = 0;
     if (level >= 2){ d.w = this.NEED; d.s = this.NEED; }
     else if (level === 1){ d.w = this.NEED; d.s = 0; }
     else { d.w = 0; d.s = 0; }
     d.t = Date.now();
     this.all()[en] = d;
-    d.d = d.t + this.DELAY[this.level(en)] * 86400000;
+    d.d = d.t + this.DELAY[level] * 86400000;
     this.save();
     return d;
   },
@@ -4729,13 +5037,17 @@ var Progress = {
     return Date.now() >= (d.d || 0);
   },
 
+  /* выучено, но срок подошёл — отдельная выборка */
+  isStale: function(en){
+    return this.level(en) === 2 && this.isDue(en);
+  },
+
   counts: function(list){
     var c = [0, 0, 0], self = this;
     list.forEach(function(w){ c[self.level(w.en)]++; });
     return c;
   },
 
-  /* сколько слов ждёт каждого навыка */
   skillCounts: function(list){
     var need = {write:0, speak:0}, self = this;
     list.forEach(function(w){
@@ -4749,6 +5061,9 @@ var Progress = {
   dueCount: function(list){
     return list.filter(function(w){ return Progress.isDue(w.en); }).length;
   },
+  staleCount: function(list){
+    return list.filter(function(w){ return Progress.isStale(w.en); }).length;
+  },
 
   reset: function(){ this._data = {}; this.save(); },
 
@@ -4756,7 +5071,7 @@ var Progress = {
   exportFile: function(){
     var payload = {
       app: 'english-trainer',
-      version: 2,
+      version: 3,
       savedAt: new Date().toISOString(),
       progress: this.all(),
       trainerStats: Store.get('trainer-stats', {}),
@@ -4773,33 +5088,40 @@ var Progress = {
 
   importFile: function(file, done){
     var reader = new FileReader();
+    var self = this;
     reader.onload = function(){
       try {
         var p = JSON.parse(reader.result);
         if (!p || !p.progress) throw new Error('в файле нет данных о прогрессе');
-        var added = 0, old = (p.version || 1) < 2;
+        var ver = p.version || 1, added = 0;
         Object.keys(p.progress).forEach(function(k){
-          var inc = p.progress[k];
-          if (old){
-            inc = {w: inc.l >= 1 ? Progress.NEED : (inc.s || 0),
-                   s: inc.l >= 2 ? Progress.NEED : 0,
-                   r: inc.r || 0, x: inc.w || 0, d: inc.d || 0, t: inc.t || 0};
+          var inc = p.progress[k] || {};
+          if (ver < 3){
+            var w = Math.min(self.NEED, ver === 2 ? (inc.w||0) : (inc.l >= 1 ? self.NEED : (inc.s||0)));
+            var s = ver === 2 ? Math.min(self.NEED, inc.s||0) : (inc.l >= 2 ? self.NEED : 0);
+            inc = {
+              l: (w >= self.NEED && s >= self.NEED) ? 2 : (w >= self.NEED || s >= self.NEED) ? 1 : 0,
+              w:w, s:s, f:0,
+              r: inc.r||0, x: ver === 2 ? (inc.x||0) : (inc.w||0),
+              d: inc.d||0, t: inc.t||0
+            };
           }
-          var cur = Progress.all()[k];
-          /* при слиянии берём лучшее по каждому навыку */
-          if (!cur){ Progress.all()[k] = inc; added++; return; }
-          var merged = {
-            w: Math.max(cur.w || 0, inc.w || 0),
-            s: Math.max(cur.s || 0, inc.s || 0),
-            r: Math.max(cur.r || 0, inc.r || 0),
-            x: Math.max(cur.x || 0, inc.x || 0),
-            d: Math.max(cur.d || 0, inc.d || 0),
-            t: Math.max(cur.t || 0, inc.t || 0)
+          var cur = self.all()[k];
+          if (!cur){ self.all()[k] = inc; added++; return; }
+          /* при слиянии берём лучшее по каждому полю */
+          self.all()[k] = {
+            l: Math.max(cur.l||0, inc.l||0),
+            w: Math.max(cur.w||0, inc.w||0),
+            s: Math.max(cur.s||0, inc.s||0),
+            f: 0,
+            r: Math.max(cur.r||0, inc.r||0),
+            x: Math.max(cur.x||0, inc.x||0),
+            d: Math.max(cur.d||0, inc.d||0),
+            t: Math.max(cur.t||0, inc.t||0)
           };
-          Progress.all()[k] = merged;
           added++;
         });
-        Progress.save();
+        self.save();
         if (p.trainerStats) Store.set('trainer-stats', p.trainerStats);
         if (p.topics) Store.set('trainer-topics', p.topics);
         done(null, added);
@@ -5387,7 +5709,10 @@ function renderSkillPanel(host, onChange){
     var list = VOCAB.filter(function(w){
       if (setFilter !== 'all' && w.set !== setFilter) return false;
       if (topicFilter !== 'all' && w.topic !== topicFilter) return false;
-      if (lvlFilter !== 'all' && Progress.level(w.en) !== +lvlFilter) return false;
+      if (lvlFilter === 'due'   && !Progress.isDue(w.en)) return false;
+      if (lvlFilter === 'stale' && !Progress.isStale(w.en)) return false;
+      if (lvlFilter !== 'all' && lvlFilter !== 'due' && lvlFilter !== 'stale'
+          && Progress.level(w.en) !== +lvlFilter) return false;
       if (q && (w.en + ' ' + w.ru + ' ' + (w.tr||'') + ' ' + (w.note||'')).toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
@@ -5397,6 +5722,7 @@ function renderSkillPanel(host, onChange){
       var lvl = Progress.level(w.en);
       var seen = (d.r || 0) + (d.x || 0);
       var N = Progress.NEED;
+      var dueMark = Progress.isDue(w.en) ? '<span class="duemark">пора</span>' : '';
       var skills = '<span class="skills"><span class="skill' + (d.w >= N ? ' done' : '') + '">✍ ' +
         Math.min(d.w||0, N) + '/' + N + '</span>' +
         (Progress.useSpeak() ? '<span class="skill' + (d.s >= N ? ' done' : '') + '">🎤 ' +
@@ -5404,7 +5730,7 @@ function renderSkillPanel(host, onChange){
       return '<tr class="lv' + lvl + '">' +
         '<td data-label="Уровень"><button class="lvl l' + lvl + ' btnlvl" type="button" data-word="' +
           esc(w.en).replace(/"/g,'&quot;') + '" title="Нажми, чтобы сменить вручную">' +
-          Progress.NAMES[lvl] + '</button>' + skills + '</td>' +
+          Progress.NAMES[lvl] + '</button>' + dueMark + skills + '</td>' +
         '<td class="en main">' + esc(w.en) +
           (Speak.ok ? ' <button class="iconbtn sound" type="button" data-say="' + esc(w.en).replace(/"/g,'&quot;') +
             '" title="Послушать"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/>' +
@@ -5412,12 +5738,17 @@ function renderSkillPanel(host, onChange){
         '<td class="ipa" data-label="—">' + esc(w.tr || '') + '</td>' +
         '<td data-label="—">' + esc(w.ru) + '</td>' +
         '<td style="color:var(--ink-soft)" data-label="—">' + esc(w.note || '') +
+          (SYNONYMS.others(w).length
+            ? '<span class="synmark"> · то же: ' + esc(SYNONYMS.others(w).join(', ')) + '</span>'
+            : '') +
           (seen ? '<span class="seen"> · ответов: ' + seen + '</span>' : '') + '</td></tr>';
     }).join('') || '<tr><td colspan="5" style="color:var(--ink-faint)">Ничего не найдено</td></tr>';
 
     var c = Progress.counts(VOCAB);
-    counter.textContent = 'Показано ' + list.length + ' · выучено ' + c[2] +
-      ' · на повторении ' + c[1] + ' · не выучено ' + c[0];
+    var due = Progress.dueCount(VOCAB), stale = Progress.staleCount(VOCAB);
+    counter.innerHTML = 'Показано <b>' + list.length + '</b> из ' + VOCAB.length +
+      ' · выучено ' + c[2] + ' · на повторении ' + c[1] + ' · не выучено ' + c[0] +
+      ' · пора повторить ' + due + ' (из них выученных ' + stale + ')';
   }
 
   /* смена уровня вручную: по кругу */
@@ -5473,10 +5804,45 @@ function renderSkillPanel(host, onChange){
     this.value = '';
   });
 
-  document.getElementById('reset').addEventListener('click', function(){
-    if (!confirm('Сбросить весь прогресс по словам? Это действие нельзя отменить.')) return;
-    Progress.reset(); render();
-  });
+  /* сброс в три шага: случайно не нажмёшь */
+  (function(){
+    var btn = document.getElementById('reset');
+    var msgBox = document.getElementById('reset-msg');
+    var step = 0, timer = null;
+
+    var steps = [
+      {label:'Точно сбросить? Нажми ещё раз', hint:'Шаг 1 из 3. Прогресс пока цел.'},
+      {label:'Это нельзя отменить. Ещё раз',  hint:'Шаг 2 из 3. Сохрани файл, если не сохранил.'},
+      {label:'Сбросить окончательно',          hint:'Шаг 3 из 3. Следующее нажатие удалит всё.'}
+    ];
+
+    function reset(){
+      step = 0;
+      btn.textContent = 'Сбросить весь прогресс';
+      btn.classList.remove('armed');
+      msgBox.innerHTML = '';
+      if (timer) clearTimeout(timer);
+    }
+
+    btn.addEventListener('click', function(){
+      if (step < steps.length){
+        var st = steps[step];
+        btn.textContent = st.label;
+        btn.classList.add('armed');
+        msgBox.innerHTML = '<p class="qhint" style="margin:.6rem 0 0">' + st.hint +
+          ' Подтверждение отменится через 10 секунд.</p>';
+        step++;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(reset, 10000);
+        return;
+      }
+      if (!confirm('Последняя проверка: удалить весь прогресс по словам?')) { reset(); return; }
+      Progress.reset();
+      reset();
+      render();
+      msgBox.innerHTML = '<div class="verdict ok" style="margin-top:.7rem"><b>Готово</b>Прогресс сброшен.</div>';
+    });
+  })();
 
   renderVoicePanel(document.getElementById('v-voice'));
   renderSkillPanel(document.getElementById('v-skill'), render);
@@ -5581,34 +5947,66 @@ var TopicPicker = {
     if (this.selected) return this.selected;
     var saved = Store.get(this.key, null);
     var all = TOPICS.map(function(t){ return t.name; });
-    this.selected = (saved && saved.length) ? saved.filter(function(n){ return all.indexOf(n) !== -1; }) : all.slice();
-    if (!this.selected.length) this.selected = all.slice();
+    if (saved === null) this.selected = all.slice();        /* первый запуск */
+    else this.selected = saved.filter(function(n){ return all.indexOf(n) !== -1; });
     return this.selected;
   },
   save: function(){ Store.set(this.key, this.selected); },
   has: function(name){ return this.load().indexOf(name) !== -1; },
   toggle: function(name){
+    this.load();
     var i = this.selected.indexOf(name);
     if (i === -1) this.selected.push(name);
-    else if (this.selected.length > 1) this.selected.splice(i, 1);
+    else this.selected.splice(i, 1);     /* можно снять и последнюю */
     this.save();
   },
   setAll: function(names){ this.selected = names.slice(); this.save(); },
+  clearAll: function(){ this.selected = []; this.save(); },
 
-  dueOnly: function(){ return Store.get(this.dueKey, true); },
-  setDueOnly: function(v){ Store.set(this.dueKey, !!v); },
+  /* режим отбора: all | due | stale | new | learning | learned */
+  modeKey: 'trainer-mode',
+  mode: function(){ return Store.get(this.modeKey, 'due'); },
+  setMode: function(v){ Store.set(this.modeKey, v); },
+
+  MODES: [
+    {id:'all',      name:'Все слова'},
+    {id:'due',      name:'Пора повторить'},
+    {id:'stale',    name:'Выучено, но пора повторить'},
+    {id:'new',      name:'Не выучено'},
+    {id:'learning', name:'На повторении'},
+    {id:'learned',  name:'Выучено'}
+  ],
 
   /* все слова выбранных тем */
   pool: function(){
     var sel = this.load();
     return VOCAB.filter(function(w){ return sel.indexOf(w.topic) !== -1; });
   },
-  /* слова для тренировки: с учётом срока повторения */
+  /* слова для тренировки с учётом выбранного режима */
   words: function(){
     var pool = this.pool();
-    if (!this.dueOnly()) return pool;
-    var due = pool.filter(function(w){ return Progress.isDue(w.en); });
-    return due.length ? due : pool;
+    var m = this.mode();
+    if (m === 'all') return pool;
+    var f;
+    if (m === 'due')           f = function(w){ return Progress.isDue(w.en); };
+    else if (m === 'stale')    f = function(w){ return Progress.isStale(w.en); };
+    else if (m === 'new')      f = function(w){ return Progress.level(w.en) === 0; };
+    else if (m === 'learning') f = function(w){ return Progress.level(w.en) === 1; };
+    else if (m === 'learned')  f = function(w){ return Progress.level(w.en) === 2; };
+    else return pool;
+    return pool.filter(f);
+  },
+
+  /* сколько слов даст каждый режим */
+  modeCount: function(id){
+    var pool = this.pool();
+    if (id === 'all')      return pool.length;
+    if (id === 'due')      return pool.filter(function(w){ return Progress.isDue(w.en); }).length;
+    if (id === 'stale')    return pool.filter(function(w){ return Progress.isStale(w.en); }).length;
+    if (id === 'new')      return pool.filter(function(w){ return Progress.level(w.en) === 0; }).length;
+    if (id === 'learning') return pool.filter(function(w){ return Progress.level(w.en) === 1; }).length;
+    if (id === 'learned')  return pool.filter(function(w){ return Progress.level(w.en) === 2; }).length;
+    return 0;
   }
 };
 
@@ -5621,11 +6019,6 @@ function renderTopicPanel(host, onChange){
     var talk = TOPICS.filter(function(t){ return t.set !== 'hw'; });
     var hw   = TOPICS.filter(function(t){ return t.set === 'hw'; });
 
-    var poolAll = TopicPicker.pool();
-    var c = Progress.counts(poolAll);
-    var due = Progress.dueCount(poolAll);
-    var need = Progress.skillCounts(poolAll);
-
     function chips(list){
       return list.map(function(t){
         return '<span class="topicchip' + (TopicPicker.has(t.name) ? ' on' : '') +
@@ -5634,39 +6027,59 @@ function renderTopicPanel(host, onChange){
       }).join('');
     }
 
+    var pool = TopicPicker.pool();
+    var c = Progress.counts(pool);
+    var ready = TopicPicker.words().length;
+    var mode = TopicPicker.mode();
+
+    var modeBtns = TopicPicker.MODES.map(function(m){
+      var n = TopicPicker.modeCount(m.id);
+      return '<span class="topicchip' + (mode === m.id ? ' on' : '') + '" data-mode="' + m.id + '">' +
+             esc(m.name) + ' <span class="n">' + n + '</span></span>';
+    }).join('');
+
     host.innerHTML =
-      '<div class="setrow">' +
-        '<h5 style="margin:0;flex:1">Какие слова повторяем</h5>' +
+      '<h5>Что повторяем</h5>' +
+      '<div class="topiclist">' + modeBtns + '</div>' +
+
+      '<div class="setrow" style="margin:1.1rem 0 .4rem">' +
+        '<h5 style="margin:0;flex:1">Темы</h5>' +
         '<button class="btn" data-pick="all">Все</button>' +
-        '<button class="btn" data-pick="basic">Разговорные темы</button>' +
+        '<button class="btn" data-pick="basic">Разговорные</button>' +
         '<button class="btn" data-pick="hw">Из домашек</button>' +
+        '<button class="btn" data-pick="none">Снять все</button>' +
       '</div>' +
-      '<h5>Разговорные темы</h5><div class="topiclist">' + chips(talk) + '</div>' +
-      '<h5 style="margin-top:.95rem">Из домашек</h5><div class="topiclist">' + chips(hw) + '</div>' +
-      '<div class="setrow" style="margin:.95rem 0 0">' +
-        '<span class="topicchip' + (TopicPicker.dueOnly() ? ' on' : '') + '" data-due="1">' +
-          'Только те, что пора повторить <span class="n">' + due + '</span></span>' +
-      '</div>' +
+      '<h5 style="margin:.6rem 0 .35rem">Разговорные темы</h5>' +
+      '<div class="topiclist">' + chips(talk) + '</div>' +
+      '<h5 style="margin:.9rem 0 .35rem">Из домашек</h5>' +
+      '<div class="topiclist">' + chips(hw) + '</div>' +
+
       '<div class="lvlbar">' +
         '<span class="lvl l0">Не выучено <b>' + c[0] + '</b></span>' +
         '<span class="lvl l1">Повторение <b>' + c[1] + '</b></span>' +
         '<span class="lvl l2">Выучено <b>' + c[2] + '</b></span>' +
       '</div>' +
-      '<p class="qhint" style="margin:.6rem 0 0">Ждут написания: ' + need.write +
-        (Progress.useSpeak() ? ' · ждут произношения: ' + need.speak : '') + '</p>';
+      '<p class="qhint" style="margin:.65rem 0 0">' +
+        (pool.length === 0
+          ? 'Не выбрано ни одной темы — отметь хотя бы одну.'
+          : (ready === 0
+             ? 'В этой выборке сейчас нет слов. Смени режим или добавь темы.'
+             : 'В тренировке: <b>' + ready + '</b> слов из ' + pool.length + ' в выбранных темах.')) +
+      '</p>';
   }
 
   host.addEventListener('click', function(e){
-    if (e.target.closest('[data-due]')){
-      TopicPicker.setDueOnly(!TopicPicker.dueOnly());
-      draw(); onChange(); return;
-    }
+    var m = e.target.closest('[data-mode]');
+    if (m){ TopicPicker.setMode(m.dataset.mode); draw(); onChange(); return; }
+
     var chip = e.target.closest('[data-topic]');
     if (chip){ TopicPicker.toggle(chip.dataset.topic); draw(); onChange(); return; }
+
     var pick = e.target.closest('[data-pick]');
     if (pick){
       var mode = pick.dataset.pick;
-      TopicPicker.setAll(TOPICS.filter(function(t){
+      if (mode === 'none') TopicPicker.clearAll();
+      else TopicPicker.setAll(TOPICS.filter(function(t){
         if (mode === 'all') return true;
         if (mode === 'hw') return t.set === 'hw';
         return t.set !== 'hw';
@@ -5721,6 +6134,11 @@ function renderTopicPanel(host, onChange){
     setBar('c-bar', q.right, total);
 
     var w = q.current();
+    if (!w && total === 0){
+      deck.innerHTML = '<div class="deck-empty"><b style="font-size:1.1rem">Здесь пока нет слов</b>' +
+        '<span>Смени режим выше или отметь больше тем.</span></div>';
+      return;
+    }
     if (!w){
       deck.innerHTML = '<div class="deck-empty"><b style="font-size:1.15rem">Колода пройдена</b>' +
         '<span>Верно с первого раза: ' + q.right + ' из ' + total + '</span>' +
@@ -5843,6 +6261,11 @@ function renderTopicPanel(host, onChange){
     setBar('w-bar', q.right, total);
 
     var w = q.current();
+    if (!w && total === 0){
+      stage.innerHTML = '<p class="qtext">Здесь пока нет слов</p>' +
+        '<p class="qhint">Смени режим выше или отметь больше тем.</p>';
+      return;
+    }
     if (!w){
       stage.innerHTML = '<p class="qtext">Всё пройдено.</p><p class="qhint">Верно с первого раза: ' +
         q.right + ' из ' + total + '</p>';
@@ -5872,8 +6295,13 @@ function renderTopicPanel(host, onChange){
         function(variants){
           var w = q.current();
           input.value = variants[0];
-          var r = Fuzzy.check(variants, w.en);
-          if (r.ok) return reveal(true, false);
+          var best = null;
+          SYNONYMS.accept(w).forEach(function(cand){
+            var rr = Fuzzy.check(variants, cand);
+            if (!best || rr.score > best.score) best = rr;
+          });
+          var r = best;
+          if (r.ok) return reveal(true, false, r.said);
           document.getElementById('w-verdict').innerHTML =
             '<div class="verdict no"><b>Услышал «' + esc(r.said) + '»</b>' +
             'Похоже на ' + r.percent + '%. Поправь в поле или скажи ещё раз.</div>';
@@ -5888,8 +6316,9 @@ function renderTopicPanel(host, onChange){
   function check(){
     var w = q.current();
     var val = document.getElementById('w-input').value;
-    if (matches(val, [w.en])) return reveal(true, false);
-    if (closeEnough(val, w.en)){
+    var ok = SYNONYMS.accept(w);
+    if (matches(val, ok)) return reveal(true, false, val);
+    if (ok.some(function(x){ return closeEnough(val, x); })){
       document.getElementById('w-verdict').innerHTML =
         '<div class="verdict no"><b>Почти</b>Есть опечатка — посмотри ещё раз и поправь.</div>';
       return;
@@ -5897,16 +6326,25 @@ function renderTopicPanel(host, onChange){
     reveal(false, false);
   }
 
-  function reveal(ok, skipped){
+  function reveal(ok, skipped, given){
     var w = q.current();
     bumpStat('write', ok);
     var d = Progress.answer(w.en, ok, 'write');
+    var others = SYNONYMS.others(w);
+    /* если ответил синонимом — показываем именно его */
+    var shown = w.en;
+    if (ok && given && !matches(given, [w.en])){
+      var hit = others.filter(function(x){ return matches(given, [x]); })[0];
+      if (hit) shown = hit;
+    }
     var rem = Progress.remaining(w.en);
     document.getElementById('w-verdict').innerHTML =
       '<div class="verdict ' + (ok ? 'ok' : 'no') + '"><b>' +
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
-      '<span class="en">' + esc(w.en) + '</span>' +
-      (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(w.en) +
+      '<span class="en">' + esc(shown) + '</span>' +
+      (w.tr && shown === w.en ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(shown) +
+      (others.length ? '<br><span style="color:var(--ink-soft);font-size:.9em">Также принимается: ' +
+        esc(others.concat(shown === w.en ? [] : [w.en]).filter(function(x){ return x !== shown; }).join(' · ')) + '</span>' : '') +
       (w.note ? '<br><span style="color:var(--ink-soft);font-size:.9em">' + esc(w.note) + '</span>' : '') +
       '<div class="lvlnow">' + Progress.NAMES[Progress.level(w.en)] + ' · ' +
         (rem.write ? 'написать ещё ' + rem.write : 'написание освоено') +
@@ -6108,6 +6546,11 @@ function renderTopicPanel(host, onChange){
     }
 
     var w = q.current();
+    if (!w && total === 0){
+      stage.innerHTML = '<p class="qtext">Здесь пока нет слов</p>' +
+        '<p class="qhint">Смени режим выше или отметь больше тем.</p>';
+      return;
+    }
     if (!w){
       stage.innerHTML = '<p class="qtext">Всё пройдено.</p><p class="qhint">Верно с первого раза: ' +
         q.right + ' из ' + total + '</p>';
@@ -6140,10 +6583,14 @@ function renderTopicPanel(host, onChange){
     btn.classList.add('rec'); btn.textContent = '● Слушаю…';
     Listen.start(
       function(variants){
-        var r = Fuzzy.check(variants, w.en);
-        if (r.ok) return reveal(true, false, r);
-        if (r.near) return almost(r);
-        reveal(false, false, r);
+        var best = null;
+        SYNONYMS.accept(w).forEach(function(cand){
+          var rr = Fuzzy.check(variants, cand);
+          if (!best || rr.score > best.score){ best = rr; best.word = cand; }
+        });
+        if (best.ok) return reveal(true, false, best);
+        if (best.near) return almost(best);
+        reveal(false, false, best);
       },
       function(msg){
         document.getElementById('s-verdict').innerHTML =
@@ -6181,12 +6628,17 @@ function renderTopicPanel(host, onChange){
     var w = q.current();
     bumpStat('speak', ok);
     var d = Progress.answer(w.en, ok, 'speak');
+    var shown = (ok && heard && heard.word) ? heard.word : w.en;
+    var others = SYNONYMS.others(w).filter(function(x){ return x !== shown; });
+    if (shown !== w.en) others = others.concat([w.en]);
     var rem = Progress.remaining(w.en);
     document.getElementById('s-verdict').innerHTML =
       '<div class="verdict ' + (ok ? 'ok' : 'no') + '"><b>' +
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
-      '<span class="en">' + esc(w.en) + '</span>' +
-      (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(w.en) +
+      '<span class="en">' + esc(shown) + '</span>' +
+      (w.tr && shown === w.en ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(shown) +
+      (others.length ? '<br><span style="color:var(--ink-soft);font-size:.9em">Также принимается: ' +
+        esc(others.join(' · ')) + '</span>' : '') +
       (heard && heard.said ?
         '<br><span style="color:var(--ink-soft);font-size:.9em">Услышал: «' + esc(heard.said) + '» · похоже на ' +
         heard.percent + '%' + (heard.how ? ' · совпало ' + esc(heard.how) : '') + '</span>' : '') +

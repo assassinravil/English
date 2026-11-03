@@ -39,11 +39,13 @@
 
   <div class="controls chips" id="topicbar"></div>
 
-  <div class="controls">
+  <div class="controls chips">
     <button class="btn on" data-lvl="all" type="button">Любой уровень</button>
     <button class="btn" data-lvl="0" type="button">Не выучено</button>
     <button class="btn" data-lvl="1" type="button">Повторение</button>
     <button class="btn" data-lvl="2" type="button">Выучено</button>
+    <button class="btn" data-lvl="due" type="button">Пора повторить</button>
+    <button class="btn" data-lvl="stale" type="button">Выучено, но пора повторить</button>
   </div>
 
   <div class="controls">
@@ -51,7 +53,6 @@
     <button class="btn" id="export" type="button">Сохранить прогресс в файл</button>
     <label class="btn" for="importfile" style="cursor:pointer">Загрузить из файла</label>
     <input type="file" id="importfile" accept="application/json,.json" style="display:none">
-    <button class="btn" id="reset" type="button">Сбросить прогресс</button>
   </div>
   <div id="io-msg"></div>
 
@@ -60,6 +61,13 @@
     <thead><tr><th>Уровень</th><th>Слово</th><th>Транскрипция</th><th>Перевод</th><th>Заметка</th></tr></thead>
     <tbody id="rows"></tbody>
   </table>
+  </div>
+
+  <div class="dangerzone">
+    <h5>Опасная зона</h5>
+    <p>Сброс удалит весь прогресс без возможности вернуть. Сначала сохрани файл.</p>
+    <button class="btn danger" id="reset" type="button">Сбросить весь прогресс</button>
+    <div id="reset-msg"></div>
   </div>
 </div>
 

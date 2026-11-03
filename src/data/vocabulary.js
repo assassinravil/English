@@ -13,14 +13,14 @@ var VOCAB_HW = [
 {en:"visit", tr:"/ˈvɪzɪt/", ru:"навещать, посещать", note:"Без предлога: visit you", topic:"Глаголы", set:"hw"},
 {en:"call on", tr:"/kɔːl ɒn/", ru:"зайти к кому-то", note:"We called on Mrs Chandler.", topic:"Глаголы", set:"hw"},
 {en:"wait for", tr:"/weɪt fɔː/", ru:"ждать кого-то", note:"Предлог обязателен", topic:"Глаголы", set:"hw"},
-{en:"look for", tr:"/lʊk fɔː/", ru:"искать", note:"I've been looking for you everywhere.", topic:"Глаголы", set:"hw"},
+{en:"look for", tr:"/lʊk fɔː/", ru:"искать", note:"обычное слово для поиска предмета", topic:"Глаголы", set:"hw"},
 {en:"find", tr:"/faɪnd/", ru:"находить", note:"found / found, без предлога", topic:"Глаголы", set:"hw"},
 {en:"find out", tr:"/faɪnd aʊt/", ru:"узнать, выяснить", note:"", topic:"Глаголы", set:"hw"},
 {en:"try to", tr:"/traɪ tə/", ru:"пытаться", note:"После try — инфинитив с to", topic:"Глаголы", set:"hw"},
 {en:"ring up", tr:"/rɪŋ ʌp/", ru:"звонить по телефону", note:"ring him up — местоимение внутрь", topic:"Глаголы", set:"hw"},
 {en:"shake one's head", tr:"/ʃeɪk hed/", ru:"покачать головой", note:"shook his head", topic:"Глаголы", set:"hw"},
 {en:"smile at", tr:"/smaɪl ət/", ru:"улыбаться кому-то", note:"Не smile to", topic:"Глаголы", set:"hw"},
-{en:"leave", tr:"/liːv/", ru:"уходить, уезжать; оставлять", note:"left / left", topic:"Глаголы", set:"hw"},
+{en:"leave", tr:"/liːv/", ru:"уходить, уезжать", note:"left / left; покидать место", topic:"Глаголы", set:"hw"},
 {en:"discover", tr:"/dɪˈskʌvə/", ru:"обнаружить", note:"", topic:"Глаголы", set:"hw"},
 {en:"enable", tr:"/ɪˈneɪbl/", ru:"позволять, давать возможность", note:"enable somebody to do", topic:"Глаголы", set:"hw"},
 {en:"destroy", tr:"/dɪˈstrɔɪ/", ru:"разрушать, уничтожать", note:"", topic:"Глаголы", set:"hw"},
@@ -41,7 +41,7 @@ var VOCAB_HW = [
 {en:"suspend", tr:"/səˈspend/", ru:"приостановить, отложить", note:"suspend their decision", topic:"Глаголы", set:"hw"},
 {en:"request", tr:"/rɪˈkwest/", ru:"попросить (формально)", note:"", topic:"Глаголы", set:"hw"},
 {en:"have a bath", tr:"/hæv ə bɑːθ/", ru:"принимать ванну", note:"также take a bath", topic:"Глаголы", set:"hw"},
-{en:"sit down", tr:"/sɪt daʊn/", ru:"садиться", note:"sat / sat; не set", topic:"Глаголы", set:"hw"},
+{en:"sit down", tr:"/sɪt daʊn/", ru:"садиться на стул", note:"sat / sat", topic:"Глаголы", set:"hw"},
 {en:"wear", tr:"/weə/", ru:"носить (одежду)", note:"wore / worn", topic:"Глаголы", set:"hw"},
 {en:"look after", tr:"/lʊk ˈɑːftə/", ru:"ухаживать за, присматривать", note:"", topic:"Глаголы", set:"hw"},
 {en:"show", tr:"/ʃəʊ/", ru:"показывать", note:"showed / shown", topic:"Глаголы", set:"hw"},
@@ -88,7 +88,7 @@ var VOCAB_HW = [
 {en:"publishing house", tr:"/ˈpʌblɪʃɪŋ haʊs/", ru:"издательство", note:"", topic:"Существительные", set:"hw"},
 {en:"exhibition", tr:"/ˌeksɪˈbɪʃn/", ru:"выставка", note:"первая h не читается", topic:"Существительные", set:"hw"},
 {en:"guide", tr:"/ɡaɪd/", ru:"экскурсовод, гид", note:"", topic:"Существительные", set:"hw"},
-{en:"drawing room", tr:"/ˈdrɔːɪŋ ruːm/", ru:"гостиная", note:"также living room", topic:"Существительные", set:"hw"},
+{en:"drawing room", tr:"/ˈdrɔːɪŋ ruːm/", ru:"гостиная", note:"старомодное, в классической литературе", topic:"Существительные", set:"hw"},
 {en:"fireplace", tr:"/ˈfaɪəpleɪs/", ru:"камин", note:"in front of the fire", topic:"Существительные", set:"hw"},
 {en:"sapling", tr:"/ˈsæplɪŋ/", ru:"деревце, саженец", note:"", topic:"Существительные", set:"hw"},
 {en:"storm", tr:"/stɔːm/", ru:"буря, гроза", note:"", topic:"Существительные", set:"hw"},
@@ -121,7 +121,7 @@ var VOCAB_HW = [
 {en:"suddenly", tr:"/ˈsʌdnli/", ru:"вдруг, внезапно", note:"", topic:"Прилагательные и наречия", set:"hw"},
 {en:"upstairs", tr:"/ˌʌpˈsteəz/", ru:"наверху, наверх", note:"одно слово, без предлога", topic:"Прилагательные и наречия", set:"hw"},
 {en:"everywhere", tr:"/ˈevriweə/", ru:"повсюду", note:"", topic:"Прилагательные и наречия", set:"hw"},
-{en:"alone", tr:"/əˈləʊn/", ru:"один, в одиночестве", note:"", topic:"Прилагательные и наречия", set:"hw"},
+{en:"alone", tr:"/əˈləʊn/", ru:"один, в одиночестве", note:"без компании; one — число", topic:"Прилагательные и наречия", set:"hw"},
 {en:"loudly", tr:"/ˈlaʊdli/", ru:"громко", note:"", topic:"Прилагательные и наречия", set:"hw"},
 {en:"greatly", tr:"/ˈɡreɪtli/", ru:"сильно, очень", note:"", topic:"Прилагательные и наречия", set:"hw"},
 {en:"mortally", tr:"/ˈmɔːtəli/", ru:"смертельно", note:"только про смерть", topic:"Прилагательные и наречия", set:"hw"},
@@ -164,7 +164,7 @@ var VOCAB_HW = [
 {en:"canal", tr:"/kəˈnæl/", ru:"канал", note:"ударение на второй слог", topic:"Города и рынки", set:"hw"},
 {en:"floating market", tr:"/ˈfləʊtɪŋ ˈmɑːkɪt/", ru:"плавучий рынок", note:"", topic:"Города и рынки", set:"hw"},
 {en:"stall", tr:"/stɔːl/", ru:"прилавок, лоток", note:"packed with stalls", topic:"Города и рынки", set:"hw"},
-{en:"seller", tr:"/ˈselə/", ru:"продавец", note:"", topic:"Города и рынки", set:"hw"},
+{en:"seller", tr:"/ˈselə/", ru:"продавец", note:"тот, кто продаёт, в том числе на рынке", topic:"Города и рынки", set:"hw"},
 {en:"pavement", tr:"/ˈpeɪvmənt/", ru:"тротуар", note:"амер. sidewalk", topic:"Города и рынки", set:"hw"},
 {en:"bunch of flowers", tr:"/bʌntʃ/", ru:"букет цветов", note:"", topic:"Города и рынки", set:"hw"},
 {en:"herbs", tr:"/hɜːbs/", ru:"травы, зелень", note:"в амер. h не читается", topic:"Города и рынки", set:"hw"},
@@ -359,7 +359,7 @@ var VOCAB_DAILY = [
 {en:"team", tr:"/tiːm/", ru:"команда", note:"", topic:"Спорт и хобби", set:"basic"},
 {en:"match", tr:"/mætʃ/", ru:"матч; подходить друг другу", note:"", topic:"Спорт и хобби", set:"basic"},
 {en:"drawing", tr:"/ˈdrɔːɪŋ/", ru:"рисование, рисунок", note:"", topic:"Спорт и хобби", set:"basic"},
-{en:"trip", tr:"/trɪp/", ru:"поездка", note:"go on a trip", topic:"Спорт и хобби", set:"basic"},
+{en:"trip", tr:"/trɪp/", ru:"поездка, выезд", note:"короткая поездка туда и обратно", topic:"Спорт и хобби", set:"basic"},
 {en:"book a table", tr:"/bʊk ə ˈteɪbl/", ru:"забронировать столик", note:"", topic:"Спорт и хобби", set:"basic"},
 {en:"have fun", tr:"/hæv fʌn/", ru:"весело провести время", note:"", topic:"Спорт и хобби", set:"basic"},
 {en:"be worth", tr:"/biː wɜːθ/", ru:"стоить того", note:"дальше -ing: worth seeing", topic:"Спорт и хобби", set:"basic"}
@@ -531,7 +531,7 @@ var VOCAB_EXT1 = [
 {en:"furniture", tr:"/ˈfɜːnɪtʃə/", ru:"мебель", note:"неисчисляемое, без -s", topic:"Дом и быт", set:"basic"},
 {en:"chair", tr:"/tʃeə/", ru:"стул", note:"", topic:"Дом и быт", set:"basic"},
 {en:"armchair", tr:"/ˈɑːmtʃeə/", ru:"кресло", note:"", topic:"Дом и быт", set:"basic"},
-{en:"sofa", tr:"/ˈsəʊfə/", ru:"диван", note:"брит. также settee", topic:"Дом и быт", set:"basic"},
+{en:"sofa", tr:"/ˈsəʊfə/", ru:"диван", note:"обычное слово; couch разговорнее", topic:"Дом и быт", set:"basic"},
 {en:"table", tr:"/ˈteɪbl/", ru:"стол", note:"desk — письменный", topic:"Дом и быт", set:"basic"},
 {en:"bed", tr:"/bed/", ru:"кровать", note:"go to bed — без артикля", topic:"Дом и быт", set:"basic"},
 {en:"wardrobe", tr:"/ˈwɔːdrəʊb/", ru:"платяной шкаф", note:"", topic:"Дом и быт", set:"basic"},
@@ -546,7 +546,7 @@ var VOCAB_EXT1 = [
 {en:"bathroom", tr:"/ˈbɑːθruːm/", ru:"ванная", note:"", topic:"Дом и быт", set:"basic"},
 {en:"bedroom", tr:"/ˈbedruːm/", ru:"спальня", note:"", topic:"Дом и быт", set:"basic"},
 {en:"kitchen", tr:"/ˈkɪtʃɪn/", ru:"кухня", note:"", topic:"Дом и быт", set:"basic"},
-{en:"living room", tr:"/ˈlɪvɪŋ ruːm/", ru:"гостиная", note:"", topic:"Дом и быт", set:"basic"},
+{en:"living room", tr:"/ˈlɪvɪŋ ruːm/", ru:"гостиная", note:"современное слово", topic:"Дом и быт", set:"basic"},
 {en:"switch on / switch off", tr:"/swɪtʃ ɒn, swɪtʃ ɒf/", ru:"включить / выключить", note:"также turn on / off", topic:"Дом и быт", set:"basic"},
 {en:"washing machine", tr:"/ˈwɒʃɪŋ məˌʃiːn/", ru:"стиральная машина", note:"", topic:"Дом и быт", set:"basic"},
 {en:"fridge", tr:"/frɪdʒ/", ru:"холодильник", note:"полное refrigerator", topic:"Дом и быт", set:"basic"},
@@ -643,7 +643,7 @@ var VOCAB_EXT1 = [
 {en:"lawyer", tr:"/ˈlɔɪə/", ru:"юрист, адвокат", note:"", topic:"Работа и профессии", set:"basic"},
 {en:"accountant", tr:"/əˈkaʊntənt/", ru:"бухгалтер", note:"", topic:"Работа и профессии", set:"basic"},
 {en:"cook / chef", tr:"/kʊk, ʃef/", ru:"повар / шеф-повар", note:"", topic:"Работа и профессии", set:"basic"},
-{en:"shop assistant", tr:"/ʃɒp əˈsɪstənt/", ru:"продавец", note:"", topic:"Работа и профессии", set:"basic"},
+{en:"shop assistant", tr:"/ʃɒp əˈsɪstənt/", ru:"продавец в магазине", note:"работник торгового зала", topic:"Работа и профессии", set:"basic"},
 {en:"builder", tr:"/ˈbɪldə/", ru:"строитель", note:"", topic:"Работа и профессии", set:"basic"},
 {en:"farmer", tr:"/ˈfɑːmə/", ru:"фермер", note:"", topic:"Работа и профессии", set:"basic"},
 {en:"journalist", tr:"/ˈdʒɜːnəlɪst/", ru:"журналист", note:"", topic:"Работа и профессии", set:"basic"},
@@ -724,7 +724,7 @@ var VOCAB_EXT2 = [
 {en:"beach", tr:"/biːtʃ/", ru:"пляж", note:"", topic:"Транспорт и поездки", set:"basic"},
 {en:"camping", tr:"/ˈkæmpɪŋ/", ru:"поход с палаткой", note:"go camping", topic:"Транспорт и поездки", set:"basic"},
 {en:"guidebook", tr:"/ˈɡaɪdbʊk/", ru:"путеводитель", note:"", topic:"Транспорт и поездки", set:"basic"},
-{en:"map", tr:"/mæp/", ru:"карта", note:"", topic:"Транспорт и поездки", set:"basic"},
+{en:"map", tr:"/mæp/", ru:"карта местности", note:"a map of the city", topic:"Транспорт и поездки", set:"basic"},
 {en:"get lost", tr:"/ɡet lɒst/", ru:"заблудиться", note:"", topic:"Транспорт и поездки", set:"basic"},
 {en:"How do I get to…?", tr:"/haʊ duː aɪ ɡet tuː/", ru:"Как пройти к…?", note:"", topic:"Транспорт и поездки", set:"basic"},
 
@@ -747,7 +747,7 @@ var VOCAB_EXT2 = [
 /* --- Покупки --- */
 {en:"customer", tr:"/ˈkʌstəmə/", ru:"покупатель, клиент", note:"", topic:"Покупки и деньги", set:"basic"},
 {en:"cash", tr:"/kæʃ/", ru:"наличные", note:"pay in cash", topic:"Покупки и деньги", set:"basic"},
-{en:"card", tr:"/kɑːd/", ru:"карта", note:"pay by card", topic:"Покупки и деньги", set:"basic"},
+{en:"card", tr:"/kɑːd/", ru:"карта, карточка", note:"банковская или открытка", topic:"Покупки и деньги", set:"basic"},
 {en:"sale", tr:"/seɪl/", ru:"распродажа", note:"on sale", topic:"Покупки и деньги", set:"basic"},
 {en:"free", tr:"/friː/", ru:"бесплатный; свободный", note:"", topic:"Покупки и деньги", set:"basic"},
 {en:"pay for", tr:"/peɪ fɔː/", ru:"платить за", note:"paid / paid", topic:"Покупки и деньги", set:"basic"},
@@ -825,7 +825,7 @@ var VOCAB_EXT2 = [
 {en:"file / folder", tr:"/faɪl, ˈfəʊldə/", ru:"файл / папка", note:"", topic:"Технологии", set:"basic"},
 {en:"password", tr:"/ˈpɑːswɜːd/", ru:"пароль", note:"", topic:"Технологии", set:"basic"},
 {en:"download", tr:"/ˌdaʊnˈləʊd/", ru:"скачивать", note:"upload — загружать", topic:"Технологии", set:"basic"},
-{en:"search", tr:"/sɜːtʃ/", ru:"искать", note:"search for something", topic:"Технологии", set:"basic"},
+{en:"search", tr:"/sɜːtʃ/", ru:"искать тщательно", note:"search for; обыскивать место", topic:"Технологии", set:"basic"},
 {en:"website", tr:"/ˈwebsaɪt/", ru:"сайт", note:"", topic:"Технологии", set:"basic"},
 {en:"email", tr:"/ˈiːmeɪl/", ru:"электронная почта", note:"send an email", topic:"Технологии", set:"basic"},
 {en:"message", tr:"/ˈmesɪdʒ/", ru:"сообщение", note:"", topic:"Технологии", set:"basic"},
@@ -855,7 +855,7 @@ var VOCAB_EXT2 = [
 var VOCAB_EXT3 = [
 /* --- Повседневные глаголы --- */
 {en:"wake up", tr:"/weɪk ʌp/", ru:"просыпаться", note:"woke / woken", topic:"Базовые глаголы", set:"basic"},
-{en:"get up", tr:"/ɡet ʌp/", ru:"вставать", note:"", topic:"Базовые глаголы", set:"basic"},
+{en:"get up", tr:"/ɡet ʌp/", ru:"вставать с постели", note:"после сна", topic:"Базовые глаголы", set:"basic"},
 {en:"wash", tr:"/wɒʃ/", ru:"мыть, стирать", note:"", topic:"Базовые глаголы", set:"basic"},
 {en:"brush teeth", tr:"/brʌʃ tiːθ/", ru:"чистить зубы", note:"", topic:"Базовые глаголы", set:"basic"},
 {en:"cook", tr:"/kʊk/", ru:"готовить", note:"", topic:"Базовые глаголы", set:"basic"},
@@ -865,7 +865,7 @@ var VOCAB_EXT3 = [
 {en:"dream", tr:"/driːm/", ru:"мечтать; сон", note:"dream about", topic:"Базовые глаголы", set:"basic"},
 {en:"wait", tr:"/weɪt/", ru:"ждать", note:"wait for somebody", topic:"Базовые глаголы", set:"basic"},
 {en:"hurry", tr:"/ˈhʌri/", ru:"торопиться", note:"hurry up!", topic:"Базовые глаголы", set:"basic"},
-{en:"stay", tr:"/steɪ/", ru:"оставаться", note:"", topic:"Базовые глаголы", set:"basic"},
+{en:"stay", tr:"/steɪ/", ru:"оставаться где-то", note:"stay at home, stay in a hotel", topic:"Базовые глаголы", set:"basic"},
 {en:"live", tr:"/lɪv/", ru:"жить", note:"live in a city", topic:"Базовые глаголы", set:"basic"},
 {en:"meet", tr:"/miːt/", ru:"встречать", note:"met / met, без предлога", topic:"Базовые глаголы", set:"basic"},
 {en:"invite", tr:"/ɪnˈvaɪt/", ru:"приглашать", note:"invite somebody to", topic:"Базовые глаголы", set:"basic"},
@@ -1057,7 +1057,7 @@ var VOCAB_EXT4 = [
 {en:"water the plants", tr:"/ˈwɔːtə/", ru:"поливать растения", note:"water как глагол", topic:"Дом и быт", set:"basic"},
 {en:"make the bed", tr:"/meɪk ðə bed/", ru:"заправлять постель", note:"make, не do", topic:"Дом и быт", set:"basic"},
 {en:"do the shopping", tr:"/ˈʃɒpɪŋ/", ru:"ходить за покупками", note:"", topic:"Дом и быт", set:"basic"},
-{en:"repair", tr:"/rɪˈpeə/", ru:"чинить", note:"", topic:"Дом и быт", set:"basic"},
+{en:"repair", tr:"/rɪˈpeə/", ru:"ремонтировать", note:"о технике и зданиях, формальнее", topic:"Дом и быт", set:"basic"},
 {en:"share", tr:"/ʃeə/", ru:"делить, делиться", note:"share with somebody", topic:"Дом и быт", set:"basic"},
 {en:"tidy / messy", tr:"/ˈtaɪdi, ˈmesi/", ru:"прибранный / беспорядок", note:"", topic:"Дом и быт", set:"basic"},
 {en:"rent", tr:"/rent/", ru:"снимать жильё; аренда", note:"", topic:"Дом и быт", set:"basic"},
@@ -1335,7 +1335,7 @@ var VOCAB_EXT6 = [
 {en:"handwriting", tr:"/ˈhændraɪtɪŋ/", ru:"почерк", note:"in bad handwriting", topic:"Предметы и места", set:"hw"},
 {en:"magazine", tr:"/ˌmæɡəˈziːn/", ru:"журнал", note:"ударение на последний слог", topic:"Предметы и места", set:"hw"},
 {en:"hall", tr:"/hɔːl/", ru:"холл, зал", note:"", topic:"Предметы и места", set:"hw"},
-{en:"couch", tr:"/kaʊtʃ/", ru:"диван", note:"также sofa", topic:"Предметы и места", set:"hw"},
+{en:"couch", tr:"/kaʊtʃ/", ru:"диван", note:"разговорнее; в учебниках чаще sofa", topic:"Предметы и места", set:"hw"},
 {en:"oasis", tr:"/əʊˈeɪsɪs/", ru:"оазис", note:"«оу-ЭЙ-сис»", topic:"Предметы и места", set:"hw"},
 {en:"desert", tr:"/ˈdezət/", ru:"пустыня", note:"ударение на первый; dessert — десерт", topic:"Предметы и места", set:"hw"},
 {en:"yard", tr:"/jɑːd/", ru:"двор", note:"in the yard", topic:"Предметы и места", set:"hw"},
@@ -1442,7 +1442,7 @@ var VOCAB_EXT7 = [
 {en:"control", tr:"/kənˈtrəʊl/", ru:"контролировать", note:"controlled — удвоение l", topic:"Частые глаголы", set:"basic"},
 {en:"convince", tr:"/kənˈvɪns/", ru:"убеждать", note:"", topic:"Частые глаголы", set:"basic"},
 {en:"count", tr:"/kaʊnt/", ru:"считать", note:"count on — рассчитывать на", topic:"Частые глаголы", set:"basic"},
-{en:"create", tr:"/kriˈeɪt/", ru:"создавать", note:"", topic:"Частые глаголы", set:"basic"},
+{en:"create", tr:"/kriˈeɪt/", ru:"создавать с нуля", note:"make — изготовить, create — придумать", topic:"Частые глаголы", set:"basic"},
 {en:"damage", tr:"/ˈdæmɪdʒ/", ru:"повреждать; ущерб", note:"", topic:"Частые глаголы", set:"basic"},
 {en:"deal with", tr:"/diːl wɪð/", ru:"иметь дело с, решать", note:"dealt / dealt", topic:"Частые глаголы", set:"basic"},
 {en:"deliver", tr:"/dɪˈlɪvə/", ru:"доставлять", note:"", topic:"Частые глаголы", set:"basic"},
@@ -1517,8 +1517,8 @@ var VOCAB_EXT7 = [
 {en:"refuse", tr:"/rɪˈfjuːz/", ru:"отказываться", note:"дальше инфинитив с to", topic:"Частые глаголы", set:"basic"},
 {en:"regret", tr:"/rɪˈɡret/", ru:"сожалеть", note:"regretted — удвоение t", topic:"Частые глаголы", set:"basic"},
 {en:"rely on", tr:"/rɪˈlaɪ ɒn/", ru:"полагаться на", note:"", topic:"Частые глаголы", set:"basic"},
-{en:"remain", tr:"/rɪˈmeɪn/", ru:"оставаться", note:"", topic:"Частые глаголы", set:"basic"},
-{en:"reply", tr:"/rɪˈplaɪ/", ru:"отвечать", note:"reply to", topic:"Частые глаголы", set:"basic"},
+{en:"remain", tr:"/rɪˈmeɪn/", ru:"оставаться в состоянии", note:"книжное: remain silent", topic:"Частые глаголы", set:"basic"},
+{en:"reply", tr:"/rɪˈplaɪ/", ru:"отвечать", note:"reply to; answer — без предлога", topic:"Частые глаголы", set:"basic"},
 {en:"represent", tr:"/ˌreprɪˈzent/", ru:"представлять", note:"", topic:"Частые глаголы", set:"basic"},
 {en:"respect", tr:"/rɪˈspekt/", ru:"уважать", note:"", topic:"Частые глаголы", set:"basic"},
 {en:"respond", tr:"/rɪˈspɒnd/", ru:"реагировать, отвечать", note:"respond to", topic:"Частые глаголы", set:"basic"},
@@ -1623,7 +1623,7 @@ var VOCAB_EXT8 = [
 {en:"available", tr:"/əˈveɪləbl/", ru:"доступный", note:"", topic:"Качества", set:"basic"},
 {en:"aware of", tr:"/əˈweər əv/", ru:"осведомлённый о", note:"be aware of", topic:"Качества", set:"basic"},
 {en:"brief", tr:"/briːf/", ru:"краткий", note:"", topic:"Качества", set:"basic"},
-{en:"broad", tr:"/brɔːd/", ru:"широкий", note:"«брод»", topic:"Качества", set:"basic"},
+{en:"broad", tr:"/brɔːd/", ru:"широкий", note:"книжнее; broad shoulders, broad view", topic:"Качества", set:"basic"},
 {en:"certain", tr:"/ˈsɜːtn/", ru:"уверенный; определённый", note:"", topic:"Качества", set:"basic"},
 {en:"common", tr:"/ˈkɒmən/", ru:"обычный, общий", note:"", topic:"Качества", set:"basic"},
 {en:"entire", tr:"/ɪnˈtaɪə/", ru:"целый", note:"", topic:"Качества", set:"basic"},
@@ -1653,7 +1653,7 @@ var VOCAB_EXT8 = [
 {en:"rare", tr:"/reə/", ru:"редкий", note:"rarely — редко", topic:"Качества", set:"basic"},
 {en:"responsible for", tr:"/rɪˈspɒnsəbl/", ru:"ответственный за", note:"", topic:"Качества", set:"basic"},
 {en:"rough", tr:"/rʌf/", ru:"грубый, неровный", note:"«раф»", topic:"Качества", set:"basic"},
-{en:"several", tr:"/ˈsevrəl/", ru:"несколько", note:"", topic:"Качества", set:"basic"},
+{en:"several", tr:"/ˈsevrəl/", ru:"несколько", note:"больше, чем a few; без артикля", topic:"Качества", set:"basic"},
 {en:"similar to", tr:"/ˈsɪmələ tuː/", ru:"похожий на", note:"предлог to", topic:"Качества", set:"basic"},
 {en:"slight", tr:"/slaɪt/", ru:"небольшой, лёгкий", note:"slightly — слегка", topic:"Качества", set:"basic"},
 {en:"smooth", tr:"/smuːð/", ru:"гладкий", note:"th звонкое", topic:"Качества", set:"basic"},
@@ -1667,7 +1667,7 @@ var VOCAB_EXT8 = [
 {en:"unusual", tr:"/ʌnˈjuːʒuəl/", ru:"необычный", note:"", topic:"Качества", set:"basic"},
 {en:"useful", tr:"/ˈjuːsfl/", ru:"полезный", note:"", topic:"Качества", set:"basic"},
 {en:"various", tr:"/ˈveəriəs/", ru:"различные", note:"", topic:"Качества", set:"basic"},
-{en:"wide", tr:"/waɪd/", ru:"широкий", note:"", topic:"Качества", set:"basic"},
+{en:"wide", tr:"/waɪd/", ru:"широкий", note:"о дороге, реке, расстоянии", topic:"Качества", set:"basic"},
 {en:"wild", tr:"/waɪld/", ru:"дикий", note:"", topic:"Качества", set:"basic"},
 {en:"willing to", tr:"/ˈwɪlɪŋ tuː/", ru:"готовый что-то сделать", note:"", topic:"Качества", set:"basic"},
 {en:"worth", tr:"/wɜːθ/", ru:"стоящий", note:"worth doing — стоит делать", topic:"Качества", set:"basic"},
@@ -1731,6 +1731,157 @@ var VOCAB_EXT9 = [
 {en:"repeat", tr:"/rɪˈpiːt/", ru:"повторять", note:"", topic:"Частые глаголы", set:"basic"}
 ];
 
+
+/* ---------- УТОЧНЕНИЯ ДЛЯ СИНОНИМОВ ----------
+   Применяются после разделения составных записей.
+   Нужны там, где разные слова переводятся одинаково:
+   без пояснения непонятно, какое из них выбрать. */
+var CLARIFY = {
+  "almost":         {ru:"почти",                    note:"= nearly, взаимозаменяемы"},
+  "nearly":         {ru:"почти",                    note:"= almost, взаимозаменяемы"},
+  "term":           {ru:"семестр, четверть",        note:"учебный период; также термин"},
+  "quarter":        {ru:"четверть",                 note:"одна четвёртая; a quarter past"},
+  "film":           {ru:"фильм",                    note:"британское"},
+  "movie":          {ru:"фильм",                    note:"американское"},
+  "hoover":         {ru:"пылесосить",               note:"британское, от марки пылесоса"},
+  "vacuum":         {ru:"пылесосить",               note:"американское"},
+  "about":          {ru:"примерно; о, об",          note:"about ten people; talk about"},
+  "around":         {ru:"примерно; вокруг",         note:"around ten people; walk around"},
+  "upstairs":       {ru:"наверх, на верхний этаж",  note:"о доме; без предлога"},
+  "at the top":     {ru:"наверху чего-то",          note:"at the top of the page"},
+  "ferment":        {ru:"бродить (о вине)",         note:"о жидкости и тесте"},
+  "wander":         {ru:"бродить, гулять",          note:"о человеке; не wonder"},
+  "soil":           {ru:"почва",                    note:"для растений: good soil"},
+  "ground":         {ru:"земля под ногами",         note:"the ground was wet"},
+  "enormous":       {ru:"огромный",                 note:"книжнее, чем huge"},
+  "huge":           {ru:"огромный",                 note:"разговорнее, чем enormous"},
+  "convince":       {ru:"убедить в чём-то",         note:"convince that — изменить мнение"},
+  "persuade":       {ru:"уговорить сделать",        note:"persuade to do — добиться действия"},
+  "amount":         {ru:"количество неисчисляемого", note:"amount of water"},
+  "quantity":       {ru:"количество исчисляемого",  note:"a large quantity of books"},
+  "entire":         {ru:"целый, весь",              note:"книжнее; the entire country"},
+  "whole":          {ru:"целый, весь",              note:"обычное; the whole day"},
+  "familiar":       {ru:"знакомый (прилагательное)", note:"familiar with — знаком с чем-то"},
+  "acquaintance":   {ru:"знакомый (человек)",       note:"существительное"},
+  "although":       {ru:"хотя",                     note:"в начале предложения"},
+  "though":         {ru:"хотя; впрочем",            note:"в конце фразы — «впрочем»"},
+  "must":           {ru:"должен по правилу",        note:"закон, внутренний долг"},
+  "have to":        {ru:"приходится",               note:"обязывают обстоятельства"},
+  "question":       {ru:"вопрос, который задают",   note:"ask a question"},
+  "issue":          {ru:"вопрос, проблема",         note:"тема для обсуждения"},
+  "speed":          {ru:"скорость движения",        note:"at high speed"},
+  "rate":           {ru:"темп, ставка",             note:"birth rate, interest rate"},
+  "throw":          {ru:"бросать предмет",          note:"threw / thrown"},
+  "give up":        {ru:"бросать привычку",         note:"give up smoking"},
+  "quit":           {ru:"бросать работу, уходить",  note:"quit / quit"},
+  "soft":           {ru:"мягкий на ощупь",          note:"soft pillow"},
+  "gentle":         {ru:"мягкий, нежный",           note:"о характере и движении"},
+  "calm":           {ru:"спокойный (человек)",      note:"l не читается"},
+  "peaceful":       {ru:"спокойный (место)",        note:"a peaceful village"},
+  "story":          {ru:"история, рассказ",         note:"общее слово"},
+  "short story":    {ru:"рассказ как жанр",         note:"литературный термин"},
+  "narrative":      {ru:"повествование",            note:"книжное"},
+  "exciting":       {ru:"захватывающий",            note:"вызывает возбуждение"},
+  "fascinating":    {ru:"увлекательный",            note:"затягивает интересом"},
+  "share":          {ru:"делиться с кем-то",        note:"share with somebody"},
+  "divide":         {ru:"делить на части",          note:"divide into"},
+  "ordinary":       {ru:"обычный, рядовой",         note:"ничем не выделяется"},
+  "common":         {ru:"распространённый",         note:"встречается часто"},
+  "allow":          {ru:"разрешать",                note:"allow somebody to do"},
+  "enable":         {ru:"давать возможность",       note:"enable somebody to do"},
+  "gain":           {ru:"приобретать",              note:"gain experience, gain weight"},
+  "receive":        {ru:"получать присланное",      note:"receive a letter"},
+  "maintain":       {ru:"поддерживать в порядке",   note:"maintain a car"},
+  "support":        {ru:"поддерживать морально",    note:"support a friend"},
+  "goal":           {ru:"цель, которой добиваешься", note:"achieve a goal"},
+  "purpose":        {ru:"назначение, смысл",        note:"on purpose — намеренно"},
+  "point":          {ru:"смысл, суть",              note:"what's the point?"},
+  "sense":          {ru:"чувство; смысл",           note:"make sense — иметь смысл"},
+  "scarcely":       {ru:"едва",                     note:"книжнее, чем hardly"},
+  "hardly":         {ru:"едва, почти не",           note:"обычное; не путать с hard"},
+  "a few":          {ru:"несколько",                note:"для исчисляемых: a few books"},
+  "several":        {ru:"несколько",                note:"больше, чем a few"},
+  "sofa":           {ru:"диван",                    note:"обычное слово"},
+  "couch":          {ru:"диван",                    note:"разговорнее"},
+  "pill":           {ru:"таблетка",                 note:"круглая, глотают целиком"},
+  "tablet":         {ru:"таблетка; планшет",        note:"плоская"},
+  "do":             {ru:"делать, выполнять",        note:"do homework; make — создавать"},
+  "make":           {ru:"делать, изготавливать",    note:"make a cake; do — выполнять"},
+  "one":            {ru:"один (число)",            note:"число; alone — в одиночестве"},
+  "alone":          {ru:"один, в одиночестве",     note:"без компании; one — число"},
+  "light":          {ru:"лёгкий по весу; свет",    note:"heavy — тяжёлый; easy — несложный"},
+  "easy":           {ru:"лёгкий, несложный",       note:"difficult — трудный; light — по весу"},
+  "answer":         {ru:"отвечать; ответ",         note:"без предлога; reply требует to"},
+  "reply":          {ru:"отвечать",                note:"reply to; answer — без предлога"},
+  "also":           {ru:"тоже",                    note:"в середине фразы: I also like it"},
+  "too":            {ru:"тоже",                    note:"в конце фразы: I like it too"},
+  "a little":       {ru:"немного",                 note:"для неисчисляемых: a little water"},
+  "some":           {ru:"немного, какой-нибудь",   note:"в утверждении; any — в вопросе"},
+  "a few":          {ru:"несколько",               note:"для исчисляемых: a few books"},
+  "several":        {ru:"несколько",               note:"больше, чем a few; без артикля"},
+  "many":           {ru:"много",                   note:"для исчисляемых: many books"},
+  "much":           {ru:"много",                   note:"для неисчисляемых: much water"},
+  "maybe":          {ru:"может быть",              note:"разговорное, обычно в начале"},
+  "perhaps":        {ru:"может быть",              note:"чуть формальнее, чем maybe"},
+  "Thank you":      {ru:"спасибо",                 note:"полная форма, нейтрально"},
+  "Thanks":         {ru:"спасибо",                 note:"короче и разговорнее"},
+  "Sorry":          {ru:"извините",                note:"когда уже задел или виноват"},
+  "Excuse me":      {ru:"извините",                note:"чтобы обратиться или пройти"},
+  "fat":            {ru:"толстый",                 note:"грубовато; full — наполненный"},
+  "full":           {ru:"полный, наполненный",     note:"о ёмкости; fat — о человеке"},
+  "bicycle":        {ru:"велосипед",               note:"полное слово, официальнее"},
+  "bike":           {ru:"велосипед",               note:"разговорное; by bike"},
+  "journey":        {ru:"поездка, путь",           note:"сам путь из А в Б, часто долгий"},
+  "trip":           {ru:"поездка, выезд",          note:"короткая, туда и обратно"},
+  "travel":         {ru:"путешествовать",          note:"глагол; trip и journey — существительные"},
+  "ill":            {ru:"больной",                 note:"британское: he is ill"},
+  "sick":           {ru:"больной",                 note:"американское; be sick — ещё и «тошнит»"},
+  "pill":           {ru:"таблетка",                note:"круглая, глотают целиком"},
+  "tablet":         {ru:"таблетка",                note:"плоская; также планшет"},
+  "stand up":       {ru:"вставать со стула",       note:"подниматься на ноги"},
+  "get up":         {ru:"вставать с постели",      note:"после сна"},
+  "fix":            {ru:"чинить; закреплять",      note:"разговорное, широкое значение"},
+  "repair":         {ru:"ремонтировать",           note:"о технике и зданиях, формальнее"},
+  "get off":        {ru:"выходить из транспорта",  note:"автобус, поезд, самолёт"},
+  "get on":         {ru:"садиться в транспорт",    note:"автобус, поезд, самолёт"},
+  "sit down":       {ru:"садиться на стул",        note:"sat / sat"},
+  "leave":          {ru:"уходить, уезжать",        note:"left / left; покидать место"},
+  "rarely":         {ru:"редко",                   note:"обычное слово"},
+  "seldom":         {ru:"редко",                   note:"книжное, реже встречается"},
+  "wide":           {ru:"широкий",                 note:"о дороге, реке, расстоянии"},
+  "broad":          {ru:"широкий",                 note:"книжнее; broad shoulders"},
+  "map":            {ru:"карта местности",         note:"a map of the city"},
+  "card":           {ru:"карта, карточка",         note:"банковская или открытка"},
+  "search":         {ru:"искать тщательно",        note:"search for; обыскивать место"},
+  "look for":       {ru:"искать",                  note:"обычное слово для поиска"},
+  "stay":           {ru:"оставаться где-то",       note:"stay at home, stay in a hotel"},
+  "remain":         {ru:"оставаться в состоянии",  note:"книжное: remain silent"},
+  "make":           {ru:"делать, изготавливать",   note:"make a cake; do — выполнять"},
+  "do":             {ru:"делать, выполнять",       note:"do homework; make — создавать"},
+  "create":         {ru:"создавать с нуля",        note:"make — изготовить, create — придумать"},
+  "say":            {ru:"сказать",                 note:"say something; tell — кому-то"},
+  "tell":           {ru:"рассказать кому-то",      note:"tell somebody something"},
+  "speak":          {ru:"говорить",                note:"speak to somebody, speak English"},
+  "talk":           {ru:"разговаривать",           note:"talk about, talk to"},
+  "hear":           {ru:"слышать",                 note:"непроизвольно; listen — намеренно"},
+  "listen to":      {ru:"слушать",                 note:"намеренно; предлог обязателен"},
+  "see":            {ru:"видеть",                  note:"непроизвольно; look at — смотреть"},
+  "look at":        {ru:"смотреть на",             note:"намеренно, короткое действие"},
+  "watch":          {ru:"наблюдать, смотреть",     note:"долго: watch a film, без предлога"},
+  "borrow":         {ru:"брать в долг",            note:"borrow from — у кого берёшь"},
+  "lend":           {ru:"давать в долг",           note:"lend to — кому даёшь"},
+  "bring":          {ru:"приносить сюда",          note:"к говорящему"},
+  "take":           {ru:"уносить, брать",          note:"от говорящего"},
+  "carry":          {ru:"нести",                   note:"в руках, по пути"},
+  "home city":      {ru:"родной город",            note:"не native city"},
+  "shop assistant": {ru:"продавец в магазине",     note:"работник торгового зала"},
+  "seller":         {ru:"продавец",                note:"тот, кто продаёт, в том числе на рынке"},
+  "living room":    {ru:"гостиная",                note:"современное слово"},
+  "drawing room":   {ru:"гостиная",                note:"старомодное, в литературе"},
+  "sofa":           {ru:"диван",                   note:"обычное слово"},
+  "couch":          {ru:"диван",                   note:"разговорнее, чем sofa"}
+};
+
 /* ---------- СБОРКА ----------
 
    Записи вида «arm / leg» и «one, two, three» разбиваются на отдельные слова:
@@ -1779,7 +1930,11 @@ var VOCAB = (function(){
   all.forEach(function(entry){
     splitEntry(entry).forEach(function(w){
       var k = w.en.toLowerCase();
-      if (!seen[k]){ seen[k] = 1; out.push(w); }
+      if (seen[k]) return;
+      seen[k] = 1;
+      var c = CLARIFY[w.en];
+      if (c){ w = {en:w.en, tr:w.tr, ru:c.ru, note:c.note, topic:w.topic, set:w.set}; }
+      out.push(w);
     });
   });
   return out;
@@ -1791,4 +1946,38 @@ var TOPICS = (function(){
     if (seen.indexOf(w.topic) === -1){ seen.push(w.topic); out.push({name:w.topic, set:w.set}); }
   });
   return out;
+})();
+
+/* ---------- СИНОНИМЫ ----------
+   Если у двух слов перевод совпадает буква в букву, различить их
+   по подсказке невозможно. Тренажёр принимает любой вариант:
+   «тоже» — и also, и too; «больной» — и ill, и sick.
+   Карта строится сама, вручную ничего поддерживать не нужно. */
+var SYNONYMS = (function(){
+  function norm(s){
+    return String(s || '').toLowerCase()
+      .replace(/\u0451/g, '\u0435')
+      .replace(/[^\u0430-\u044f a-z,]/g, '')
+      .replace(/\s+/g, ' ').trim();
+  }
+  var map = {};
+  VOCAB.forEach(function(w){
+    var k = norm(w.ru);
+    if (!k) return;
+    (map[k] = map[k] || []).push(w.en);
+  });
+  return {
+    /* все английские варианты для этого русского перевода */
+    forRu: function(ru){ return map[norm(ru)] || []; },
+    /* что принимать как верный ответ для слова */
+    accept: function(word){
+      var list = map[norm(word.ru)] || [];
+      if (list.indexOf(word.en) === -1) list = list.concat([word.en]);
+      return list;
+    },
+    /* другие слова с тем же переводом */
+    others: function(word){
+      return (map[norm(word.ru)] || []).filter(function(x){ return x !== word.en; });
+    }
+  };
 })();

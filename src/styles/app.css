@@ -495,18 +495,6 @@ footer a{color:var(--brand)}
   .flash-word{font-size:1.55rem}
   h3{margin-top:2.2rem}
 
-  table.stack{min-width:0;display:block}
-  table.stack thead{display:none}
-  table.stack tbody,table.stack tr,table.stack td{display:block;width:100%}
-  table.stack tr{border-bottom:1px solid var(--line);padding:.85rem .9rem;position:relative}
-  table.stack tr:last-child{border-bottom:none}
-  table.stack td{border:none;padding:.1rem 0}
-  table.stack td:empty{display:none}
-  table.stack td[data-label]::before{content:attr(data-label) " ";color:var(--ink-faint);font-size:.76rem}
-  table.stack td.chkcell{position:absolute;right:.7rem;top:.85rem;width:auto;padding:0}
-  table.stack td.chkcell::before{content:none}
-  table.stack .chk{width:1.3rem;height:1.3rem}
-  table.stack td.main{font-size:1.04rem;padding-right:2.2rem;font-weight:600}
 }
 
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
@@ -549,13 +537,7 @@ tr.lv2 td.main,tr.lv2 td:nth-child(4){opacity:.55}
 }
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.62}}
 
-@media (max-width:640px){
-  .flash-lvl{top:2.7rem}
-  table.stack tr{padding-top:2.6rem}
-  table.stack td[data-label="Уровень"]{position:absolute;top:.8rem;left:.9rem;padding:0}
-  table.stack td[data-label="Уровень"]::before{content:none}
-  table.stack td.main{padding-right:0}
-}
+
 
 /* выпадающий список голосов */
 select{
@@ -572,6 +554,98 @@ select:focus{border-color:var(--brand)}
 }
 .skill.done{background:var(--ok-bg);color:var(--ok)}
 .flash-lvl{display:flex;gap:.4rem;align-items:center;justify-content:center;flex-wrap:wrap}
-@media (max-width:640px){
-  .skills{display:flex;margin:.35rem 0 0}
+
+
+/* опасная зона */
+.dangerzone{
+  margin-top:2.5rem;padding:1rem 1.15rem;border-radius:var(--r);
+  border:1px solid var(--no-line);background:var(--no-bg);
 }
+.dangerzone h5{margin:0 0 .35rem;font-size:.82rem;font-weight:600;color:var(--no)}
+.dangerzone p{margin:0 0 .75rem;font-size:.87rem;color:var(--ink-soft)}
+.btn.danger{border-color:var(--no);color:var(--no)}
+.btn.danger:hover{background:var(--no);color:var(--on-brand);border-color:var(--no)}
+.btn.danger.armed{background:var(--no);color:#fff;font-weight:600}
+
+/* отметка «пора повторить» */
+.duemark{
+  display:inline-block;margin-left:.35rem;font-size:.68rem;font-weight:600;
+  padding:.1em .45em;border-radius:5px;color:var(--warn);background:var(--warn-bg);
+  vertical-align:middle;
+}
+
+
+/* =====================================================
+   МОБИЛЬНАЯ ВЁРСТКА ТАБЛИЦ
+   Строка превращается в карточку: сверху слово,
+   под ним транскрипция, перевод и заметка,
+   уровень и навыки — отдельной полосой внизу.
+   ===================================================== */
+@media (max-width:640px){
+  table.stack{min-width:0;display:block}
+  table.stack thead{display:none}
+  table.stack tbody,table.stack tr,table.stack td{display:block;width:100%}
+
+  table.stack tr{
+    border-bottom:1px solid var(--line);
+    padding:.9rem .95rem;
+  }
+  table.stack tr:last-child{border-bottom:none}
+  table.stack tr:hover{background:transparent}
+
+  table.stack td{border:none;padding:0;margin:0}
+  table.stack td:empty{display:none}
+  table.stack td[data-label]::before{
+    content:attr(data-label) " ";
+    color:var(--ink-faint);font-size:.75rem;
+  }
+  table.stack td[data-label="—"]::before{content:none}
+
+  /* слово — первой строкой, крупно */
+  table.stack td.main{
+    font-size:1.08rem;font-weight:600;line-height:1.35;
+    margin-bottom:.15rem;padding-right:0;
+  }
+  table.stack td.ipa{font-size:.86rem;margin-bottom:.2rem}
+
+  /* уровень и навыки — полосой под текстом */
+  table.stack td[data-label="Уровень"]{
+    display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;
+    margin-top:.55rem;
+  }
+  table.stack td[data-label="Уровень"]::before{content:none}
+  table.stack td[data-label="Уровень"] .skills{margin:0}
+  table.stack .lvl{font-size:.7rem}
+  table.stack .skill{font-size:.68rem}
+
+  /* заметка — помельче и приглушённее */
+  table.stack td:last-child{font-size:.84rem;line-height:1.45;margin-top:.2rem}
+
+  /* неправильные глаголы: формы в строку */
+  table.stack td[data-label="2-я"],
+  table.stack td[data-label="3-я"]{display:inline-block;width:auto;margin-right:.9rem}
+}
+
+/* карточка тренажёра: уровень и навыки не должны налезать */
+@media (max-width:640px){
+  .deck{height:25rem}
+  .flash-lvl{
+    position:static;transform:none;
+    margin:.5rem 0 .9rem;display:flex;gap:.35rem;
+    align-items:center;justify-content:center;flex-wrap:wrap;
+  }
+  .flash-topic{position:static;transform:none;margin-bottom:.3rem;display:inline-block}
+  .swipe-card{padding:1.6rem 1.1rem;justify-content:flex-start}
+  .swipe-card .flash-word{margin-top:auto}
+  .swipe-card .flash-hint{position:static;margin-top:auto;padding-top:1rem}
+  .stamp{top:1.1rem}
+
+  /* панель настроек: чипы не должны прижиматься */
+  .settings{padding:.9rem 1rem}
+  .topicchip{padding:.34rem .75rem}
+  .settings .setrow{gap:.35rem}
+  .settings .setrow .btn{flex:1 1 auto;min-width:auto}
+}
+
+/* пометка синонимов в словаре */
+.synmark{color:var(--info);font-size:.9em}

@@ -2,36 +2,39 @@
    ПРОГРЕСС ПО СЛОВАМ
 
    Два навыка считаются раздельно:
-     write — написание   (тренажёр «Написание»)
-     speak — произношение (тренажёр «Произношение»)
+     w — написание   (тренажёр «Написание»)
+     s — произношение (тренажёр «Произношение»)
+   Нужно по 3 верных в каждом.
 
-   Верный ответ прибавляет к своему навыку, ошибка отнимает.
-   Нужно по 3 в каждом.
-
-   Уровень выводится из навыков:
+   Уровень хранится явно, чтобы ошибки не обнуляли накопленное:
      0 «Не выучено»  — ни один навык не набран
-     1 «Повторение»  — набран один навык
+     1 «Повторение»  — набран один навык, либо выученное слово забылось
      2 «Выучено»     — набраны оба
 
-   Карточки — чистое повторение: двигают срок возврата,
-   но навыки не трогают.
+   Ошибка НЕ отнимает у навыков. Она делает так:
+     выучено  → повторение  (одного верного ответа хватит, чтобы вернуть)
+     повторение → остаётся, пока ошибок подряд меньше пяти
+     пять ошибок подряд → полный сброс в «не выучено»
 
-   Срок возврата по уровням: сразу / 2 дня / 10 дней.
+   Уровень не понижается от времени. Проходит только срок повторения:
+     уровень 0 — сразу, 1 — через 2 дня, 2 — через 10 дней.
+   Выученное слово с наступившим сроком попадает в отдельную выборку
+   «пора повторить», но остаётся выученным.
 
-   Хранится в localStorage под ключом progress-v2 как JSON:
-     { "слово": {w:написание, s:произношение, r:верных, x:ошибок, d:срок, t:когда} }
+   Хранится в localStorage под ключом progress-v3:
+     { "слово": {l:уровень, w, s, f:ошибок подряд, r:верных, x:ошибок, d:срок, t:когда} }
    ========================================================= */
 
 var Progress = {
-  KEY: 'progress-v2',
-  NEED: 3,                     // сколько верных нужно в каждом навыке
+  KEY: 'progress-v3',
+  NEED: 3,                     // верных ответов в каждом навыке
+  FAILS_TO_RESET: 5,           // ошибок подряд до полного сброса
   DELAY: [0, 2, 10],           // задержка в днях по уровням
   NAMES: ['Не выучено', 'Повторение', 'Выучено'],
   SPEAK_KEY: 'progress-use-speak',
 
   _data: null,
 
-  /* учитывать ли произношение: без микрофона это недостижимо */
   useSpeak: function(){
     var saved = Store.get(this.SPEAK_KEY, null);
     if (saved !== null) return !!saved;
@@ -39,38 +42,52 @@ var Progress = {
   },
   setUseSpeak: function(v){ Store.set(this.SPEAK_KEY, !!v); },
 
+  blank: function(){ return {l:0, w:0, s:0, f:0, r:0, x:0, d:0, t:0}; },
+
   all: function(){
     if (this._data) return this._data;
     this._data = Store.get(this.KEY, null);
+    if (this._data) return this._data;
 
-    if (!this._data){
-      this._data = {};
-      var now = Date.now();
+    /* ---------- перенос старого прогресса ---------- */
+    this._data = {};
+    var self = this, now = Date.now();
 
-      /* перенос из прежней схемы с одним счётчиком */
-      var v1 = Store.get('progress-v1', null);
-      if (v1){
-        var self = this;
-        Object.keys(v1).forEach(function(k){
-          var o = v1[k];
-          var done = (o.l >= 2) ? self.NEED : (o.l === 1 ? self.NEED : (o.s || 0));
-          self._data[k] = {
-            w: Math.min(self.NEED, done),
-            s: o.l >= 2 ? self.NEED : 0,
-            r: o.r || 0, x: o.w || 0,
-            d: o.d || now, t: o.t || now
-          };
-        });
-      }
+    var v2 = Store.get('progress-v2', null);
+    if (v2){
+      Object.keys(v2).forEach(function(k){
+        var o = v2[k] || {};
+        var w = Math.min(self.NEED, o.w || 0);
+        var s = Math.min(self.NEED, o.s || 0);
+        var l = (w >= self.NEED && s >= self.NEED) ? 2
+              : (w >= self.NEED || s >= self.NEED) ? 1 : 0;
+        self._data[k] = {l:l, w:w, s:s, f:0, r:o.r||0, x:o.x||0, d:o.d||now, t:o.t||now};
+      });
+      this.save();
+      return this._data;
+    }
 
-      /* ещё более ранние отметки «выучено» */
-      var old = Store.get('vocab-learned', null);
-      if (old && !v1){
-        var me = this;
-        Object.keys(old).forEach(function(k){
-          me._data[k] = {w:me.NEED, s:me.NEED, r:me.NEED, x:0, d:now, t:now};
-        });
-      }
+    var v1 = Store.get('progress-v1', null);
+    if (v1){
+      Object.keys(v1).forEach(function(k){
+        var o = v1[k] || {};
+        var done = (o.l >= 1) ? self.NEED : (o.s || 0);
+        self._data[k] = {
+          l: o.l || 0,
+          w: Math.min(self.NEED, done),
+          s: (o.l >= 2) ? self.NEED : 0,
+          f: 0, r: o.r||0, x: o.w||0, d: o.d||now, t: o.t||now
+        };
+      });
+      this.save();
+      return this._data;
+    }
+
+    var old = Store.get('vocab-learned', null);
+    if (old){
+      Object.keys(old).forEach(function(k){
+        self._data[k] = {l:2, w:self.NEED, s:self.NEED, f:0, r:self.NEED, x:0, d:now, t:now};
+      });
       this.save();
     }
     return this._data;
@@ -79,37 +96,55 @@ var Progress = {
   save: function(){ Store.set(this.KEY, this._data); },
 
   of: function(en){
-    return this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    var d = this.all()[en];
+    return d || this.blank();
   },
 
-  /* уровень выводится из навыков, а не хранится */
   level: function(en){
     var d = this.of(en);
-    var wOk = d.w >= this.NEED;
-    var sOk = d.s >= this.NEED;
-    if (!this.useSpeak()) return wOk ? 2 : (d.w > 0 ? 1 : 0);
-    if (wOk && sOk) return 2;
-    if (wOk || sOk) return 1;
-    return 0;
+    /* без учёта произношения «выучено» достигается одним написанием */
+    if (!this.useSpeak() && d.w >= this.NEED) return 2;
+    return d.l || 0;
   },
 
-  /* сколько осталось до полного освоения */
   remaining: function(en){
     var d = this.of(en);
     return {
-      write: Math.max(0, this.NEED - d.w),
-      speak: this.useSpeak() ? Math.max(0, this.NEED - d.s) : 0
+      write: Math.max(0, this.NEED - (d.w || 0)),
+      speak: this.useSpeak() ? Math.max(0, this.NEED - (d.s || 0)) : 0
     };
+  },
+
+  /* пересчёт уровня вверх по навыкам */
+  _up: function(d){
+    var w = d.w >= this.NEED, s = d.s >= this.NEED;
+    if (w && s) return 2;
+    if (w || s) return Math.max(d.l, 1);
+    return d.l;
   },
 
   /* ответ в тренажёре навыка: skill — "write" или "speak" */
   answer: function(en, ok, skill){
-    var d = this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    var d = this.all()[en] || this.blank();
     var now = Date.now();
     var key = (skill === 'speak') ? 's' : 'w';
 
-    if (ok){ d[key] = Math.min(this.NEED, (d[key] || 0) + 1); d.r++; }
-    else    { d[key] = Math.max(0, (d[key] || 0) - 1);        d.x++; }
+    if (ok){
+      d.f = 0;
+      d.r++;
+      d[key] = Math.min(this.NEED, (d[key] || 0) + 1);
+      d.l = this._up(d);
+    } else {
+      d.x++;
+      d.f = (d.f || 0) + 1;
+      if (d.f >= this.FAILS_TO_RESET){
+        /* слово действительно забыто — начинаем заново */
+        d.l = 0; d.w = 0; d.s = 0; d.f = 0;
+      } else if (d.l === 2){
+        /* выученное забылось — в повторение, навыки не трогаем */
+        d.l = 1;
+      }
+    }
 
     d.t = now;
     this.all()[en] = d;
@@ -118,9 +153,9 @@ var Progress = {
     return d;
   },
 
-  /* карточки: только сдвигают срок, навыки не трогают */
+  /* карточки: только сдвигают срок, навыки и уровень не трогают */
   review: function(en, ok){
-    var d = this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    var d = this.all()[en] || this.blank();
     var now = Date.now();
     d.t = now;
     this.all()[en] = d;
@@ -129,15 +164,17 @@ var Progress = {
     return d;
   },
 
-  /* ручная установка уровня из словаря */
   setLevel: function(en, level){
-    var d = this.all()[en] || {w:0, s:0, r:0, x:0, d:0, t:0};
+    var d = this.all()[en] || this.blank();
+    level = Math.max(0, Math.min(2, level));
+    d.l = level;
+    d.f = 0;
     if (level >= 2){ d.w = this.NEED; d.s = this.NEED; }
     else if (level === 1){ d.w = this.NEED; d.s = 0; }
     else { d.w = 0; d.s = 0; }
     d.t = Date.now();
     this.all()[en] = d;
-    d.d = d.t + this.DELAY[this.level(en)] * 86400000;
+    d.d = d.t + this.DELAY[level] * 86400000;
     this.save();
     return d;
   },
@@ -148,13 +185,17 @@ var Progress = {
     return Date.now() >= (d.d || 0);
   },
 
+  /* выучено, но срок подошёл — отдельная выборка */
+  isStale: function(en){
+    return this.level(en) === 2 && this.isDue(en);
+  },
+
   counts: function(list){
     var c = [0, 0, 0], self = this;
     list.forEach(function(w){ c[self.level(w.en)]++; });
     return c;
   },
 
-  /* сколько слов ждёт каждого навыка */
   skillCounts: function(list){
     var need = {write:0, speak:0}, self = this;
     list.forEach(function(w){
@@ -168,6 +209,9 @@ var Progress = {
   dueCount: function(list){
     return list.filter(function(w){ return Progress.isDue(w.en); }).length;
   },
+  staleCount: function(list){
+    return list.filter(function(w){ return Progress.isStale(w.en); }).length;
+  },
 
   reset: function(){ this._data = {}; this.save(); },
 
@@ -175,7 +219,7 @@ var Progress = {
   exportFile: function(){
     var payload = {
       app: 'english-trainer',
-      version: 2,
+      version: 3,
       savedAt: new Date().toISOString(),
       progress: this.all(),
       trainerStats: Store.get('trainer-stats', {}),
@@ -192,33 +236,40 @@ var Progress = {
 
   importFile: function(file, done){
     var reader = new FileReader();
+    var self = this;
     reader.onload = function(){
       try {
         var p = JSON.parse(reader.result);
         if (!p || !p.progress) throw new Error('в файле нет данных о прогрессе');
-        var added = 0, old = (p.version || 1) < 2;
+        var ver = p.version || 1, added = 0;
         Object.keys(p.progress).forEach(function(k){
-          var inc = p.progress[k];
-          if (old){
-            inc = {w: inc.l >= 1 ? Progress.NEED : (inc.s || 0),
-                   s: inc.l >= 2 ? Progress.NEED : 0,
-                   r: inc.r || 0, x: inc.w || 0, d: inc.d || 0, t: inc.t || 0};
+          var inc = p.progress[k] || {};
+          if (ver < 3){
+            var w = Math.min(self.NEED, ver === 2 ? (inc.w||0) : (inc.l >= 1 ? self.NEED : (inc.s||0)));
+            var s = ver === 2 ? Math.min(self.NEED, inc.s||0) : (inc.l >= 2 ? self.NEED : 0);
+            inc = {
+              l: (w >= self.NEED && s >= self.NEED) ? 2 : (w >= self.NEED || s >= self.NEED) ? 1 : 0,
+              w:w, s:s, f:0,
+              r: inc.r||0, x: ver === 2 ? (inc.x||0) : (inc.w||0),
+              d: inc.d||0, t: inc.t||0
+            };
           }
-          var cur = Progress.all()[k];
-          /* при слиянии берём лучшее по каждому навыку */
-          if (!cur){ Progress.all()[k] = inc; added++; return; }
-          var merged = {
-            w: Math.max(cur.w || 0, inc.w || 0),
-            s: Math.max(cur.s || 0, inc.s || 0),
-            r: Math.max(cur.r || 0, inc.r || 0),
-            x: Math.max(cur.x || 0, inc.x || 0),
-            d: Math.max(cur.d || 0, inc.d || 0),
-            t: Math.max(cur.t || 0, inc.t || 0)
+          var cur = self.all()[k];
+          if (!cur){ self.all()[k] = inc; added++; return; }
+          /* при слиянии берём лучшее по каждому полю */
+          self.all()[k] = {
+            l: Math.max(cur.l||0, inc.l||0),
+            w: Math.max(cur.w||0, inc.w||0),
+            s: Math.max(cur.s||0, inc.s||0),
+            f: 0,
+            r: Math.max(cur.r||0, inc.r||0),
+            x: Math.max(cur.x||0, inc.x||0),
+            d: Math.max(cur.d||0, inc.d||0),
+            t: Math.max(cur.t||0, inc.t||0)
           };
-          Progress.all()[k] = merged;
           added++;
         });
-        Progress.save();
+        self.save();
         if (p.trainerStats) Store.set('trainer-stats', p.trainerStats);
         if (p.topics) Store.set('trainer-topics', p.topics);
         done(null, added);

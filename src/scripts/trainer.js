@@ -72,34 +72,66 @@ var TopicPicker = {
     if (this.selected) return this.selected;
     var saved = Store.get(this.key, null);
     var all = TOPICS.map(function(t){ return t.name; });
-    this.selected = (saved && saved.length) ? saved.filter(function(n){ return all.indexOf(n) !== -1; }) : all.slice();
-    if (!this.selected.length) this.selected = all.slice();
+    if (saved === null) this.selected = all.slice();        /* первый запуск */
+    else this.selected = saved.filter(function(n){ return all.indexOf(n) !== -1; });
     return this.selected;
   },
   save: function(){ Store.set(this.key, this.selected); },
   has: function(name){ return this.load().indexOf(name) !== -1; },
   toggle: function(name){
+    this.load();
     var i = this.selected.indexOf(name);
     if (i === -1) this.selected.push(name);
-    else if (this.selected.length > 1) this.selected.splice(i, 1);
+    else this.selected.splice(i, 1);     /* можно снять и последнюю */
     this.save();
   },
   setAll: function(names){ this.selected = names.slice(); this.save(); },
+  clearAll: function(){ this.selected = []; this.save(); },
 
-  dueOnly: function(){ return Store.get(this.dueKey, true); },
-  setDueOnly: function(v){ Store.set(this.dueKey, !!v); },
+  /* режим отбора: all | due | stale | new | learning | learned */
+  modeKey: 'trainer-mode',
+  mode: function(){ return Store.get(this.modeKey, 'due'); },
+  setMode: function(v){ Store.set(this.modeKey, v); },
+
+  MODES: [
+    {id:'all',      name:'Все слова'},
+    {id:'due',      name:'Пора повторить'},
+    {id:'stale',    name:'Выучено, но пора повторить'},
+    {id:'new',      name:'Не выучено'},
+    {id:'learning', name:'На повторении'},
+    {id:'learned',  name:'Выучено'}
+  ],
 
   /* все слова выбранных тем */
   pool: function(){
     var sel = this.load();
     return VOCAB.filter(function(w){ return sel.indexOf(w.topic) !== -1; });
   },
-  /* слова для тренировки: с учётом срока повторения */
+  /* слова для тренировки с учётом выбранного режима */
   words: function(){
     var pool = this.pool();
-    if (!this.dueOnly()) return pool;
-    var due = pool.filter(function(w){ return Progress.isDue(w.en); });
-    return due.length ? due : pool;
+    var m = this.mode();
+    if (m === 'all') return pool;
+    var f;
+    if (m === 'due')           f = function(w){ return Progress.isDue(w.en); };
+    else if (m === 'stale')    f = function(w){ return Progress.isStale(w.en); };
+    else if (m === 'new')      f = function(w){ return Progress.level(w.en) === 0; };
+    else if (m === 'learning') f = function(w){ return Progress.level(w.en) === 1; };
+    else if (m === 'learned')  f = function(w){ return Progress.level(w.en) === 2; };
+    else return pool;
+    return pool.filter(f);
+  },
+
+  /* сколько слов даст каждый режим */
+  modeCount: function(id){
+    var pool = this.pool();
+    if (id === 'all')      return pool.length;
+    if (id === 'due')      return pool.filter(function(w){ return Progress.isDue(w.en); }).length;
+    if (id === 'stale')    return pool.filter(function(w){ return Progress.isStale(w.en); }).length;
+    if (id === 'new')      return pool.filter(function(w){ return Progress.level(w.en) === 0; }).length;
+    if (id === 'learning') return pool.filter(function(w){ return Progress.level(w.en) === 1; }).length;
+    if (id === 'learned')  return pool.filter(function(w){ return Progress.level(w.en) === 2; }).length;
+    return 0;
   }
 };
 
@@ -112,11 +144,6 @@ function renderTopicPanel(host, onChange){
     var talk = TOPICS.filter(function(t){ return t.set !== 'hw'; });
     var hw   = TOPICS.filter(function(t){ return t.set === 'hw'; });
 
-    var poolAll = TopicPicker.pool();
-    var c = Progress.counts(poolAll);
-    var due = Progress.dueCount(poolAll);
-    var need = Progress.skillCounts(poolAll);
-
     function chips(list){
       return list.map(function(t){
         return '<span class="topicchip' + (TopicPicker.has(t.name) ? ' on' : '') +
@@ -125,39 +152,59 @@ function renderTopicPanel(host, onChange){
       }).join('');
     }
 
+    var pool = TopicPicker.pool();
+    var c = Progress.counts(pool);
+    var ready = TopicPicker.words().length;
+    var mode = TopicPicker.mode();
+
+    var modeBtns = TopicPicker.MODES.map(function(m){
+      var n = TopicPicker.modeCount(m.id);
+      return '<span class="topicchip' + (mode === m.id ? ' on' : '') + '" data-mode="' + m.id + '">' +
+             esc(m.name) + ' <span class="n">' + n + '</span></span>';
+    }).join('');
+
     host.innerHTML =
-      '<div class="setrow">' +
-        '<h5 style="margin:0;flex:1">Какие слова повторяем</h5>' +
+      '<h5>Что повторяем</h5>' +
+      '<div class="topiclist">' + modeBtns + '</div>' +
+
+      '<div class="setrow" style="margin:1.1rem 0 .4rem">' +
+        '<h5 style="margin:0;flex:1">Темы</h5>' +
         '<button class="btn" data-pick="all">Все</button>' +
-        '<button class="btn" data-pick="basic">Разговорные темы</button>' +
+        '<button class="btn" data-pick="basic">Разговорные</button>' +
         '<button class="btn" data-pick="hw">Из домашек</button>' +
+        '<button class="btn" data-pick="none">Снять все</button>' +
       '</div>' +
-      '<h5>Разговорные темы</h5><div class="topiclist">' + chips(talk) + '</div>' +
-      '<h5 style="margin-top:.95rem">Из домашек</h5><div class="topiclist">' + chips(hw) + '</div>' +
-      '<div class="setrow" style="margin:.95rem 0 0">' +
-        '<span class="topicchip' + (TopicPicker.dueOnly() ? ' on' : '') + '" data-due="1">' +
-          'Только те, что пора повторить <span class="n">' + due + '</span></span>' +
-      '</div>' +
+      '<h5 style="margin:.6rem 0 .35rem">Разговорные темы</h5>' +
+      '<div class="topiclist">' + chips(talk) + '</div>' +
+      '<h5 style="margin:.9rem 0 .35rem">Из домашек</h5>' +
+      '<div class="topiclist">' + chips(hw) + '</div>' +
+
       '<div class="lvlbar">' +
         '<span class="lvl l0">Не выучено <b>' + c[0] + '</b></span>' +
         '<span class="lvl l1">Повторение <b>' + c[1] + '</b></span>' +
         '<span class="lvl l2">Выучено <b>' + c[2] + '</b></span>' +
       '</div>' +
-      '<p class="qhint" style="margin:.6rem 0 0">Ждут написания: ' + need.write +
-        (Progress.useSpeak() ? ' · ждут произношения: ' + need.speak : '') + '</p>';
+      '<p class="qhint" style="margin:.65rem 0 0">' +
+        (pool.length === 0
+          ? 'Не выбрано ни одной темы — отметь хотя бы одну.'
+          : (ready === 0
+             ? 'В этой выборке сейчас нет слов. Смени режим или добавь темы.'
+             : 'В тренировке: <b>' + ready + '</b> слов из ' + pool.length + ' в выбранных темах.')) +
+      '</p>';
   }
 
   host.addEventListener('click', function(e){
-    if (e.target.closest('[data-due]')){
-      TopicPicker.setDueOnly(!TopicPicker.dueOnly());
-      draw(); onChange(); return;
-    }
+    var m = e.target.closest('[data-mode]');
+    if (m){ TopicPicker.setMode(m.dataset.mode); draw(); onChange(); return; }
+
     var chip = e.target.closest('[data-topic]');
     if (chip){ TopicPicker.toggle(chip.dataset.topic); draw(); onChange(); return; }
+
     var pick = e.target.closest('[data-pick]');
     if (pick){
       var mode = pick.dataset.pick;
-      TopicPicker.setAll(TOPICS.filter(function(t){
+      if (mode === 'none') TopicPicker.clearAll();
+      else TopicPicker.setAll(TOPICS.filter(function(t){
         if (mode === 'all') return true;
         if (mode === 'hw') return t.set === 'hw';
         return t.set !== 'hw';
@@ -212,6 +259,11 @@ function renderTopicPanel(host, onChange){
     setBar('c-bar', q.right, total);
 
     var w = q.current();
+    if (!w && total === 0){
+      deck.innerHTML = '<div class="deck-empty"><b style="font-size:1.1rem">Здесь пока нет слов</b>' +
+        '<span>Смени режим выше или отметь больше тем.</span></div>';
+      return;
+    }
     if (!w){
       deck.innerHTML = '<div class="deck-empty"><b style="font-size:1.15rem">Колода пройдена</b>' +
         '<span>Верно с первого раза: ' + q.right + ' из ' + total + '</span>' +
@@ -334,6 +386,11 @@ function renderTopicPanel(host, onChange){
     setBar('w-bar', q.right, total);
 
     var w = q.current();
+    if (!w && total === 0){
+      stage.innerHTML = '<p class="qtext">Здесь пока нет слов</p>' +
+        '<p class="qhint">Смени режим выше или отметь больше тем.</p>';
+      return;
+    }
     if (!w){
       stage.innerHTML = '<p class="qtext">Всё пройдено.</p><p class="qhint">Верно с первого раза: ' +
         q.right + ' из ' + total + '</p>';
@@ -363,8 +420,13 @@ function renderTopicPanel(host, onChange){
         function(variants){
           var w = q.current();
           input.value = variants[0];
-          var r = Fuzzy.check(variants, w.en);
-          if (r.ok) return reveal(true, false);
+          var best = null;
+          SYNONYMS.accept(w).forEach(function(cand){
+            var rr = Fuzzy.check(variants, cand);
+            if (!best || rr.score > best.score) best = rr;
+          });
+          var r = best;
+          if (r.ok) return reveal(true, false, r.said);
           document.getElementById('w-verdict').innerHTML =
             '<div class="verdict no"><b>Услышал «' + esc(r.said) + '»</b>' +
             'Похоже на ' + r.percent + '%. Поправь в поле или скажи ещё раз.</div>';
@@ -379,8 +441,9 @@ function renderTopicPanel(host, onChange){
   function check(){
     var w = q.current();
     var val = document.getElementById('w-input').value;
-    if (matches(val, [w.en])) return reveal(true, false);
-    if (closeEnough(val, w.en)){
+    var ok = SYNONYMS.accept(w);
+    if (matches(val, ok)) return reveal(true, false, val);
+    if (ok.some(function(x){ return closeEnough(val, x); })){
       document.getElementById('w-verdict').innerHTML =
         '<div class="verdict no"><b>Почти</b>Есть опечатка — посмотри ещё раз и поправь.</div>';
       return;
@@ -388,16 +451,25 @@ function renderTopicPanel(host, onChange){
     reveal(false, false);
   }
 
-  function reveal(ok, skipped){
+  function reveal(ok, skipped, given){
     var w = q.current();
     bumpStat('write', ok);
     var d = Progress.answer(w.en, ok, 'write');
+    var others = SYNONYMS.others(w);
+    /* если ответил синонимом — показываем именно его */
+    var shown = w.en;
+    if (ok && given && !matches(given, [w.en])){
+      var hit = others.filter(function(x){ return matches(given, [x]); })[0];
+      if (hit) shown = hit;
+    }
     var rem = Progress.remaining(w.en);
     document.getElementById('w-verdict').innerHTML =
       '<div class="verdict ' + (ok ? 'ok' : 'no') + '"><b>' +
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
-      '<span class="en">' + esc(w.en) + '</span>' +
-      (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(w.en) +
+      '<span class="en">' + esc(shown) + '</span>' +
+      (w.tr && shown === w.en ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(shown) +
+      (others.length ? '<br><span style="color:var(--ink-soft);font-size:.9em">Также принимается: ' +
+        esc(others.concat(shown === w.en ? [] : [w.en]).filter(function(x){ return x !== shown; }).join(' · ')) + '</span>' : '') +
       (w.note ? '<br><span style="color:var(--ink-soft);font-size:.9em">' + esc(w.note) + '</span>' : '') +
       '<div class="lvlnow">' + Progress.NAMES[Progress.level(w.en)] + ' · ' +
         (rem.write ? 'написать ещё ' + rem.write : 'написание освоено') +
@@ -599,6 +671,11 @@ function renderTopicPanel(host, onChange){
     }
 
     var w = q.current();
+    if (!w && total === 0){
+      stage.innerHTML = '<p class="qtext">Здесь пока нет слов</p>' +
+        '<p class="qhint">Смени режим выше или отметь больше тем.</p>';
+      return;
+    }
     if (!w){
       stage.innerHTML = '<p class="qtext">Всё пройдено.</p><p class="qhint">Верно с первого раза: ' +
         q.right + ' из ' + total + '</p>';
@@ -631,10 +708,14 @@ function renderTopicPanel(host, onChange){
     btn.classList.add('rec'); btn.textContent = '● Слушаю…';
     Listen.start(
       function(variants){
-        var r = Fuzzy.check(variants, w.en);
-        if (r.ok) return reveal(true, false, r);
-        if (r.near) return almost(r);
-        reveal(false, false, r);
+        var best = null;
+        SYNONYMS.accept(w).forEach(function(cand){
+          var rr = Fuzzy.check(variants, cand);
+          if (!best || rr.score > best.score){ best = rr; best.word = cand; }
+        });
+        if (best.ok) return reveal(true, false, best);
+        if (best.near) return almost(best);
+        reveal(false, false, best);
       },
       function(msg){
         document.getElementById('s-verdict').innerHTML =
@@ -672,12 +753,17 @@ function renderTopicPanel(host, onChange){
     var w = q.current();
     bumpStat('speak', ok);
     var d = Progress.answer(w.en, ok, 'speak');
+    var shown = (ok && heard && heard.word) ? heard.word : w.en;
+    var others = SYNONYMS.others(w).filter(function(x){ return x !== shown; });
+    if (shown !== w.en) others = others.concat([w.en]);
     var rem = Progress.remaining(w.en);
     document.getElementById('s-verdict').innerHTML =
       '<div class="verdict ' + (ok ? 'ok' : 'no') + '"><b>' +
       (ok ? 'Верно' : (skipped ? 'Ответ' : 'Не так')) + '</b>' +
-      '<span class="en">' + esc(w.en) + '</span>' +
-      (w.tr ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(w.en) +
+      '<span class="en">' + esc(shown) + '</span>' +
+      (w.tr && shown === w.en ? ' <span class="ipa">' + esc(w.tr) + '</span>' : '') + ' ' + soundBtn(shown) +
+      (others.length ? '<br><span style="color:var(--ink-soft);font-size:.9em">Также принимается: ' +
+        esc(others.join(' · ')) + '</span>' : '') +
       (heard && heard.said ?
         '<br><span style="color:var(--ink-soft);font-size:.9em">Услышал: «' + esc(heard.said) + '» · похоже на ' +
         heard.percent + '%' + (heard.how ? ' · совпало ' + esc(heard.how) : '') + '</span>' : '') +

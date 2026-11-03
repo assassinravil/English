@@ -105,7 +105,10 @@
     var list = VOCAB.filter(function(w){
       if (setFilter !== 'all' && w.set !== setFilter) return false;
       if (topicFilter !== 'all' && w.topic !== topicFilter) return false;
-      if (lvlFilter !== 'all' && Progress.level(w.en) !== +lvlFilter) return false;
+      if (lvlFilter === 'due'   && !Progress.isDue(w.en)) return false;
+      if (lvlFilter === 'stale' && !Progress.isStale(w.en)) return false;
+      if (lvlFilter !== 'all' && lvlFilter !== 'due' && lvlFilter !== 'stale'
+          && Progress.level(w.en) !== +lvlFilter) return false;
       if (q && (w.en + ' ' + w.ru + ' ' + (w.tr||'') + ' ' + (w.note||'')).toLowerCase().indexOf(q) === -1) return false;
       return true;
     });
@@ -115,6 +118,7 @@
       var lvl = Progress.level(w.en);
       var seen = (d.r || 0) + (d.x || 0);
       var N = Progress.NEED;
+      var dueMark = Progress.isDue(w.en) ? '<span class="duemark">пора</span>' : '';
       var skills = '<span class="skills"><span class="skill' + (d.w >= N ? ' done' : '') + '">✍ ' +
         Math.min(d.w||0, N) + '/' + N + '</span>' +
         (Progress.useSpeak() ? '<span class="skill' + (d.s >= N ? ' done' : '') + '">🎤 ' +
@@ -122,7 +126,7 @@
       return '<tr class="lv' + lvl + '">' +
         '<td data-label="Уровень"><button class="lvl l' + lvl + ' btnlvl" type="button" data-word="' +
           esc(w.en).replace(/"/g,'&quot;') + '" title="Нажми, чтобы сменить вручную">' +
-          Progress.NAMES[lvl] + '</button>' + skills + '</td>' +
+          Progress.NAMES[lvl] + '</button>' + dueMark + skills + '</td>' +
         '<td class="en main">' + esc(w.en) +
           (Speak.ok ? ' <button class="iconbtn sound" type="button" data-say="' + esc(w.en).replace(/"/g,'&quot;') +
             '" title="Послушать"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/>' +
@@ -130,12 +134,17 @@
         '<td class="ipa" data-label="—">' + esc(w.tr || '') + '</td>' +
         '<td data-label="—">' + esc(w.ru) + '</td>' +
         '<td style="color:var(--ink-soft)" data-label="—">' + esc(w.note || '') +
+          (SYNONYMS.others(w).length
+            ? '<span class="synmark"> · то же: ' + esc(SYNONYMS.others(w).join(', ')) + '</span>'
+            : '') +
           (seen ? '<span class="seen"> · ответов: ' + seen + '</span>' : '') + '</td></tr>';
     }).join('') || '<tr><td colspan="5" style="color:var(--ink-faint)">Ничего не найдено</td></tr>';
 
     var c = Progress.counts(VOCAB);
-    counter.textContent = 'Показано ' + list.length + ' · выучено ' + c[2] +
-      ' · на повторении ' + c[1] + ' · не выучено ' + c[0];
+    var due = Progress.dueCount(VOCAB), stale = Progress.staleCount(VOCAB);
+    counter.innerHTML = 'Показано <b>' + list.length + '</b> из ' + VOCAB.length +
+      ' · выучено ' + c[2] + ' · на повторении ' + c[1] + ' · не выучено ' + c[0] +
+      ' · пора повторить ' + due + ' (из них выученных ' + stale + ')';
   }
 
   /* смена уровня вручную: по кругу */
@@ -191,10 +200,45 @@
     this.value = '';
   });
 
-  document.getElementById('reset').addEventListener('click', function(){
-    if (!confirm('Сбросить весь прогресс по словам? Это действие нельзя отменить.')) return;
-    Progress.reset(); render();
-  });
+  /* сброс в три шага: случайно не нажмёшь */
+  (function(){
+    var btn = document.getElementById('reset');
+    var msgBox = document.getElementById('reset-msg');
+    var step = 0, timer = null;
+
+    var steps = [
+      {label:'Точно сбросить? Нажми ещё раз', hint:'Шаг 1 из 3. Прогресс пока цел.'},
+      {label:'Это нельзя отменить. Ещё раз',  hint:'Шаг 2 из 3. Сохрани файл, если не сохранил.'},
+      {label:'Сбросить окончательно',          hint:'Шаг 3 из 3. Следующее нажатие удалит всё.'}
+    ];
+
+    function reset(){
+      step = 0;
+      btn.textContent = 'Сбросить весь прогресс';
+      btn.classList.remove('armed');
+      msgBox.innerHTML = '';
+      if (timer) clearTimeout(timer);
+    }
+
+    btn.addEventListener('click', function(){
+      if (step < steps.length){
+        var st = steps[step];
+        btn.textContent = st.label;
+        btn.classList.add('armed');
+        msgBox.innerHTML = '<p class="qhint" style="margin:.6rem 0 0">' + st.hint +
+          ' Подтверждение отменится через 10 секунд.</p>';
+        step++;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(reset, 10000);
+        return;
+      }
+      if (!confirm('Последняя проверка: удалить весь прогресс по словам?')) { reset(); return; }
+      Progress.reset();
+      reset();
+      render();
+      msgBox.innerHTML = '<div class="verdict ok" style="margin-top:.7rem"><b>Готово</b>Прогресс сброшен.</div>';
+    });
+  })();
 
   renderVoicePanel(document.getElementById('v-voice'));
   renderSkillPanel(document.getElementById('v-skill'), render);
